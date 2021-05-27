@@ -1,0 +1,91 @@
+// Dependency imports
+$family-sans-serif: 'Barlow', system-ui, sans-serif;
+$body-size: 16px;
+$modal-content-width: 900px;
+@import '@cityssm/bulma-a11y/bulma-a11y';
+@import '@creativebulma/bulma-tooltip/src/sass/index';
+
+@import '../lib/fontsource-barlow/index.css';
+
+.has-height-auto {
+  height: auto !important;
+}
+
+#is-login-page {
+  min-height: 100vh;
+  background-image: url('../images/login-background.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  body,
+  body > .columns {
+    min-height: 100vh;
+  }
+}
+
+.navbar-burger span {
+  height: 2px;
+}
+
+.input[type='number'] {
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+  }
+}
+
+.is-edit-control-flex,
+.is-edit-control-inline-block {
+  display: none;
+}
+
+.is-edit-mode {
+  .is-edit-control-flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .is-edit-control-inline-block {
+    display: inline-block;
+  }
+}
+
+.icon-checkbox {
+  display: flex;
+
+  &:focus-within {
+    outline: thin dotted;
+    outline-offset: 2px;
+  }
+
+  input:not(:checked) ~ .fa-layers .icon-checkbox-dot {
+    display: none;
+  }
+}
+
+.panel-block {
+  background-color: $white;
+}
+
+main {
+  margin-bottom: 100px;
+}
+
+.button.is-fixed-circle {
+  position: fixed;
+  right: 15px;
+  bottom: 15px;
+  z-index: 100;
+  display: inline-block;
+  height: auto;
+  padding: 15px;
+  border-radius: 50%;
+
+  .fa-fw {
+    height: 1.25em;
+  }
+}

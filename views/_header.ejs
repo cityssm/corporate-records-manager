@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html class="has-background-white-ter" lang="en">
+
+<head>
+  <title>
+    Corporate Records Manager
+  </title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="csrf-token" content="<%= csrfToken %>">
+  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.min.css" />
+</head>
+
+<body>
+  <nav class="level has-background-dark has-text-white p-3 mb-0">
+    <div class="level-left has-text-weight-bold">
+      Corporate Records Manager
+    </div>
+    <div class="level-right">
+      <a class="has-text-white" href="<%= urlPrefix %>/logout">
+        <span class="icon"><i class="fas fa-sign-out-alt" aria-hidden="true"></i></span>
+        <span>Log Out <%= user.userName %></span>
+      </a>
+    </div>
+  </nav>
+  <main class="p-3">
