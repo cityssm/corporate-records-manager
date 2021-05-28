@@ -18,6 +18,8 @@ import * as dateTimeFns from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as permissionHandlers from "./handlers/permissions.js";
 import routerLogin from "./routes/login.js";
 import routerDashboard from "./routes/dashboard.js";
+import routerNew from "./routes/new.js";
+import routerReports from "./routes/reports.js";
 
 import debug from "debug";
 const debugApp = debug("corporate-records-manager:app");
@@ -91,7 +93,7 @@ app.use(urlPrefix + "/lib/bulma-webapp-js",
   express.static(path.join("node_modules", "@cityssm", "bulma-webapp-js", "dist")));
 
 app.use(urlPrefix + "/lib/date-diff",
-  express.static(path.join("node_modules", "@cityssm", "date-diff")));
+  express.static(path.join("node_modules", "@cityssm", "date-diff", "es2015")));
 
 app.use(urlPrefix + "/lib/fa5",
   express.static(path.join("node_modules", "@fortawesome", "fontawesome-free")));
@@ -168,6 +170,10 @@ app.get(urlPrefix + "/", sessionChecker, (_req, res) => {
 });
 
 app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
+
+app.use(urlPrefix + "/new", sessionChecker, permissionHandlers.canUpdate, routerNew);
+
+app.use(urlPrefix + "/reports", sessionChecker, routerReports);
 
 app.use(urlPrefix + "/login", routerLogin);
 

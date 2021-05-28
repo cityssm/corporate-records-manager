@@ -13,15 +13,30 @@
 </head>
 
 <body>
-  <nav class="level has-background-dark has-text-white p-3 mb-0">
-    <div class="level-left has-text-weight-bold">
-      Corporate Records Manager
-    </div>
-    <div class="level-right">
-      <a class="has-text-white" href="<%= urlPrefix %>/logout">
-        <span class="icon"><i class="fas fa-sign-out-alt" aria-hidden="true"></i></span>
-        <span>Log Out <%= user.userName %></span>
+  <nav class="navbar is-dark">
+    <div class="navbar-brand">
+      <a class="navbar-item has-text-weight-bold" href="<%= urlPrefix %>/dashboard">
+        Corporate Records Manager
       </a>
+      <a class="navbar-burger" id="navbar-burger" role="button" href="#navbar-menu" aria-label="menu" aria-expanded="false" data-target="navbar-menu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu" id="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="<%= urlPrefix %>/reports">
+          <span class="icon"><i class="fas fa-file" aria-hidden="true"></i></span>
+          <span>Reports</span>
+        </a>
+      </div>
+      <div class="navbar-end">
+        <a class="navbar-item" href="<%= urlPrefix %>/logout">
+          <span class="icon"><i class="fas fa-sign-out-alt" aria-hidden="true"></i></span>
+          <span>Log Out <%= user.userName %></span>
+        </a>
+      </div>
     </div>
   </nav>
   <main class="p-3">

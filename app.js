@@ -11,8 +11,11 @@ import sqlite from "connect-sqlite3";
 import * as configFns from "./helpers/configFns.js";
 import * as stringFns from "@cityssm/expressjs-server-js/stringFns.js";
 import * as dateTimeFns from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import * as permissionHandlers from "./handlers/permissions.js";
 import routerLogin from "./routes/login.js";
 import routerDashboard from "./routes/dashboard.js";
+import routerNew from "./routes/new.js";
+import routerReports from "./routes/reports.js";
 import debug from "debug";
 const debugApp = debug("corporate-records-manager:app");
 export const app = express();
@@ -47,7 +50,7 @@ const urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
 app.use(urlPrefix, express.static("public"));
 app.use(urlPrefix + "/lib/fontsource-barlow", express.static(path.join("node_modules", "@fontsource", "barlow")));
 app.use(urlPrefix + "/lib/bulma-webapp-js", express.static(path.join("node_modules", "@cityssm", "bulma-webapp-js", "dist")));
-app.use(urlPrefix + "/lib/date-diff", express.static(path.join("node_modules", "@cityssm", "date-diff")));
+app.use(urlPrefix + "/lib/date-diff", express.static(path.join("node_modules", "@cityssm", "date-diff", "es2015")));
 app.use(urlPrefix + "/lib/fa5", express.static(path.join("node_modules", "@fortawesome", "fontawesome-free")));
 const SQLiteStore = sqlite(session);
 const sessionCookieName = configFns.getProperty("session.cookieName");
@@ -91,6 +94,8 @@ app.get(urlPrefix + "/", sessionChecker, (_req, res) => {
     res.redirect(urlPrefix + "/dashboard");
 });
 app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
+app.use(urlPrefix + "/new", sessionChecker, permissionHandlers.canUpdate, routerNew);
+app.use(urlPrefix + "/reports", sessionChecker, routerReports);
 app.use(urlPrefix + "/login", routerLogin);
 app.get(urlPrefix + "/logout", (req, res) => {
     if (req.session.user && req.cookies[sessionCookieName]) {

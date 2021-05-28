@@ -1,8 +1,15 @@
 import type { RequestHandler } from "express";
 
+import { getRecordTypes } from "../helpers/recordsDB/configCache.js";
+
 
 export const handler: RequestHandler = async (_req, res) => {
-  res.render("dashboard");
+
+  const recordTypes = await getRecordTypes();
+
+  res.render("dashboard", {
+    recordTypes
+  });
 };
 
 

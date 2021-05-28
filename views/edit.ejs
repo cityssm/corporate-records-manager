@@ -1,0 +1,12 @@
+<%- include('_header'); -%>
+
+<h1 class="title is-1">
+  <% if (isNew) { %>
+    Create a New <%= recordType.recordType %> Record
+  <% } else { %>
+    Edit
+  <% } %>
+</h1>
+
+<%- include('_footerA'); -%>
+<%- include('_footerB'); -%>
