@@ -1,9 +1,9 @@
 import { Router } from "express";
 import * as authFns from "../helpers/authFns.js";
 import * as configFns from "../helpers/configFns.js";
-import { getUser } from "../helpers/securityDB/getUser.js";
+import { getUser } from "../helpers/recordsDB/getUser.js";
 import debug from "debug";
-const debugLogin = debug("building-permit-system:routes:login");
+const debugLogin = debug("corporate-records-manager:routes:login");
 const redirectURL = configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard";
 export const router = Router();
 router.route("/")

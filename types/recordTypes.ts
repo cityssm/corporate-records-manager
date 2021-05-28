@@ -5,11 +5,8 @@ export interface User {
 };
 
 
-export type SessionUser = User;
-
-
 declare module "express-session" {
   interface Session {
-    user: SessionUser;
+    user: User;
   }
 };

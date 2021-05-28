@@ -47,7 +47,7 @@ export function getProperty(propertyName: "session.doKeepAlive"): boolean;
 export function getProperty(propertyName: "session.maxAgeMillis"): number;
 export function getProperty(propertyName: "session.secret"): string;
 
-export function getProperty(propertyName: "securityMssqlConfig"): sqlTypes.config;
+export function getProperty(propertyName: "mssqlConfig"): sqlTypes.config;
 export function getProperty(propertyName: "adWebAuthConfig"): ADWebAuthConfig;
 
 

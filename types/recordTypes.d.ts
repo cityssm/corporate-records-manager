@@ -3,9 +3,8 @@ export interface User {
     canUpdate: boolean;
     isAdmin: boolean;
 }
-export declare type SessionUser = User;
 declare module "express-session" {
     interface Session {
-        user: SessionUser;
+        user: User;
     }
 }

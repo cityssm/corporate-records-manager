@@ -10,5 +10,5 @@ export declare function getProperty(propertyName: "session.cookieName"): string;
 export declare function getProperty(propertyName: "session.doKeepAlive"): boolean;
 export declare function getProperty(propertyName: "session.maxAgeMillis"): number;
 export declare function getProperty(propertyName: "session.secret"): string;
-export declare function getProperty(propertyName: "securityMssqlConfig"): sqlTypes.config;
+export declare function getProperty(propertyName: "mssqlConfig"): sqlTypes.config;
 export declare function getProperty(propertyName: "adWebAuthConfig"): ADWebAuthConfig;

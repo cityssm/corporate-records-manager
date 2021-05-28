@@ -27,10 +27,3 @@ export interface Config {
 
   adWebAuthConfig: ADWebAuthConfig;
 }
-
-
-export interface Config_RecordType {
-  recordTypeKey?: string;
-  recordType: string;
-  recordTypePlural: string;
-}
