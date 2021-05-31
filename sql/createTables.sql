@@ -58,25 +58,13 @@ create table CR.RelatedRecords (
 )
 
 
-create table CR.TagTypes (
-	tagTypeKey varchar(20) primary key not null,
-	tagType varchar(100) not null,
-	tagColorClasses varchar(25) not null default 'is-info',
-	isActive bit not null default 1
-)
-
-
 create table CR.RecordTags (
 	recordID bigint not null,
 	tag varchar(100) not null,
-	tagTypeKey varchar(20),
 
 	constraint pk_recordtags primary key (recordID, tag),
 	constraint fk_recordtags_recordid foreign key (recordID) references CR.Records (recordID)
 	on update no action
-	on delete no action,
-	constraint fk_recordtags_tagtypekey foreign key (tagTypeKey) references CR.TagTypes (tagTypeKey)
-	on update cascade
 	on delete no action
 )
 

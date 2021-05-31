@@ -1,23 +1,20 @@
 import { getRecordType } from "../helpers/recordsDB/configCache.js";
+import getRecord from "../helpers/recordsDB/getRecord.js";
 import * as configFns from "../helpers/configFns.js";
 export const handler = async (req, res) => {
-    const recordTypeKey = req.params.recordTypeKey;
-    const recordType = await getRecordType(recordTypeKey);
+    const recordID = req.params.recordID;
+    const record = await getRecord(recordID);
+    if (!record) {
+        return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard?error=recordNotAvailable");
+    }
+    const recordType = await getRecordType(record.recordTypeKey);
     if (!recordType) {
         return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard?error=recordTypeKeyNotAvailable");
     }
-    const emptyRecord = {
-        recordID: null,
-        recordTypeKey: recordTypeKey,
-        recordNumber: "",
-        recordTitle: "",
-        recordDescription: "",
-        tags: []
-    };
     res.render("edit", {
-        isNew: true,
+        isNew: false,
         recordType,
-        record: emptyRecord
+        record
     });
 };
 export default handler;

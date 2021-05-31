@@ -16,15 +16,15 @@ export const getUser = async (userName: string): Promise<User> => {
     const pool: sqlTypes.ConnectionPool =
       await sqlPool.connect(configFns.getProperty("mssqlConfig"));
 
-    const userPermissionsResult = await pool.request()
+    const result = await pool.request()
       .input("userName", userName)
       .query("select userName, canUpdate, isAdmin" +
         " from CR.Users" +
         " where isActive = 1" +
         " and userName = @userName");
 
-    if (userPermissionsResult.recordset && userPermissionsResult.recordset.length > 0) {
-      user = userPermissionsResult.recordset[0];
+    if (result.recordset && result.recordset.length > 0) {
+      user = result.recordset[0];
     }
 
   } catch (e) {

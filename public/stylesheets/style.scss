@@ -38,22 +38,6 @@ $modal-content-width: 900px;
   }
 }
 
-.is-edit-control-flex,
-.is-edit-control-inline-block {
-  display: none;
-}
-
-.is-edit-mode {
-  .is-edit-control-flex {
-    display: flex;
-    align-items: center;
-  }
-
-  .is-edit-control-inline-block {
-    display: inline-block;
-  }
-}
-
 .icon-checkbox {
   display: flex;
 

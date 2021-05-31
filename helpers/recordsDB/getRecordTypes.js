@@ -1,7 +1,7 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import debug from "debug";
-const debugSQL = debug("corporate-records-manager:recordsDB:getUser");
+const debugSQL = debug("corporate-records-manager:recordsDB:getRecordTypes");
 export const getRecordTypes = async () => {
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));

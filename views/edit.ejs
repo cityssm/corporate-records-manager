@@ -4,9 +4,129 @@
   <% if (isNew) { %>
     Create a New <%= recordType.recordType %> Record
   <% } else { %>
-    Edit
+    Edit <%= recordType.recordType %>
   <% } %>
 </h1>
 
+
+<div class="columns">
+  <div class="column">
+    <form id="form--record">
+      <input id="record--isNew" name="isNew" type="hidden" value="<%= isNew ? "1": "0" %>" />
+      <input id="record--recordID" name="recordID" type="hidden" value="<%= record.recordID %>" />
+      <input id="record--recordTypeKey" name="recordTypeKey" type="hidden" value="<%= recordType.recordTypeKey %>" />
+      <div class="panel">
+        <h2 class="panel-heading"><%= recordType.recordType %> Details</h2>
+        <div class="panel-block is-block">
+          <label class="label" for="record--recordNumber"><%= recordType.recordType %> Number</label>
+          <div class="field has-addons">
+            <div class="control has-icons-right is-expanded">
+              <input class="input" id="record--recordNumber" name="recordNumber" type="text" value="<%= record.recordNumber %>" maxlength="30" required <%= (isNew ? "" : "readonly") %> />
+              <span class="icon is-small is-right">
+                <i class="fas fa-pencil-alt <%= (isNew ? "" : "is-hidden") %>" aria-hidden="true"></i>
+                <i class="fas fa-lock <%= (isNew ? "is-hidden" : "") %>" aria-hidden="true"></i>
+              </span>
+            </div>
+            <div class="control">
+              <button class="button has-tooltip-top has-tooltip-arrow is-lock-toggle-button" data-tooltip="Toggle Field" type="button">
+                <i class="fas fa-unlock" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <div class="field">
+            <label class="label" for="record--recordTitle"><%= recordType.recordType %> Title</label>
+            <div class="control">
+              <input class="input" id="record--recordTitle" name="recordTitle" type="text" value="<%= record.recordTitle %>" maxlength="100" required />
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <div class="field">
+            <label class="label" for="record--recordDescription"><%= recordType.recordType %> Description</label>
+            <div class="control">
+              <textarea class="textarea" id="record--recordDescription" name="recordDescription" maxlength="500"><%= record.recordDescription %></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <strong class="is-block mb-2">Tags</strong>
+          <div class="tags" id="container--tags">
+            <% for (const tag of record.tags) { %>
+              <span class="tag is-medium">
+                <input name="tags" type="hidden" value="<%= tag %>" />
+                <%= tag %>
+                <button class="delete is-remove-tag-button" type="button" aria-label="Remove Tag"></button>
+              </span>
+            <% } %>
+            <a class="tag is-light is-success is-medium" id="is-add-tag-button" type="button">
+              <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+              <span>Add a New Tag</span>
+            </a>
+          </div>
+        </div>
+        <div class="panel-block has-background-white-ter is-justify-content-end">
+          <button class="button is-success" type="submit">
+            <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
+            <span>Save Record Changes</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="column">
+    <% if (isNew) { %>
+      <div class="message is-info">
+        <div class="message-body">
+          Additional record options like statuses, links, and related records
+          will become available after the record is saved.
+        </div>
+      </div>
+    <% } else { %>
+      <div class="panel">
+        <div class="panel-heading is-flex is-justify-content-space-between">
+          <h2 class="has-text-weight-bold">Statuses</h2>
+          <button class="button is-small is-light is-success" id="is-add-status-button" type="button">
+            <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+            <span>Add Updated Status</span>
+          </button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-heading is-flex is-justify-content-space-between">
+          <h2 class="has-text-weight-bold">Links</h2>
+          <button class="button is-small is-light is-success" id="is-add-url-button" type="button">
+            <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+            <span>Add New Link</span>
+          </button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-heading is-flex is-justify-content-space-between">
+          <h2 class="has-text-weight-bold">Related Records</h2>
+          <button class="button is-small is-light is-success" id="is-add-related-button" type="button">
+            <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+            <span>Link a Related Record</span>
+          </button>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<% if (!isNew) { %>
+  <div class="panel">
+    <div class="panel-heading is-flex is-justify-content-space-between">
+      <h2 class="has-text-weight-bold">Comments</h2>
+      <button class="button is-small is-light is-success" id="is-add-comment-button" type="button">
+        <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+        <span>Add New Comment</span>
+      </button>
+    </div>
+  </div>
+<% } %>
+
 <%- include('_footerA'); -%>
+<script src="<%= urlPrefix %>/javascripts/edit.min.js"></script>
 <%- include('_footerB'); -%>

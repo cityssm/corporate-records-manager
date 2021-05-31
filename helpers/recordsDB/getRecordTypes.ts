@@ -5,7 +5,7 @@ import type * as sqlTypes from "mssql";
 import type { RecordType } from "../../types/recordTypes";
 
 import debug from "debug";
-const debugSQL = debug("corporate-records-manager:recordsDB:getUser");
+const debugSQL = debug("corporate-records-manager:recordsDB:getRecordTypes");
 
 
 export const getRecordTypes = async (): Promise<RecordType[]> => {
