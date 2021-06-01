@@ -11,6 +11,7 @@ configFallbackValues.set("session.cookieName", "corporate-records-manager-user-s
 configFallbackValues.set("session.secret", "cityssm/corporate-records-manager");
 configFallbackValues.set("session.maxAgeMillis", 5 * 60 * 60 * 1000);
 configFallbackValues.set("session.doKeepAlive", false);
+configFallbackValues.set("integrations.docuShare.isEnabled", false);
 export function getProperty(propertyName) {
     if (configOverrides.hasOwnProperty(propertyName)) {
         return configOverrides[propertyName];

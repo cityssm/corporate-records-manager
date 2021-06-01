@@ -1,6 +1,7 @@
 *.db
 *.db-journal
 *.log
+dsapi.jar
 
 data/config.*
 node_modules/

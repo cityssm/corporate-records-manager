@@ -39,7 +39,7 @@ export const createRecord = async (recordForm: Record, reqSession: expressSessio
 
     recordID = result.recordset[0].recordID;
 
-    await setRecordTags(recordID, recordForm.tags)
+    await setRecordTags(recordID, recordForm.tags);
 
   } catch (e) {
     debugSQL(e);

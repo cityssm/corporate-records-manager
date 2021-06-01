@@ -20,7 +20,8 @@ export declare type Record = {
     recordDescription: string;
     tags?: string[];
     statuses?: RecordStatus[];
-    commentLogs?: RecordComment[];
+    urls?: RecordURL[];
+    comments?: RecordComment[];
 } & TrackedValue;
 export declare type RecordStatus = {
     statusLogID: number;

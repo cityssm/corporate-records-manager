@@ -6,10 +6,6 @@ export const setRecordTags = async (recordID, recordTags) => {
     const tags = (typeof recordTags === "string" ? [recordTags] : recordTags);
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
-        await pool.request()
-            .input("recordID", recordID)
-            .query("delete from CR.RecordTags" +
-            " where recordID = @recordID");
         for (const tag of tags) {
             await pool.request()
                 .input("recordID", recordID)

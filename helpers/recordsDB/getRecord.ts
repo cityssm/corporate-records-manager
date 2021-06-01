@@ -2,6 +2,9 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 
 import getRecordTags from "./getRecordTags.js";
+import getRecordStatuses from "./getRecordStatuses.js";
+import getRecordURLs from "./getRecordURLs.js";
+import getRecordComments from "./getRecordComments.js";
 
 import type * as sqlTypes from "mssql";
 import type { Record } from "../../types/recordTypes";
@@ -33,6 +36,11 @@ export const getRecord = async (recordID: number | string): Promise<Record> => {
     const record: Record = result.recordset[0];
 
     record.tags = await getRecordTags(recordID);
+    record.statuses = await getRecordStatuses(recordID);
+    record.urls = await getRecordURLs(recordID);
+    record.comments = await getRecordComments(recordID);
+
+    return record;
 
   } catch (e) {
     debugSQL(e);

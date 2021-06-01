@@ -84,7 +84,7 @@
         </div>
       </div>
     <% } else { %>
-      <div class="panel">
+      <div class="panel" id="panel--statuses">
         <div class="panel-heading is-flex is-justify-content-space-between">
           <h2 class="has-text-weight-bold">Statuses</h2>
           <button class="button is-small is-light is-success" id="is-add-status-button" type="button">
@@ -93,7 +93,7 @@
           </button>
         </div>
       </div>
-      <div class="panel">
+      <div class="panel" id="panel--urls">
         <div class="panel-heading is-flex is-justify-content-space-between">
           <h2 class="has-text-weight-bold">Links</h2>
           <button class="button is-small is-light is-success" id="is-add-url-button" type="button">
@@ -102,7 +102,7 @@
           </button>
         </div>
       </div>
-      <div class="panel">
+      <div class="panel" id="panel--relatedRecords">
         <div class="panel-heading is-flex is-justify-content-space-between">
           <h2 class="has-text-weight-bold">Related Records</h2>
           <button class="button is-small is-light is-success" id="is-add-related-button" type="button">
@@ -116,7 +116,7 @@
 </div>
 
 <% if (!isNew) { %>
-  <div class="panel">
+  <div class="panel" id="panel--comments">
     <div class="panel-heading is-flex is-justify-content-space-between">
       <h2 class="has-text-weight-bold">Comments</h2>
       <button class="button is-small is-light is-success" id="is-add-comment-button" type="button">
@@ -128,5 +128,13 @@
 <% } %>
 
 <%- include('_footerA'); -%>
+<script>
+  exports.recordStatuses = <%- JSON.stringify(record.statuses) %>;
+  exports.recordURLs = <%- JSON.stringify(record.urls) %>;
+  exports.recordComments = <%- JSON.stringify(record.comments) %>;
+</script>
+<script src="<%= urlPrefix %>/javascripts/newEdit.min.js"></script>
+<% if (!isNew) { %>
 <script src="<%= urlPrefix %>/javascripts/edit.min.js"></script>
+<% } %>
 <%- include('_footerB'); -%>

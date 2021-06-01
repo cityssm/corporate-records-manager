@@ -1,6 +1,9 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import getRecordTags from "./getRecordTags.js";
+import getRecordStatuses from "./getRecordStatuses.js";
+import getRecordURLs from "./getRecordURLs.js";
+import getRecordComments from "./getRecordComments.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecord");
 export const getRecord = async (recordID) => {
@@ -20,6 +23,10 @@ export const getRecord = async (recordID) => {
         }
         const record = result.recordset[0];
         record.tags = await getRecordTags(recordID);
+        record.statuses = await getRecordStatuses(recordID);
+        record.urls = await getRecordURLs(recordID);
+        record.comments = await getRecordComments(recordID);
+        return record;
     }
     catch (e) {
         debugSQL(e);
