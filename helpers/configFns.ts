@@ -1,4 +1,5 @@
 import type * as sqlTypes from "mssql";
+import type * as configTypes from "../types/configTypes";
 import type { ADWebAuthConfig } from "@cityssm/ad-web-auth-connector/types";
 import type * as docuShareConfig from "@cityssm/docushare/types";
 
@@ -35,6 +36,7 @@ configFallbackValues.set("session.maxAgeMillis", 5 * 60 * 60 * 1000);
 configFallbackValues.set("session.doKeepAlive", false);
 
 configFallbackValues.set("integrations.docuShare.isEnabled", false);
+configFallbackValues.set("integrations.docuShare.collectionHandles", []);
 
 
 export function getProperty(propertyName: "application.httpPort"): number;
@@ -57,6 +59,7 @@ export function getProperty(propertyName: "integrations.docuShare.isEnabled"): b
 export function getProperty(propertyName: "integrations.docuShare.rootURL"): string;
 export function getProperty(propertyName: "integrations.docuShare.server"): docuShareConfig.ServerConfig;
 export function getProperty(propertyName: "integrations.docuShare.session"): docuShareConfig.SessionConfig;
+export function getProperty(propertyName: "integrations.docuShare.collectionHandles"): configTypes.DocuShareCollectionHandle[];
 
 
 export function getProperty(propertyName: string): any {

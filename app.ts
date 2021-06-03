@@ -14,6 +14,7 @@ import sqlite from "connect-sqlite3";
 import * as configFns from "./helpers/configFns.js";
 import * as stringFns from "@cityssm/expressjs-server-js/stringFns.js";
 import * as dateTimeFns from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import * as docuShareFns from "./helpers/docuShareFns.js";
 
 import * as permissionHandlers from "./handlers/permissions.js";
 import routerLogin from "./routes/login.js";
@@ -210,8 +211,11 @@ app.use(function(err: Error, req: express.Request, res: express.Response, _next:
   // Render the error page
   res.status(err.status || 500);
   res.render("error");
-
 });
 
+
+if (configFns.getProperty("integrations.docuShare.isEnabled")) {
+  docuShareFns.doSetup();
+}
 
 export default app;

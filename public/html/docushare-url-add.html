@@ -1,0 +1,35 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Add a New DocuShare Link</h2>
+      <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--addDocuShareURL-search">
+        <div class="columns">
+          <div class="column is-one-third">
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="addDocuShareURL--collectionHandleIndex" name="collectionHandleIndex">
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="control has-icons-left">
+              <input class="input" id="addDocuShareURL--searchString" name="searchString" type="text" placeholder="Search DocuShare Collection" />
+              <span class="icon is-small is-left">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="mt-5" id="container--addDocuShareURL"></div>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-close-modal-button">Cancel</button>
+    </footer>
+  </div>
+</div>

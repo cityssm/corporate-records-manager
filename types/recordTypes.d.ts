@@ -35,7 +35,7 @@ export declare type RecordComment = {
     comment: string;
 } & TrackedValue;
 export declare type RecordURL = {
-    urlID: number;
+    urlID?: number;
     url: string;
     urlTitle: string;
     urlDescription?: string;
@@ -48,6 +48,11 @@ export interface User {
 declare module "express-session" {
     interface Session {
         user: User;
+    }
+}
+declare module "@cityssm/docushare/types" {
+    interface DocuShareObject {
+        url?: string;
     }
 }
 export {};

@@ -54,7 +54,7 @@ export type RecordComment = {
 
 
 export type RecordURL = {
-  urlID: number;
+  urlID?: number;
   url: string;
   urlTitle: string;
   urlDescription?: string;
@@ -78,3 +78,15 @@ declare module "express-session" {
     user: User;
   }
 };
+
+
+/*
+ * DocuShare Object
+ */
+
+
+declare module "@cityssm/docushare/types" {
+  interface DocuShareObject {
+    url?: string;
+  }
+}

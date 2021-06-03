@@ -89,7 +89,7 @@ declare const cityssm: cityssmGlobal;
 
     const addTagBySubmitFn = (submitEvent: Event) => {
       submitEvent.preventDefault();
-      const inputEle = document.getElementById("recordTagAdd--tag") as HTMLInputElement;
+      const inputEle = document.getElementById("addTag--tag") as HTMLInputElement;
 
       if (inputEle.value === "") {
         addTagModalCloseFn();

@@ -32,14 +32,15 @@ export interface Config {
     docuShare?: {
       isEnabled: boolean;
       rootURL?: string;
-      handles?: {
-        corporateRecordsCollectionHandle: string;
-        recordTypes?: {
-          [recordTypeKey: string]: string;
-        }
-      };
+      collectionHandles?: DocuShareCollectionHandle[];
       server?: docuShareConfig.ServerConfig;
       session?: docuShareConfig.SessionConfig;
     };
   };
 }
+
+
+export interface DocuShareCollectionHandle {
+  title: string;
+  handle: string;
+};

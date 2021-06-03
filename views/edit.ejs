@@ -14,7 +14,7 @@
     <form id="form--record">
       <input id="record--isNew" name="isNew" type="hidden" value="<%= isNew ? "1": "0" %>" />
       <input id="record--recordID" name="recordID" type="hidden" value="<%= record.recordID %>" />
-      <input id="record--recordTypeKey" name="recordTypeKey" type="hidden" value="<%= recordType.recordTypeKey %>" />
+      <input id="record--recordTypeKey" name="recordTypeKey" data-record-type="<%= recordType.recordType %>" type="hidden" value="<%= recordType.recordTypeKey %>" />
       <div class="panel">
         <h2 class="panel-heading"><%= recordType.recordType %> Details</h2>
         <div class="panel-block is-block">
@@ -96,10 +96,18 @@
       <div class="panel" id="panel--urls">
         <div class="panel-heading is-flex is-justify-content-space-between">
           <h2 class="has-text-weight-bold">Links</h2>
-          <button class="button is-small is-light is-success" id="is-add-url-button" type="button">
-            <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-            <span>Add New Link</span>
-          </button>
+          <span>
+            <button class="button is-small is-light is-success" id="is-add-url-button" type="button">
+              <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+              <span>Add New Link</span>
+            </button>
+            <% if (configFns.getProperty("integrations.docuShare.isEnabled")) { %>
+              <button class="button is-small is-light is-success" id="is-add-docushare-url-button" type="button">
+                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add New DocuShare Link</span>
+              </button>
+            <% } %>
+          </span>
         </div>
       </div>
       <div class="panel" id="panel--relatedRecords">
@@ -132,6 +140,9 @@
   exports.recordStatuses = <%- JSON.stringify(record.statuses) %>;
   exports.recordURLs = <%- JSON.stringify(record.urls) %>;
   exports.recordComments = <%- JSON.stringify(record.comments) %>;
+  <% if (configFns.getProperty("integrations.docuShare.isEnabled")) { %>
+    exports.docuShareCollectionHandles = <%- JSON.stringify(configFns.getProperty("integrations.docuShare.collectionHandles")) %>;
+  <% } %>
 </script>
 <script src="<%= urlPrefix %>/javascripts/newEdit.min.js"></script>
 <% if (!isNew) { %>

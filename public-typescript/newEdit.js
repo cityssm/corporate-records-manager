@@ -52,7 +52,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         var addTagBySubmitFn = function (submitEvent) {
             submitEvent.preventDefault();
-            var inputEle = document.getElementById("recordTagAdd--tag");
+            var inputEle = document.getElementById("addTag--tag");
             if (inputEle.value === "") {
                 addTagModalCloseFn();
                 return;

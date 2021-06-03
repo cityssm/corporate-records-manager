@@ -1,14 +1,19 @@
-import * as path from "path";
+import { fileURLToPath } from "url";
+import path from "path";
 
 import * as ds from "@cityssm/docushare";
 
 import * as configFns from "./configFns.js";
 
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 export const doSetup = () => {
 
   ds.setupJava({
-    dsapiPath: path.join("..", "..", "..", "java", "dsapi.jar")
+    dsapiPath: path.join(__dirname, "..", "java", "dsapi.jar")
   });
 
   ds.setupServer(configFns.getProperty("integrations.docuShare.server"));
@@ -17,17 +22,14 @@ export const doSetup = () => {
 };
 
 
-export const getCollectionHandle = (collectionID: number) => {
-  return "Collection-" + collectionID.toString();
-};
-
-
-export const getCollectionURL = (collectionID: number) => {
-  return configFns.getProperty("integrations.docuShare.rootURL") + "/dsweb/View/" +
-    getCollectionHandle(collectionID);
-};
-
-
 export const getIDFromHandle = (handle: string) => {
   return handle.split("-")[1];
+};
+
+
+export const getURL = (handle: string) => {
+
+  return configFns.getProperty("integrations.docuShare.rootURL") +
+    "/dsweb/View/" +
+    handle;
 };
