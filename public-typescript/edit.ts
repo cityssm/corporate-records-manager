@@ -45,6 +45,7 @@ declare const cityssm: cityssmGlobal;
     const urlPanelEle = document.getElementById("panel--urls");
 
     const renderURLsFn = (urls: recordTypes.RecordURL[]) => {
+
       clearPanelBlocksFn(urlPanelEle);
 
       if (urls.length === 0) {
@@ -76,6 +77,29 @@ declare const cityssm: cityssmGlobal;
 
     const getURLs = () => {
 
+      clearPanelBlocksFn(urlPanelEle);
+
+      urlPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
+        "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
+        "Loading Links..." +
+        "</div>");
+
+      cityssm.postJSON(urlPrefix + "/view/doGetURLs", {
+        recordID
+      },
+        (responseJSON: { success: boolean; urls: recordTypes.RecordURL[]; message?: string }) => {
+
+          if (responseJSON.success) {
+            renderURLsFn(responseJSON.urls);
+          } else {
+
+            urlPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+              "<div class=\"message is-danger\"><div class=\"message-body\">" +
+              responseJSON.message +
+              "</div></div>" +
+              "</div>");
+          }
+        });
     };
 
     const addDocuShareButtonEle = document.getElementById("is-add-docushare-url-button");
@@ -100,8 +124,6 @@ declare const cityssm: cityssmGlobal;
           const panelBlockEle = buttonEle.closest(".panel-block");
 
           const handle = panelBlockEle.getAttribute("data-handle");
-
-          alert(handle);
 
           cityssm.postJSON(urlPrefix + "/edit/doAddDocuShareLink", {
             recordID,
@@ -168,11 +190,13 @@ declare const cityssm: cityssmGlobal;
                     "<strong>" + cityssm.escapeHTML(dsObject.title) + "</strong>" +
                     "</div>") +
                   ("<div class=\"level-right\">" +
-                    "<a class=\"button is-info\" href=\"" + dsObject.url + "\" target=\"_blank\">" +
-                    "View Document" +
+                    "<a class=\"button is-info mr-1\" href=\"" + dsObject.url + "\" target=\"_blank\">" +
+                    "<span class=\"icon\"><i class=\"fas fa-eye\" aria-hidden=\"true\"></i></span>" +
+                    "<span>View</span>" +
                     "</a>" +
-                    " <button class=\"button is-success\" type=\"button\">" +
-                    "Add Link" +
+                    "<button class=\"button is-success\" type=\"button\">" +
+                    "<span class=\"icon\"><i class=\"fas fa-plus\" aria-hidden=\"true\"></i></span>" +
+                    "<span>Add Link</span>" +
                     "</button>" +
                     "</div>") +
                   "</div>";

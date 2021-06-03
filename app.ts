@@ -20,6 +20,7 @@ import * as permissionHandlers from "./handlers/permissions.js";
 import routerLogin from "./routes/login.js";
 import routerDashboard from "./routes/dashboard.js";
 import routerNew from "./routes/new.js";
+import routerView from "./routes/view.js";
 import routerEdit from "./routes/edit.js";
 import routerReports from "./routes/reports.js";
 
@@ -172,6 +173,8 @@ app.get(urlPrefix + "/", sessionChecker, (_req, res) => {
 });
 
 app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
+
+app.use(urlPrefix + "/view", sessionChecker, routerView);
 
 app.use(urlPrefix + "/new", sessionChecker, permissionHandlers.canUpdate, routerNew);
 

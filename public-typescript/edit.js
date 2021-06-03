@@ -22,7 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     {
         var urlPanelEle_1 = document.getElementById("panel--urls");
-        var renderURLsFn = function (urls) {
+        var renderURLsFn_1 = function (urls) {
             clearPanelBlocksFn(urlPanelEle_1);
             if (urls.length === 0) {
                 urlPanelEle_1.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -47,6 +47,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         };
         var getURLs_1 = function () {
+            clearPanelBlocksFn(urlPanelEle_1);
+            urlPanelEle_1.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
+                "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
+                "Loading Links..." +
+                "</div>");
+            cityssm.postJSON(urlPrefix + "/view/doGetURLs", {
+                recordID: recordID
+            }, function (responseJSON) {
+                if (responseJSON.success) {
+                    renderURLsFn_1(responseJSON.urls);
+                }
+                else {
+                    urlPanelEle_1.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+                        "<div class=\"message is-danger\"><div class=\"message-body\">" +
+                        responseJSON.message +
+                        "</div></div>" +
+                        "</div>");
+                }
+            });
         };
         var addDocuShareButtonEle = document.getElementById("is-add-docushare-url-button");
         if (addDocuShareButtonEle) {
@@ -60,7 +79,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     buttonEle.disabled = true;
                     var panelBlockEle = buttonEle.closest(".panel-block");
                     var handle = panelBlockEle.getAttribute("data-handle");
-                    alert(handle);
                     cityssm.postJSON(urlPrefix + "/edit/doAddDocuShareLink", {
                         recordID: recordID,
                         handle: handle
@@ -108,11 +126,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     "<strong>" + cityssm.escapeHTML(dsObject.title) + "</strong>" +
                                     "</div>") +
                                 ("<div class=\"level-right\">" +
-                                    "<a class=\"button is-info\" href=\"" + dsObject.url + "\" target=\"_blank\">" +
-                                    "View Document" +
+                                    "<a class=\"button is-info mr-1\" href=\"" + dsObject.url + "\" target=\"_blank\">" +
+                                    "<span class=\"icon\"><i class=\"fas fa-eye\" aria-hidden=\"true\"></i></span>" +
+                                    "<span>View</span>" +
                                     "</a>" +
-                                    " <button class=\"button is-success\" type=\"button\">" +
-                                    "Add Link" +
+                                    "<button class=\"button is-success\" type=\"button\">" +
+                                    "<span class=\"icon\"><i class=\"fas fa-plus\" aria-hidden=\"true\"></i></span>" +
+                                    "<span>Add Link</span>" +
                                     "</button>" +
                                     "</div>") +
                                 "</div>";
@@ -160,7 +180,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             });
         }
-        renderURLsFn(exports.recordURLs);
+        renderURLsFn_1(exports.recordURLs);
         delete exports.recordURLs;
     }
     {

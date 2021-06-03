@@ -6,14 +6,22 @@
       <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
     </header>
     <section class="modal-card-body">
+      <div class="message is-info">
+        <p class="message-body">
+          Note that viewing documents in DocuShare requires permissions to be set up in DocuShare.
+        </p>
+      </div>
       <form id="form--addDocuShareURL-search">
         <div class="columns">
-          <div class="column is-one-third">
-            <div class="control">
+          <div class="column is-two-fifths">
+            <div class="control has-icons-left">
               <div class="select is-fullwidth">
                 <select id="addDocuShareURL--collectionHandleIndex" name="collectionHandleIndex">
                 </select>
               </div>
+              <span class="icon is-small is-left">
+                <i class="fas fa-archive" aria-hidden="true"></i>
+              </span>
             </div>
           </div>
           <div class="column">

@@ -12,8 +12,6 @@ export const handler: RequestHandler = async (req, res) => {
 
   const handle = req.body.handle;
 
-  console.log(handle);
-
   const dsOutput = await ds.findByHandle(handle);
 
   if (!dsOutput.success) {
