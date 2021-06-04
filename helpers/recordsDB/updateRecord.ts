@@ -44,7 +44,6 @@ export const updateRecord = async (recordForm: Record, reqSession: expressSessio
     debugSQL(e);
     return false;
   }
-
 };
 
 

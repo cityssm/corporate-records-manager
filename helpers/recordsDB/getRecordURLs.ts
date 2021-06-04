@@ -18,7 +18,8 @@ export const getRecordURLs = async (recordID: number | string): Promise<recordTy
       .input("recordID", recordID)
       .query("select urlID, url, urlTitle, urlDescription" +
         " from CR.RecordURLs" +
-        " where recordID = @recordID");
+        " where recordID = @recordID" +
+        " and recordDelete_datetime is null");
 
     if (result.recordset && result.recordset.length > 0) {
       return result.recordset;

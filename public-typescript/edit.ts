@@ -19,6 +19,7 @@ declare const cityssm: cityssmGlobal;
 
     for (let index = 0; index < panelBlockEles.length; index += 1) {
       panelBlockEles[index].remove();
+      index -= 1;
     }
   };
 
@@ -42,9 +43,126 @@ declare const cityssm: cityssmGlobal;
    */
 
   {
+    let urls: recordTypes.RecordURL[] = exports.recordURLs;
+    delete exports.recordURLs;
+
     const urlPanelEle = document.getElementById("panel--urls");
 
-    const renderURLsFn = (urls: recordTypes.RecordURL[]) => {
+    const openEditURLModalFn = (clickEvent: MouseEvent) => {
+
+      clickEvent.preventDefault();
+
+      const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
+
+      const index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+      const url = urls[index];
+
+      let closeEditModalFn: () => void;
+
+      const editFn = (formEvent: Event) => {
+        formEvent.preventDefault();
+
+        cityssm.postJSON(urlPrefix + "/edit/doUpdateURL",
+          formEvent.currentTarget,
+          (responseJSON: { success: boolean; message?: string }) => {
+
+            if (responseJSON.success) {
+              getURLs();
+              closeEditModalFn();
+            } else {
+              cityssm.alertModal("Update Link Error",
+                cityssm.escapeHTML(responseJSON.message),
+                "OK",
+                "danger");
+            }
+          });
+      };
+
+      cityssm.openHtmlModal("url-edit", {
+        onshow: () => {
+          (document.getElementById("editURL--urlID") as HTMLInputElement).value = url.urlID.toString();
+          (document.getElementById("editURL--url") as HTMLInputElement).value = url.url;
+          (document.getElementById("editURL--urlTitle") as HTMLInputElement).value = url.urlTitle;
+          (document.getElementById("editURL--urlDescription") as HTMLInputElement).value = url.urlDescription;
+
+          document.getElementById("form--editURL").addEventListener("submit", editFn);
+        },
+        onshown: (_modalEle, closeModalFn) => {
+          closeEditModalFn = closeModalFn;
+        }
+      });
+    };
+
+    const openRemoveURLModalFn = (clickEvent: MouseEvent) => {
+
+      clickEvent.preventDefault();
+
+      const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
+
+      const index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+      const url = urls[index];
+
+      const removeFn = () => {
+
+        cityssm.postJSON(urlPrefix + "/edit/doRemoveURL", {
+          urlID: url.urlID
+        }, (responseJSON: { success: boolean; message?: string }) => {
+
+          if (responseJSON.success) {
+            urls.splice(index, 1);
+            clearPanelBlocksFn(urlPanelEle);
+            renderURLsFn();
+
+          } else {
+            cityssm.alertModal("Remove Link Error",
+              cityssm.escapeHTML(responseJSON.message),
+              "OK",
+              "danger");
+          }
+        });
+      };
+
+      cityssm.confirmModal("Remove Link",
+        "Are you sure you want to remove the link to \"" + cityssm.escapeHTML(url.urlTitle) + "\"?",
+        "Yes, Remove the Link",
+        "warning",
+        removeFn);
+    };
+
+    const renderURLFn = (url: recordTypes.RecordURL, index: number) => {
+
+      const panelBlockEle = document.createElement("div");
+      panelBlockEle.className = "panel-block is-block";
+      panelBlockEle.setAttribute("data-url-id", url.urlID.toString());
+      panelBlockEle.setAttribute("data-index", index.toString());
+
+      panelBlockEle.innerHTML = "<div class=\"columns\">" +
+        ("<div class=\"column\">" +
+          "<a class=\"has-text-weight-bold\" href=\"" + cityssm.escapeHTML(url.url) + "\" target=\"_blank\">" +
+          cityssm.escapeHTML(url.urlTitle) +
+          "</a><br />" +
+          "<span class=\"tag has-tooltip-arrow has-tooltip-right\" data-tooltip=\"Link Domain\">" + url.url.split("/")[2] + "</span><br />" +
+          "<span class=\"is-size-7\">" + cityssm.escapeHTML(url.urlDescription) + "</span>" +
+          "</div>") +
+        ("<div class=\"column is-narrow\">" +
+          "<button class=\"button is-info is-light is-small\" type=\"button\">" +
+          "<span class=\"icon\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
+          "<span>Edit</span>" +
+          "</button>" +
+          " <button class=\"button is-danger is-light is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Remove Link\" type=\"button\">" +
+          "<span class=\"icon\"><i class=\"fas fa-trash-alt\" aria-hidden=\"true\"></i></span>" +
+          "</button>" +
+          "</div>") +
+        "</div>";
+
+      const buttonEles = panelBlockEle.getElementsByTagName("button");
+      buttonEles[0].addEventListener("click", openEditURLModalFn);
+      buttonEles[1].addEventListener("click", openRemoveURLModalFn);
+
+      urlPanelEle.appendChild(panelBlockEle);
+    };
+
+    const renderURLsFn = () => {
 
       clearPanelBlocksFn(urlPanelEle);
 
@@ -58,26 +176,13 @@ declare const cityssm: cityssmGlobal;
         return;
       }
 
-      for (const url of urls) {
-
-        const panelBlockEle = document.createElement("div");
-        panelBlockEle.className = "panel-block is-block";
-        panelBlockEle.setAttribute("data-url-id", url.urlID.toString());
-
-        panelBlockEle.innerHTML =
-          "<a class=\"has-text-weight-bold\" href=\"" + cityssm.escapeHTML(url.url) + "\" target=\"_blank\">" +
-          cityssm.escapeHTML(url.urlTitle) +
-          "</a><br />" +
-          "<span class=\"tag\">" + url.url.split("/")[2] + "</span>" +
-          cityssm.escapeHTML(url.urlDescription);
-
-        urlPanelEle.appendChild(panelBlockEle);
-      }
+      urls.forEach(renderURLFn);
     };
 
     const getURLs = () => {
 
       clearPanelBlocksFn(urlPanelEle);
+      urls = [];
 
       urlPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
         "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
@@ -90,7 +195,8 @@ declare const cityssm: cityssmGlobal;
         (responseJSON: { success: boolean; urls: recordTypes.RecordURL[]; message?: string }) => {
 
           if (responseJSON.success) {
-            renderURLsFn(responseJSON.urls);
+            urls = responseJSON.urls;
+            renderURLsFn();
           } else {
 
             urlPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -101,6 +207,43 @@ declare const cityssm: cityssmGlobal;
           }
         });
     };
+
+    renderURLsFn();
+
+    document.getElementById("is-add-url-button").addEventListener("click", () => {
+
+      let closeAddModalFn: () => void;
+
+      const addFn = (formEvent: Event) => {
+        formEvent.preventDefault();
+
+        cityssm.postJSON(urlPrefix + "/edit/doAddURL",
+          formEvent.currentTarget,
+          (responseJSON: { success: boolean; message?: string }) => {
+
+            if (responseJSON.success) {
+              getURLs();
+              closeAddModalFn();
+            } else {
+              cityssm.alertModal("Add Link Error",
+                cityssm.escapeHTML(responseJSON.message),
+                "OK",
+                "danger");
+            }
+          });
+      };
+
+      cityssm.openHtmlModal("url-add", {
+        onshow: () => {
+          (document.getElementById("addURL--recordID") as HTMLInputElement).value = recordID;
+
+          document.getElementById("form--addURL").addEventListener("submit", addFn);
+        },
+        onshown: (_modalEle, closeModalFn) => {
+          closeAddModalFn = closeModalFn;
+        }
+      });
+    });
 
     const addDocuShareButtonEle = document.getElementById("is-add-docushare-url-button");
 
@@ -125,7 +268,7 @@ declare const cityssm: cityssmGlobal;
 
           const handle = panelBlockEle.getAttribute("data-handle");
 
-          cityssm.postJSON(urlPrefix + "/edit/doAddDocuShareLink", {
+          cityssm.postJSON(urlPrefix + "/edit/doAddDocuShareURL", {
             recordID,
             handle: handle
           },
@@ -258,9 +401,6 @@ declare const cityssm: cityssmGlobal;
         });
       });
     }
-
-    renderURLsFn(exports.recordURLs);
-    delete exports.recordURLs;
   }
 
   /*

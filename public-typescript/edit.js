@@ -10,6 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         var panelBlockEles = panelEle.getElementsByClassName("panel-block");
         for (var index = 0; index < panelBlockEles.length; index += 1) {
             panelBlockEles[index].remove();
+            index -= 1;
         }
     };
     {
@@ -21,10 +22,92 @@ Object.defineProperty(exports, "__esModule", { value: true });
         delete exports.recordStatuses;
     }
     {
+        var urls_1 = exports.recordURLs;
+        delete exports.recordURLs;
         var urlPanelEle_1 = document.getElementById("panel--urls");
-        var renderURLsFn_1 = function (urls) {
+        var openEditURLModalFn_1 = function (clickEvent) {
+            clickEvent.preventDefault();
+            var panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
+            var index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+            var url = urls_1[index];
+            var closeEditModalFn;
+            var editFn = function (formEvent) {
+                formEvent.preventDefault();
+                cityssm.postJSON(urlPrefix + "/edit/doUpdateURL", formEvent.currentTarget, function (responseJSON) {
+                    if (responseJSON.success) {
+                        getURLs_1();
+                        closeEditModalFn();
+                    }
+                    else {
+                        cityssm.alertModal("Update Link Error", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
+                    }
+                });
+            };
+            cityssm.openHtmlModal("url-edit", {
+                onshow: function () {
+                    document.getElementById("editURL--urlID").value = url.urlID.toString();
+                    document.getElementById("editURL--url").value = url.url;
+                    document.getElementById("editURL--urlTitle").value = url.urlTitle;
+                    document.getElementById("editURL--urlDescription").value = url.urlDescription;
+                    document.getElementById("form--editURL").addEventListener("submit", editFn);
+                },
+                onshown: function (_modalEle, closeModalFn) {
+                    closeEditModalFn = closeModalFn;
+                }
+            });
+        };
+        var openRemoveURLModalFn_1 = function (clickEvent) {
+            clickEvent.preventDefault();
+            var panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
+            var index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+            var url = urls_1[index];
+            var removeFn = function () {
+                cityssm.postJSON(urlPrefix + "/edit/doRemoveURL", {
+                    urlID: url.urlID
+                }, function (responseJSON) {
+                    if (responseJSON.success) {
+                        urls_1.splice(index, 1);
+                        clearPanelBlocksFn(urlPanelEle_1);
+                        renderURLsFn_1();
+                    }
+                    else {
+                        cityssm.alertModal("Remove Link Error", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
+                    }
+                });
+            };
+            cityssm.confirmModal("Remove Link", "Are you sure you want to remove the link to \"" + cityssm.escapeHTML(url.urlTitle) + "\"?", "Yes, Remove the Link", "warning", removeFn);
+        };
+        var renderURLFn_1 = function (url, index) {
+            var panelBlockEle = document.createElement("div");
+            panelBlockEle.className = "panel-block is-block";
+            panelBlockEle.setAttribute("data-url-id", url.urlID.toString());
+            panelBlockEle.setAttribute("data-index", index.toString());
+            panelBlockEle.innerHTML = "<div class=\"columns\">" +
+                ("<div class=\"column\">" +
+                    "<a class=\"has-text-weight-bold\" href=\"" + cityssm.escapeHTML(url.url) + "\" target=\"_blank\">" +
+                    cityssm.escapeHTML(url.urlTitle) +
+                    "</a><br />" +
+                    "<span class=\"tag has-tooltip-arrow has-tooltip-right\" data-tooltip=\"Link Domain\">" + url.url.split("/")[2] + "</span><br />" +
+                    "<span class=\"is-size-7\">" + cityssm.escapeHTML(url.urlDescription) + "</span>" +
+                    "</div>") +
+                ("<div class=\"column is-narrow\">" +
+                    "<button class=\"button is-info is-light is-small\" type=\"button\">" +
+                    "<span class=\"icon\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
+                    "<span>Edit</span>" +
+                    "</button>" +
+                    " <button class=\"button is-danger is-light is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Remove Link\" type=\"button\">" +
+                    "<span class=\"icon\"><i class=\"fas fa-trash-alt\" aria-hidden=\"true\"></i></span>" +
+                    "</button>" +
+                    "</div>") +
+                "</div>";
+            var buttonEles = panelBlockEle.getElementsByTagName("button");
+            buttonEles[0].addEventListener("click", openEditURLModalFn_1);
+            buttonEles[1].addEventListener("click", openRemoveURLModalFn_1);
+            urlPanelEle_1.appendChild(panelBlockEle);
+        };
+        var renderURLsFn_1 = function () {
             clearPanelBlocksFn(urlPanelEle_1);
-            if (urls.length === 0) {
+            if (urls_1.length === 0) {
                 urlPanelEle_1.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
                     "<div class=\"message is-info\">" +
                     "<div class=\"message-body\">There are no links associated with this record.</div>" +
@@ -32,22 +115,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>");
                 return;
             }
-            for (var _i = 0, urls_1 = urls; _i < urls_1.length; _i++) {
-                var url = urls_1[_i];
-                var panelBlockEle = document.createElement("div");
-                panelBlockEle.className = "panel-block is-block";
-                panelBlockEle.setAttribute("data-url-id", url.urlID.toString());
-                panelBlockEle.innerHTML =
-                    "<a class=\"has-text-weight-bold\" href=\"" + cityssm.escapeHTML(url.url) + "\" target=\"_blank\">" +
-                        cityssm.escapeHTML(url.urlTitle) +
-                        "</a><br />" +
-                        "<span class=\"tag\">" + url.url.split("/")[2] + "</span>" +
-                        cityssm.escapeHTML(url.urlDescription);
-                urlPanelEle_1.appendChild(panelBlockEle);
-            }
+            urls_1.forEach(renderURLFn_1);
         };
         var getURLs_1 = function () {
             clearPanelBlocksFn(urlPanelEle_1);
+            urls_1 = [];
             urlPanelEle_1.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
                 "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
                 "Loading Links..." +
@@ -56,7 +128,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 recordID: recordID
             }, function (responseJSON) {
                 if (responseJSON.success) {
-                    renderURLsFn_1(responseJSON.urls);
+                    urls_1 = responseJSON.urls;
+                    renderURLsFn_1();
                 }
                 else {
                     urlPanelEle_1.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -67,6 +140,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         };
+        renderURLsFn_1();
+        document.getElementById("is-add-url-button").addEventListener("click", function () {
+            var closeAddModalFn;
+            var addFn = function (formEvent) {
+                formEvent.preventDefault();
+                cityssm.postJSON(urlPrefix + "/edit/doAddURL", formEvent.currentTarget, function (responseJSON) {
+                    if (responseJSON.success) {
+                        getURLs_1();
+                        closeAddModalFn();
+                    }
+                    else {
+                        cityssm.alertModal("Add Link Error", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
+                    }
+                });
+            };
+            cityssm.openHtmlModal("url-add", {
+                onshow: function () {
+                    document.getElementById("addURL--recordID").value = recordID;
+                    document.getElementById("form--addURL").addEventListener("submit", addFn);
+                },
+                onshown: function (_modalEle, closeModalFn) {
+                    closeAddModalFn = closeModalFn;
+                }
+            });
+        });
         var addDocuShareButtonEle = document.getElementById("is-add-docushare-url-button");
         if (addDocuShareButtonEle) {
             addDocuShareButtonEle.addEventListener("click", function () {
@@ -79,7 +177,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     buttonEle.disabled = true;
                     var panelBlockEle = buttonEle.closest(".panel-block");
                     var handle = panelBlockEle.getAttribute("data-handle");
-                    cityssm.postJSON(urlPrefix + "/edit/doAddDocuShareLink", {
+                    cityssm.postJSON(urlPrefix + "/edit/doAddDocuShareURL", {
                         recordID: recordID,
                         handle: handle
                     }, function (responseJSON) {
@@ -180,8 +278,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             });
         }
-        renderURLsFn_1(exports.recordURLs);
-        delete exports.recordURLs;
     }
     {
         var relatedRecordPanelEle = document.getElementById("panel--relatedRecords");
