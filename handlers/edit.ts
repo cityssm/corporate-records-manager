@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 
-import { getRecordType } from "../helpers/recordsDB/configCache.js";
+import * as configCache from "../helpers/recordsDB/configCache.js";
 import getRecord from "../helpers/recordsDB/getRecord.js";
 
 import * as configFns from "../helpers/configFns.js";
@@ -16,16 +16,19 @@ export const handler: RequestHandler = async (req, res) => {
     return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard?error=recordNotAvailable");
   }
 
-  const recordType = await getRecordType(record.recordTypeKey);
+  const recordType = await configCache.getRecordType(record.recordTypeKey);
 
   if (!recordType) {
     return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard?error=recordTypeKeyNotAvailable");
   }
 
+  const statusTypes = await configCache.getStatusTypes(record.recordTypeKey);
+
   res.render("edit", {
     isNew: false,
     recordType,
-    record
+    record,
+    statusTypes
   });
 };
 

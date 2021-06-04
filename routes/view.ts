@@ -3,6 +3,7 @@ import { Router } from "express";
 import * as configFns from "../helpers/configFns.js";
 
 import handler_view from "../handlers/view.js";
+import handler_doGetStatuses from "../handlers/doGetStatuses.js";
 import handler_doGetURLs from "../handlers/doGetURLs.js";
 
 
@@ -13,6 +14,7 @@ router.get("/", (_req, res) => {
   return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
 });
 
+router.post("/doGetStatuses", handler_doGetStatuses);
 router.post("/doGetURLs", handler_doGetURLs);
 
 router.get("/:recordID", handler_view);

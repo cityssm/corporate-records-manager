@@ -7,7 +7,15 @@ export interface RecordType {
   recordTypeKey: string;
   recordType: string;
   isActive: boolean;
-}
+};
+
+
+export interface StatusType {
+  statusTypeKey: string;
+  recordTypeKey?: string;
+  statusType: string;
+  isActive: boolean;
+};
 
 
 /*
@@ -23,7 +31,8 @@ interface TrackedValue {
   recordUpdate_datetime?: Date;
   recordDelete_userName?: string;
   recordDelete_datetime?: Date;
-}
+};
+
 
 export type Record = {
   recordID: number;
@@ -34,14 +43,17 @@ export type Record = {
   tags?: string[];
   statuses?: RecordStatus[];
   urls?: RecordURL[];
+  related?: Record[];
   comments?: RecordComment[];
 } & TrackedValue;
 
 
 export type RecordStatus = {
   statusLogID: number;
-  statusTime: Date;
   statusTypeKey: string;
+  statusTime: Date;
+  statusDateString?: string;
+  statusTimeString?: string;
   statusLog: string;
 } & TrackedValue;
 

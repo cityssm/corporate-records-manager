@@ -3,6 +3,12 @@ export interface RecordType {
     recordType: string;
     isActive: boolean;
 }
+export interface StatusType {
+    statusTypeKey: string;
+    recordTypeKey?: string;
+    statusType: string;
+    isActive: boolean;
+}
 interface TrackedValue {
     recordID?: number;
     recordCreate_userName?: string;
@@ -21,12 +27,15 @@ export declare type Record = {
     tags?: string[];
     statuses?: RecordStatus[];
     urls?: RecordURL[];
+    related?: Record[];
     comments?: RecordComment[];
 } & TrackedValue;
 export declare type RecordStatus = {
     statusLogID: number;
-    statusTime: Date;
     statusTypeKey: string;
+    statusTime: Date;
+    statusDateString?: string;
+    statusTimeString?: string;
     statusLog: string;
 } & TrackedValue;
 export declare type RecordComment = {

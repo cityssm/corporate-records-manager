@@ -1,6 +1,7 @@
 import type * as recordTypes from "../../types/recordTypes";
 
 import db_getRecordTypes from "./getRecordTypes.js";
+import db_getStatusTypes from "./getStatusTypes.js";
 
 import NodeCache from "node-cache";
 
@@ -40,4 +41,13 @@ export const getRecordType = async (recordTypeKey: string) => {
   });
 
   return recordType;
+};
+
+
+export const getStatusTypes = async (recordTypeKey: string) => {
+  const statusTypes: recordTypes.StatusType[] =
+    await getCachedDataOrDoQuery("statusTypes:" + recordTypeKey, async () => {
+      return await db_getStatusTypes(recordTypeKey);
+    });
+  return statusTypes;
 };

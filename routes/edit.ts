@@ -5,6 +5,10 @@ import * as configFns from "../helpers/configFns.js";
 import handler_edit from "../handlers/edit.js";
 import handler_doUpdate from "../handlers/doUpdate.js";
 
+import handler_doAddStatus from "../handlers/doAddStatus.js";
+import handler_doUpdateStatus from "../handlers/doUpdateStatus.js";
+import handler_doRemoveStatus from "../handlers/doRemoveStatus.js";
+
 import handler_doAddURL from "../handlers/doAddURL.js";
 import handler_doUpdateURL from "../handlers/doUpdateURL.js";
 import handler_doRemoveURL from "../handlers/doRemoveURL.js";
@@ -22,6 +26,11 @@ router.get("/", (_req, res) => {
 
 
 router.post("/doUpdate", handler_doUpdate);
+
+
+router.post("/doAddStatus", handler_doAddStatus);
+router.post("/doUpdateStatus", handler_doUpdateStatus);
+router.post("/doRemoveStatus", handler_doRemoveStatus);
 
 
 router.post("/doAddURL", handler_doAddURL);

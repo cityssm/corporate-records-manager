@@ -18,7 +18,9 @@ export const getRecordStatuses = async (recordID: number | string): Promise<reco
       .input("recordID", recordID)
       .query("select statusLogID, statusTypeKey, statusTime, statusLog" +
         " from CR.RecordStatusLog" +
-        " where recordID = @recordID");
+        " where recordID = @recordID" +
+        " and recordDelete_datetime is null" +
+        " order by statusTime desc");
 
     if (result.recordset && result.recordset.length > 0) {
       return result.recordset;

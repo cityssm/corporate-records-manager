@@ -1,20 +1,14 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 
-import getRecordTags from "./getRecordTags.js";
-import getRecordStatuses from "./getRecordStatuses.js";
-import getRecordURLs from "./getRecordURLs.js";
-import getRelatedRecords from "./getRelatedRecords.js";
-import getRecordComments from "./getRecordComments.js";
-
 import type * as sqlTypes from "mssql";
 import type { Record } from "../../types/recordTypes";
 
 import debug from "debug";
-const debugSQL = debug("corporate-records-manager:recordsDB:getRecord");
+const debugSQL = debug("corporate-records-manager:recordsDB:getRelatedRecords");
 
 
-export const getRecord = async (recordID: number | string): Promise<Record> => {
+export const getRelatedRecords = async (recordID: number | string): Promise<Record[]> => {
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -28,21 +22,18 @@ export const getRecord = async (recordID: number | string): Promise<Record> => {
         " recordUpdate_userName, recordUpdate_datetime" +
         " from CR.Records" +
         " where recordDelete_datetime is null" +
-        " and recordID = @recordID");
+        (" and (" +
+          "recordID in (select recordID_A from CR.RelatedRecords where recordID_B = @recordID)" +
+          " or recordID in (select recordID_B from CR.RelatedRecords where recordID_A = @recordID)" +
+          ")"));
 
     if (!result.recordset || result.recordset.length === 0) {
       return null;
     }
 
-    const record: Record = result.recordset[0];
+    const records: Record[] = result.recordset;
 
-    record.tags = await getRecordTags(recordID);
-    record.statuses = await getRecordStatuses(recordID);
-    record.urls = await getRecordURLs(recordID);
-    record.related = await getRelatedRecords(recordID);
-    record.comments = await getRecordComments(recordID);
-
-    return record;
+    return records;
 
   } catch (e) {
     debugSQL(e);
@@ -50,4 +41,4 @@ export const getRecord = async (recordID: number | string): Promise<Record> => {
 };
 
 
-export default getRecord;
+export default getRelatedRecords;

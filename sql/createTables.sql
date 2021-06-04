@@ -73,12 +73,29 @@ create table CR.StatusTypes (
 	statusTypeKey varchar(30) primary key not null,
 	recordTypeKey varchar(20),
 	statusType varchar(100),
+	orderNumber tinyint not null default 0,
 	isActive bit not null default 1,
 
 	constraint fk_statustypes_recordtypekey foreign key (recordTypeKey) references CR.RecordTypes (recordTypeKey)
 	on update cascade
 	on delete cascade
 )
+
+
+insert into CR.StatusTypes (statusTypeKey, recordTypeKey, statusType, orderNumber, isActive)
+values ('bylaw-new', 'bylaw', 'New', 1, 1)
+
+insert into CR.StatusTypes (statusTypeKey, recordTypeKey, statusType, orderNumber, isActive)
+values ('bylaw-amending', 'bylaw', 'Amending', 2, 1)
+
+insert into CR.StatusTypes (statusTypeKey, recordTypeKey, statusType, orderNumber, isActive)
+values ('bylaw-consolidated', 'bylaw', 'Consolidated', 3, 1)
+
+insert into CR.StatusTypes (statusTypeKey, recordTypeKey, statusType, orderNumber, isActive)
+values ('bylaw-repealing', 'bylaw', 'Repealing', 4, 1)
+
+insert into CR.StatusTypes (statusTypeKey, recordTypeKey, statusType, orderNumber, isActive)
+values ('bylaw-repealed', 'bylaw', 'Repealed', 5, 1)
 
 
 create table CR.RecordStatusLog (

@@ -1,0 +1,54 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Add a New Status</h2>
+      <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--addStatus">
+        <input id="addStatus--recordID" name="recordID" type="hidden" />
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addStatus--statusTypeKey">Status</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="addStatus--statusTypeKey" name="statusTypeKey" required>
+                    <option value="">(Select a Status)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addStatus--statusDateString">Status Date</label>
+              <div class="control">
+                <input class="input" id="addStatus--statusDateString" name="statusDateString" type="date" required />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addStatus--statusTimeString">Status Time</label>
+              <div class="control">
+                <input class="input" id="addStatus--statusTimeString" name="statusTimeString" type="time" required />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="addStatus--statusLog">Additional Details</label>
+          <div class="control">
+            <textarea class="textarea" id="addStatus--statusLog" name="statusLog"></textarea>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--addStatus">Add Status</button>
+      <button class="button is-close-modal-button">Cancel</button>
+    </footer>
+  </div>
+</div>

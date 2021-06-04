@@ -1,6 +1,5 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
-import setRecordTags from "./setRecordTags.js";
 
 import type * as sqlTypes from "mssql";
 import type * as expressSession from "express-session";

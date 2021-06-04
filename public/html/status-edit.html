@@ -1,0 +1,53 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Update a Status</h2>
+      <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--editStatus">
+        <input id="editStatus--statusLogID" name="statusLogID" type="hidden" />
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="editStatus--statusTypeKey">Status</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="editStatus--statusTypeKey" name="statusTypeKey" required>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="editStatus--statusDateString">Status Date</label>
+              <div class="control">
+                <input class="input" id="editStatus--statusDateString" name="statusDateString" type="date" required />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="editStatus--statusTimeString">Status Time</label>
+              <div class="control">
+                <input class="input" id="editStatus--statusTimeString" name="statusTimeString" type="time" required />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="editStatus--statusLog">Additional Details</label>
+          <div class="control">
+            <textarea class="textarea" id="editStatus--statusLog" name="statusLog"></textarea>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--editStatus">Update Status</button>
+      <button class="button is-close-modal-button">Cancel</button>
+    </footer>
+  </div>
+</div>

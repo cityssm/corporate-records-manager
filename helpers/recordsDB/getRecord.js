@@ -3,6 +3,7 @@ import * as configFns from "../configFns.js";
 import getRecordTags from "./getRecordTags.js";
 import getRecordStatuses from "./getRecordStatuses.js";
 import getRecordURLs from "./getRecordURLs.js";
+import getRelatedRecords from "./getRelatedRecords.js";
 import getRecordComments from "./getRecordComments.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecord");
@@ -25,6 +26,7 @@ export const getRecord = async (recordID) => {
         record.tags = await getRecordTags(recordID);
         record.statuses = await getRecordStatuses(recordID);
         record.urls = await getRecordURLs(recordID);
+        record.related = await getRelatedRecords(recordID);
         record.comments = await getRecordComments(recordID);
         return record;
     }
