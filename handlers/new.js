@@ -17,7 +17,8 @@ export const handler = async (req, res) => {
     res.render("edit", {
         isNew: true,
         recordType,
-        record: emptyRecord
+        record: emptyRecord,
+        statusTypes: null
     });
 };
 export default handler;

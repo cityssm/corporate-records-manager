@@ -142,12 +142,18 @@
 <%- include('_footerA'); -%>
 <script>
   // Record Data
-  exports.recordStatuses = <%- JSON.stringify(record.statuses) %>;
-  exports.recordURLs = <%- JSON.stringify(record.urls) %>;
-  exports.recordComments = <%- JSON.stringify(record.comments) %>;
+  <% if (!isNew) { %>
+    exports.recordStatuses = <%- JSON.stringify(record.statuses) %>;
+    exports.recordURLs = <%- JSON.stringify(record.urls) %>;
+    exports.relatedRecords = <%- JSON.stringify(record.related) %>;
+    exports.recordComments = <%- JSON.stringify(record.comments) %>;
+  <% } %>
 
   // Config Values
-  exports.statusTypes = <%- JSON.stringify(statusTypes) %>;
+  <% if (statusTypes) { %>
+    exports.statusTypes = <%- JSON.stringify(statusTypes) %>;
+  <% } %>
+  
   <% if (configFns.getProperty("integrations.docuShare.isEnabled")) { %>
     exports.docuShareCollectionHandles = <%- JSON.stringify(configFns.getProperty("integrations.docuShare.collectionHandles")) %>;
   <% } %>
