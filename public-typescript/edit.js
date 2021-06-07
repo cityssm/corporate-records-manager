@@ -454,7 +454,195 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     {
-        var relatedRecordPanelEle = document.getElementById("panel--relatedRecords");
+        var relatedRecords_1 = exports.relatedRecords;
+        delete exports.relatedRecords;
+        var relatedRecordPanelEle_1 = document.getElementById("panel--relatedRecords");
+        var openRemoveRelatedRecordModalFn_1 = function (clickEvent) {
+            clickEvent.preventDefault();
+            var panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
+            var index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+            var relatedRecordID = parseInt(panelBlockEle.getAttribute("data-record-id"), 10);
+            var removeFn = function () {
+                cityssm.postJSON(urlPrefix + "/edit/doRemoveRelatedRecord", {
+                    recordID: recordID,
+                    relatedRecordID: relatedRecordID
+                }, function (responseJSON) {
+                    if (responseJSON.success) {
+                        relatedRecords_1.splice(index, 1);
+                        clearPanelBlocksFn(relatedRecordPanelEle_1);
+                        renderRelatedRecordsFn_1();
+                    }
+                    else {
+                        cityssm.alertModal("Remove Related Record Error", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
+                    }
+                });
+            };
+            cityssm.confirmModal("Remove Comment", "Are you sure you want to remove this related record?", "Yes, Remove the Related Record", "warning", removeFn);
+        };
+        var renderRelatedRecordFn_1 = function (relatedRecord, index) {
+            var panelBlockEle = document.createElement("div");
+            panelBlockEle.className = "panel-block is-block";
+            panelBlockEle.setAttribute("data-index", index.toString());
+            panelBlockEle.setAttribute("data-record-id", relatedRecord.recordID.toString());
+            panelBlockEle.innerHTML = "<div class=\"columns\">" +
+                ("<div class=\"column\">" +
+                    "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/view/" + relatedRecord.recordID.toString() + "\" target=\"_blank\">" +
+                    relatedRecord.recordTitle +
+                    "</a><br />" +
+                    relatedRecord.recordNumber +
+                    "</div>") +
+                ("<div class=\"column is-narrow\">" +
+                    "<button class=\"button is-danger is-light is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Remove Comment\" type=\"button\">" +
+                    "<span class=\"icon\"><i class=\"fas fa-trash-alt\" aria-hidden=\"true\"></i></span>" +
+                    "</button>" +
+                    "</div>") +
+                "</div>";
+            panelBlockEle.getElementsByTagName("button")[0].addEventListener("click", openRemoveRelatedRecordModalFn_1);
+            relatedRecordPanelEle_1.appendChild(panelBlockEle);
+        };
+        var renderRelatedRecordsFn_1 = function () {
+            clearPanelBlocksFn(relatedRecordPanelEle_1);
+            if (relatedRecords_1.length === 0) {
+                relatedRecordPanelEle_1.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+                    "<div class=\"message is-info\">" +
+                    "<div class=\"message-body\">This record has no related records.</div>" +
+                    "</div>" +
+                    "</div>");
+                return;
+            }
+            relatedRecords_1.forEach(renderRelatedRecordFn_1);
+        };
+        var getRelatedRecords_1 = function () {
+            clearPanelBlocksFn(relatedRecordPanelEle_1);
+            relatedRecords_1 = [];
+            relatedRecordPanelEle_1.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
+                "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
+                "Loading Related Records..." +
+                "</div>");
+            cityssm.postJSON(urlPrefix + "/view/doGetRelatedRecords", {
+                recordID: recordID
+            }, function (responseJSON) {
+                if (responseJSON.success) {
+                    relatedRecords_1 = responseJSON.relatedRecords;
+                    renderRelatedRecordsFn_1();
+                }
+                else {
+                    relatedRecordPanelEle_1.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+                        "<div class=\"message is-danger\"><div class=\"message-body\">" +
+                        responseJSON.message +
+                        "</div></div>" +
+                        "</div>");
+                }
+            });
+        };
+        renderRelatedRecordsFn_1();
+        document.getElementById("is-add-related-button").addEventListener("click", function () {
+            var doRefreshOnClose = false;
+            var searchFormEle;
+            var searchResultsContainerEle;
+            var addFn = function (event) {
+                event.preventDefault();
+                var buttonEle = event.currentTarget;
+                buttonEle.disabled = true;
+                var panelBlockEle = buttonEle.closest(".panel-block");
+                var relatedRecordID = panelBlockEle.getAttribute("data-record-id");
+                cityssm.postJSON(urlPrefix + "/edit/doAddRelatedRecord", {
+                    recordID: recordID,
+                    relatedRecordID: relatedRecordID
+                }, function (responseJSON) {
+                    if (responseJSON.success) {
+                        doRefreshOnClose = true;
+                        panelBlockEle.remove();
+                    }
+                    else {
+                        cityssm.alertModal("Error Adding Related Record", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
+                        buttonEle.disabled = false;
+                    }
+                });
+            };
+            var searchRecordsFn = function (event) {
+                if (event) {
+                    event.preventDefault();
+                }
+                searchResultsContainerEle.innerHTML = "<div class=\"has-text-centered has-text-grey\">" +
+                    "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
+                    "Searching Records..." +
+                    "</div>";
+                cityssm.postJSON(urlPrefix + "/edit/doSearchRelatedRecords", searchFormEle, function (responseJSON) {
+                    if (!responseJSON.success) {
+                        searchResultsContainerEle.innerHTML = "<div class=\"message is-danger\">" +
+                            "<div class=\"message-body\">" +
+                            "<p>" + cityssm.escapeHTML(responseJSON.message) + "</p>" +
+                            "</div>" +
+                            "</div>";
+                        return;
+                    }
+                    var panelEle = document.createElement("div");
+                    panelEle.className = "panel";
+                    for (var _i = 0, _a = responseJSON.records; _i < _a.length; _i++) {
+                        var relatedRecord = _a[_i];
+                        var panelBlockEle = document.createElement("div");
+                        panelBlockEle.className = "panel-block is-block";
+                        panelBlockEle.setAttribute("data-record-id", relatedRecord.recordID.toString());
+                        panelBlockEle.innerHTML = "<div class=\"level\">" +
+                            ("<div class=\"level-left\">" +
+                                "<strong>" + cityssm.escapeHTML(relatedRecord.recordTitle) + "</strong>" +
+                                "</div>") +
+                            ("<div class=\"level-right\">" +
+                                "<a class=\"button is-info mr-1\" href=\"" + urlPrefix + "/view/" + relatedRecord.recordID.toString() + "\" target=\"_blank\">" +
+                                "<span class=\"icon\"><i class=\"fas fa-eye\" aria-hidden=\"true\"></i></span>" +
+                                "<span>View</span>" +
+                                "</a>" +
+                                "<button class=\"button is-success\" type=\"button\">" +
+                                "<span class=\"icon\"><i class=\"fas fa-plus\" aria-hidden=\"true\"></i></span>" +
+                                "<span>Add Related Record</span>" +
+                                "</button>" +
+                                "</div>") +
+                            "</div>";
+                        panelBlockEle.getElementsByTagName("button")[0].addEventListener("click", addFn);
+                        panelEle.appendChild(panelBlockEle);
+                    }
+                    searchResultsContainerEle.innerHTML = "";
+                    if (panelEle.children.length === 0) {
+                        searchResultsContainerEle.innerHTML = "<div class=\"message is-info\">" +
+                            "<div class=\"message-body\">" +
+                            "<p>There are no new records that meet your search criteria.</p>" +
+                            "</div>" +
+                            "</div>";
+                    }
+                    else {
+                        searchResultsContainerEle.appendChild(panelEle);
+                    }
+                });
+            };
+            cityssm.openHtmlModal("relatedRecord-add", {
+                onshow: function () {
+                    searchResultsContainerEle = document.getElementById("container--addRelatedRecord");
+                    searchFormEle = document.getElementById("form--addRelatedRecord-search");
+                    searchFormEle.addEventListener("submit", searchRecordsFn);
+                    document.getElementById("addRelatedRecord--recordID").value = recordID;
+                    var recordTypeKeyEle = document.getElementById("addRelatedRecord--recordTypeKey");
+                    for (var index = 0; index < exports.recordTypes.length; index += 1) {
+                        var optionEle = document.createElement("option");
+                        optionEle.value = exports.recordTypes[index].recordTypeKey;
+                        optionEle.innerText = exports.recordTypes[index].recordType;
+                        recordTypeKeyEle.appendChild(optionEle);
+                        if (index === 0) {
+                            recordTypeKeyEle.value = index.toString();
+                        }
+                    }
+                    recordTypeKeyEle.addEventListener("change", searchRecordsFn);
+                    var searchStringEle = document.getElementById("addRelatedRecord--searchString");
+                    searchStringEle.value = document.getElementById("record--recordNumber").value;
+                    searchRecordsFn();
+                },
+                onhidden: function () {
+                    if (doRefreshOnClose) {
+                        getRelatedRecords_1();
+                    }
+                }
+            });
+        });
     }
     {
         var comments_1 = exports.recordComments;

@@ -1,0 +1,36 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Add a New Related Record</h2>
+      <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--addRelatedRecord-search">
+        <input id="addRelatedRecord--recordID" name="recordID" type="hidden" />
+        <div class="columns">
+          <div class="column is-two-fifths">
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="addRelatedRecord--recordTypeKey" name="recordTypeKey">
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="control has-icons-left">
+              <input class="input" id="addRelatedRecord--searchString" name="searchString" type="text" placeholder="Search Records" />
+              <span class="icon is-small is-left">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="mt-5" id="container--addRelatedRecord"></div>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-close-modal-button">Cancel</button>
+    </footer>
+  </div>
+</div>

@@ -20,6 +20,9 @@ import handler_doRemoveComment from "../handlers/doRemoveComment.js";
 import handler_doSearchDocuShare from "../handlers/doSearchDocuShare.js";
 import handler_doAddDocuShareURL from "../handlers/doAddDocuShareURL.js";
 
+import handler_doSearchRelatedRecords from "../handlers/doSearchRelatedRecords.js";
+import handler_doAddRelatedRecord from "../handlers/doAddRelatedRecord.js";
+
 
 export const router = Router();
 
@@ -46,6 +49,10 @@ if (configFns.getProperty("integrations.docuShare.isEnabled")) {
   router.post("/doSearchDocuShare", handler_doSearchDocuShare);
   router.post("/doAddDocuShareURL", handler_doAddDocuShareURL);
 }
+
+
+router.post("/doSearchRelatedRecords", handler_doSearchRelatedRecords);
+router.post("/doAddRelatedRecord", handler_doAddRelatedRecord);
 
 
 router.post("/doAddComment", handler_doAddComment);

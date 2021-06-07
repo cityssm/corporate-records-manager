@@ -28,7 +28,7 @@ export const getRelatedRecords = async (recordID: number | string): Promise<Reco
           ")"));
 
     if (!result.recordset || result.recordset.length === 0) {
-      return null;
+      return [];
     }
 
     const records: Record[] = result.recordset;

@@ -657,7 +657,270 @@ declare const cityssm: cityssmGlobal;
    */
 
   {
+    let relatedRecords: recordTypes.Record[] = exports.relatedRecords;
+    delete exports.relatedRecords;
+
     const relatedRecordPanelEle = document.getElementById("panel--relatedRecords");
+
+    const openRemoveRelatedRecordModalFn = (clickEvent: MouseEvent) => {
+
+      clickEvent.preventDefault();
+
+      const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
+
+      const index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+      const relatedRecordID = parseInt(panelBlockEle.getAttribute("data-record-id"), 10);
+
+      const removeFn = () => {
+
+        cityssm.postJSON(urlPrefix + "/edit/doRemoveRelatedRecord", {
+          recordID,
+          relatedRecordID
+        }, (responseJSON: { success: boolean; message?: string }) => {
+
+          if (responseJSON.success) {
+            relatedRecords.splice(index, 1);
+            clearPanelBlocksFn(relatedRecordPanelEle);
+            renderRelatedRecordsFn();
+
+          } else {
+            cityssm.alertModal("Remove Related Record Error",
+              cityssm.escapeHTML(responseJSON.message),
+              "OK",
+              "danger");
+          }
+        });
+      };
+
+      cityssm.confirmModal("Remove Comment",
+        "Are you sure you want to remove this related record?",
+        "Yes, Remove the Related Record",
+        "warning",
+        removeFn);
+    };
+
+    const renderRelatedRecordFn = (relatedRecord: recordTypes.Record, index: number) => {
+
+      const panelBlockEle = document.createElement("div");
+      panelBlockEle.className = "panel-block is-block";
+      panelBlockEle.setAttribute("data-index", index.toString());
+      panelBlockEle.setAttribute("data-record-id", relatedRecord.recordID.toString());
+
+      panelBlockEle.innerHTML = "<div class=\"columns\">" +
+        ("<div class=\"column\">" +
+          "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/view/" + relatedRecord.recordID.toString() + "\" target=\"_blank\">" +
+          relatedRecord.recordTitle +
+          "</a><br />" +
+          relatedRecord.recordNumber +
+          "</div>") +
+        ("<div class=\"column is-narrow\">" +
+          "<button class=\"button is-danger is-light is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Remove Comment\" type=\"button\">" +
+          "<span class=\"icon\"><i class=\"fas fa-trash-alt\" aria-hidden=\"true\"></i></span>" +
+          "</button>" +
+          "</div>") +
+        "</div>";
+
+      panelBlockEle.getElementsByTagName("button")[0].addEventListener("click", openRemoveRelatedRecordModalFn);
+
+      relatedRecordPanelEle.appendChild(panelBlockEle);
+    };
+
+    const renderRelatedRecordsFn = () => {
+
+      clearPanelBlocksFn(relatedRecordPanelEle);
+
+      if (relatedRecords.length === 0) {
+        relatedRecordPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+          "<div class=\"message is-info\">" +
+          "<div class=\"message-body\">This record has no related records.</div>" +
+          "</div>" +
+          "</div>");
+
+        return;
+      }
+
+      relatedRecords.forEach(renderRelatedRecordFn);
+    };
+
+    const getRelatedRecords = () => {
+
+      clearPanelBlocksFn(relatedRecordPanelEle);
+      relatedRecords = [];
+
+      relatedRecordPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
+        "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
+        "Loading Related Records..." +
+        "</div>");
+
+      cityssm.postJSON(urlPrefix + "/view/doGetRelatedRecords", {
+        recordID
+      },
+        (responseJSON: { success: boolean; relatedRecords: recordTypes.Record[]; message?: string }) => {
+
+          if (responseJSON.success) {
+            relatedRecords = responseJSON.relatedRecords;
+            renderRelatedRecordsFn();
+          } else {
+
+            relatedRecordPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+              "<div class=\"message is-danger\"><div class=\"message-body\">" +
+              responseJSON.message +
+              "</div></div>" +
+              "</div>");
+          }
+        });
+    };
+
+    renderRelatedRecordsFn();
+
+    document.getElementById("is-add-related-button").addEventListener("click", () => {
+
+      let doRefreshOnClose = false;
+
+      let searchFormEle: HTMLFormElement;
+      let searchResultsContainerEle: HTMLElement;
+
+      const addFn = (event: MouseEvent) => {
+
+        event.preventDefault();
+
+        const buttonEle = event.currentTarget as HTMLButtonElement;
+
+        buttonEle.disabled = true;
+
+        const panelBlockEle = buttonEle.closest(".panel-block");
+
+        const relatedRecordID = panelBlockEle.getAttribute("data-record-id");
+
+        cityssm.postJSON(urlPrefix + "/edit/doAddRelatedRecord", {
+          recordID,
+          relatedRecordID: relatedRecordID
+        },
+          (responseJSON: { success: boolean; message?: string }) => {
+
+            if (responseJSON.success) {
+              doRefreshOnClose = true;
+              panelBlockEle.remove();
+
+            } else {
+              cityssm.alertModal("Error Adding Related Record",
+                cityssm.escapeHTML(responseJSON.message),
+                "OK",
+                "danger");
+
+              buttonEle.disabled = false;
+            }
+          });
+      };
+
+      const searchRecordsFn = (event?: Event) => {
+
+        if (event) {
+          event.preventDefault();
+        }
+
+        searchResultsContainerEle.innerHTML = "<div class=\"has-text-centered has-text-grey\">" +
+          "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
+          "Searching Records..." +
+          "</div>";
+
+        cityssm.postJSON(urlPrefix + "/edit/doSearchRelatedRecords", searchFormEle,
+          (responseJSON: { success: boolean; message?: string; records?: recordTypes.Record[] }) => {
+
+            if (!responseJSON.success) {
+
+              searchResultsContainerEle.innerHTML = "<div class=\"message is-danger\">" +
+                "<div class=\"message-body\">" +
+                "<p>" + cityssm.escapeHTML(responseJSON.message) + "</p>" +
+                "</div>" +
+                "</div>";
+
+              return;
+            }
+
+            const panelEle = document.createElement("div");
+            panelEle.className = "panel";
+
+            for (const relatedRecord of responseJSON.records) {
+
+              const panelBlockEle = document.createElement("div");
+              panelBlockEle.className = "panel-block is-block";
+              panelBlockEle.setAttribute("data-record-id", relatedRecord.recordID.toString());
+
+              panelBlockEle.innerHTML = "<div class=\"level\">" +
+                ("<div class=\"level-left\">" +
+                  "<strong>" + cityssm.escapeHTML(relatedRecord.recordTitle) + "</strong>" +
+                  "</div>") +
+                ("<div class=\"level-right\">" +
+                  "<a class=\"button is-info mr-1\" href=\"" + urlPrefix + "/view/" + relatedRecord.recordID.toString() + "\" target=\"_blank\">" +
+                  "<span class=\"icon\"><i class=\"fas fa-eye\" aria-hidden=\"true\"></i></span>" +
+                  "<span>View</span>" +
+                  "</a>" +
+                  "<button class=\"button is-success\" type=\"button\">" +
+                  "<span class=\"icon\"><i class=\"fas fa-plus\" aria-hidden=\"true\"></i></span>" +
+                  "<span>Add Related Record</span>" +
+                  "</button>" +
+                  "</div>") +
+                "</div>";
+
+              panelBlockEle.getElementsByTagName("button")[0].addEventListener("click", addFn);
+
+              panelEle.appendChild(panelBlockEle);
+            }
+
+            searchResultsContainerEle.innerHTML = "";
+
+            if (panelEle.children.length === 0) {
+              searchResultsContainerEle.innerHTML = "<div class=\"message is-info\">" +
+                "<div class=\"message-body\">" +
+                "<p>There are no new records that meet your search criteria.</p>" +
+                "</div>" +
+                "</div>";
+
+            } else {
+
+              searchResultsContainerEle.appendChild(panelEle);
+            }
+          });
+      };
+
+      cityssm.openHtmlModal("relatedRecord-add", {
+        onshow: () => {
+
+          searchResultsContainerEle = document.getElementById("container--addRelatedRecord");
+
+          searchFormEle = document.getElementById("form--addRelatedRecord-search") as HTMLFormElement;
+          searchFormEle.addEventListener("submit", searchRecordsFn);
+
+          (document.getElementById("addRelatedRecord--recordID") as HTMLInputElement).value = recordID;
+
+          const recordTypeKeyEle = document.getElementById("addRelatedRecord--recordTypeKey") as HTMLSelectElement;
+
+          for (let index = 0; index < exports.recordTypes.length; index += 1) {
+            const optionEle = document.createElement("option");
+            optionEle.value = exports.recordTypes[index].recordTypeKey;
+            optionEle.innerText = exports.recordTypes[index].recordType;
+            recordTypeKeyEle.appendChild(optionEle);
+
+            if (index === 0) {
+              recordTypeKeyEle.value = index.toString();
+            }
+          }
+
+          recordTypeKeyEle.addEventListener("change", searchRecordsFn);
+
+          const searchStringEle = document.getElementById("addRelatedRecord--searchString") as HTMLInputElement;
+          searchStringEle.value = (document.getElementById("record--recordNumber") as HTMLInputElement).value;
+
+          searchRecordsFn();
+        },
+        onhidden: () => {
+          if (doRefreshOnClose) {
+            getRelatedRecords();
+          }
+        }
+      });
+    });
   }
 
   /*
@@ -669,7 +932,6 @@ declare const cityssm: cityssmGlobal;
     delete exports.recordComments;
 
     const commentPanelEle = document.getElementById("panel--comments");
-
 
     const openEditCommentModalFn = (clickEvent: MouseEvent) => {
 

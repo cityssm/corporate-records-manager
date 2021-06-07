@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 cityssm.disableNavBlocker();
                 if (isNew) {
-                    window.location.href = urlPrefix + "/records/edit/" + responseJSON.recordID.toString();
+                    window.location.href = urlPrefix + "/edit/" + responseJSON.recordID.toString();
                 }
                 else {
                     cityssm.alertModal("Record Updated Successfully", "", "OK", "success");

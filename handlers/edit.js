@@ -11,11 +11,13 @@ export const handler = async (req, res) => {
     if (!recordType) {
         return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard?error=recordTypeKeyNotAvailable");
     }
+    const recordTypes = await configCache.getRecordTypes();
     const statusTypes = await configCache.getStatusTypes(record.recordTypeKey);
     res.render("edit", {
         isNew: false,
         recordType,
         record,
+        recordTypes,
         statusTypes
     });
 };

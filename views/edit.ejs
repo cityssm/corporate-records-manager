@@ -147,13 +147,15 @@
     exports.recordURLs = <%- JSON.stringify(record.urls) %>;
     exports.relatedRecords = <%- JSON.stringify(record.related) %>;
     exports.recordComments = <%- JSON.stringify(record.comments) %>;
+
+    exports.recordTypes = <%- JSON.stringify(recordTypes) %>;
   <% } %>
 
   // Config Values
   <% if (statusTypes) { %>
     exports.statusTypes = <%- JSON.stringify(statusTypes) %>;
   <% } %>
-  
+
   <% if (configFns.getProperty("integrations.docuShare.isEnabled")) { %>
     exports.docuShareCollectionHandles = <%- JSON.stringify(configFns.getProperty("integrations.docuShare.collectionHandles")) %>;
   <% } %>

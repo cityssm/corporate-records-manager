@@ -18,7 +18,7 @@ export const getRelatedRecords = async (recordID) => {
                 " or recordID in (select recordID_B from CR.RelatedRecords where recordID_A = @recordID)" +
                 ")"));
         if (!result.recordset || result.recordset.length === 0) {
-            return null;
+            return [];
         }
         const records = result.recordset;
         return records;
