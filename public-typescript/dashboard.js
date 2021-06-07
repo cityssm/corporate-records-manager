@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.clearElement(searchResultsContainerEle);
         searchResultsContainerEle.innerHTML = "<div class=\"has-text-grey has-text-centered\">" +
-            "<span class=\"icon\"><i class=\"fas fa-4x fa-pulse fa-spinner\" aria-hidden=\"true\"></i></span><br />" +
+            "<i class=\"fas fa-4x fa-pulse fa-spinner\" aria-hidden=\"true\"></i><br />" +
             "Searching Records..." +
             "</div>";
         cityssm.postJSON(urlPrefix + "/dashboard/doGetRecords", searchFormEle, function (responseJSON) {
@@ -24,11 +24,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             panelEle.className = "panel";
             for (var _i = 0, _a = responseJSON.records; _i < _a.length; _i++) {
                 var record = _a[_i];
-                var panelBlockEle = document.createElement("div");
+                var panelBlockEle = document.createElement("a");
                 panelBlockEle.className = "panel-block is-block";
-                panelBlockEle.innerHTML = "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/view/" + record.recordID.toString() + "\">" +
-                    record.recordTitle +
-                    "</a><br />" +
+                panelBlockEle.href = urlPrefix + "/view/" + record.recordID.toString();
+                panelBlockEle.innerHTML = "<strong>" + record.recordTitle + "</strong><br />" +
                     record.recordNumber;
                 panelEle.appendChild(panelBlockEle);
             }

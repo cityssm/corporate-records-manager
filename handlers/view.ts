@@ -1,5 +1,7 @@
 import type { RequestHandler } from "express";
 
+import * as configCache from "../helpers/recordsDB/configCache.js";
+
 import { getRecordType } from "../helpers/recordsDB/configCache.js";
 import getRecord from "../helpers/recordsDB/getRecord.js";
 
@@ -22,9 +24,14 @@ export const handler: RequestHandler = async (req, res) => {
     return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard?error=recordTypeKeyNotAvailable");
   }
 
+  const recordTypes = await configCache.getRecordTypes();
+  const statusTypes = await configCache.getStatusTypes(record.recordTypeKey);
+
   res.render("view", {
     recordType,
-    record
+    record,
+    recordTypes,
+    statusTypes
   });
 };
 

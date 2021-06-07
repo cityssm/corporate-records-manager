@@ -19,7 +19,7 @@ declare const cityssm: cityssmGlobal;
     cityssm.clearElement(searchResultsContainerEle);
 
     searchResultsContainerEle.innerHTML = "<div class=\"has-text-grey has-text-centered\">" +
-      "<span class=\"icon\"><i class=\"fas fa-4x fa-pulse fa-spinner\" aria-hidden=\"true\"></i></span><br />" +
+      "<i class=\"fas fa-4x fa-pulse fa-spinner\" aria-hidden=\"true\"></i><br />" +
       "Searching Records..." +
       "</div>";
 
@@ -39,14 +39,12 @@ declare const cityssm: cityssmGlobal;
 
         for (const record of responseJSON.records) {
 
-          const panelBlockEle = document.createElement("div");
+          const panelBlockEle = document.createElement("a");
           panelBlockEle.className = "panel-block is-block";
+          panelBlockEle.href = urlPrefix + "/view/" + record.recordID.toString();
 
-          panelBlockEle.innerHTML = "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/view/" + record.recordID.toString() + "\">" +
-            record.recordTitle +
-            "</a><br />" +
+          panelBlockEle.innerHTML = "<strong>" + record.recordTitle + "</strong><br />" +
             record.recordNumber;
-
 
           panelEle.appendChild(panelBlockEle);
         }

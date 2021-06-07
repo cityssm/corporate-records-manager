@@ -1,0 +1,101 @@
+<%- include('_header'); -%>
+
+<div class="columns is-align-items-center">
+  <div class="column">
+    <h1 class="title is-1">
+      <%= recordType.recordType + " " + record.recordNumber %>
+    </h1>
+  </div>
+  <% if (user.canUpdate) { %>
+    <div class="column is-narrow has-text-right">
+      <a class="button is-link" href="<%= urlPrefix + "/edit/" + record.recordID %>">
+        <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+        <span>Edit Record</span>
+      </a>
+    </div>
+  <% } %>
+</div>
+
+<div class="columns">
+  <div class="column">
+    <div class="panel">
+      <h2 class="panel-heading"><%= recordType.recordType %> Details</h2>
+      <div class="panel-block">
+        <strong><%= record.recordTitle %></strong>
+      </div>
+      <div class="panel-block">
+        <%= record.recordDescription %>
+      </div>
+      <div class="panel-block is-block">
+        <% for (const tag of record.tags) { %>
+          <span class="tag is-medium">
+            <%= tag %>
+          </span>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <% if (record.statuses.length > 0) { %>
+      <div class="panel">
+        <h2 class="panel-heading">Statuses</h2>
+        <% for (const status of record.statuses) { %>
+          <%
+            const statusType = statusTypes.find((possibleStatusType) => { return possibleStatusType.statusTypeKey === status.statusTypeKey});
+          %>
+          <div class="panel-block is-block">
+            <strong><%= statusType ? statusType.statusType : status.statusTypeKey %></strong><br />
+            <span class="has-tooltip-arrow has-tooltip-right" data-tooltip="<%= dateTimeFns.dateToTimeString(status.statusTime) %>">
+              <%= dateTimeFns.dateToString(status.statusTime) %>
+            </span><br />
+            <span class="is-size-7"><%= status.statusLog %></span>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+    <% if (record.urls.length > 0) { %>
+      <div class="panel">
+        <h2 class="panel-heading">Links</h2>
+        <% for (const url of record.urls) { %>
+          <a class="panel-block is-block" href="<%= url.url %>" target="_blank">
+            <strong><%= url.urlTitle %></strong><br />
+            <span class="tag has-tooltip-arrow has-tooltip-right" data-tooltip="Link Domain">
+              <%= url.url.split("/")[2] %>
+            </span><br />
+            <span class="is-size-7"><%= url.urlDescription %></span>
+          </a>
+        <% } %>
+      </div>
+    <% } %>
+    <% if (record.related.length > 0) { %>
+      <div class="panel">
+        <h2 class="panel-heading">Related Records</h2>
+        <% for (const relatedRecord of record.related) { %>
+          <%
+            const relatedRecordType = recordTypes.find((possibleRecordType) => { return possibleRecordType.recordTypeKey === relatedRecord.recordTypeKey; });
+          %>
+          <a class="panel-block is-block" href="<%= urlPrefix + "/view/" + relatedRecord.recordID.toString() %>" target="_blank">
+            <strong><%= relatedRecord.recordTitle %></strong><br />
+            <%= relatedRecord.recordNumber %>
+          </a>
+        <% } %>
+      </div>
+    <% } %>
+    <% if (record.comments.length > 0) { %>
+      <div class="panel">
+        <h2 class="panel-heading">Comments</h2>
+        <% for (const comment of record.comments) { %>
+          <div class="panel-block is-block">
+            <span class="has-tooltip-arrow has-tooltip-right" data-tooltip="<%= dateTimeFns.dateToTimeString(comment.commentTime) %>">
+              <%= dateTimeFns.dateToString(comment.commentTime) %>
+            </span><br />
+            <span class="is-size-7"><%= comment.comment %></span>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('_footerA'); -%>
+<%- include('_footerB'); -%>
