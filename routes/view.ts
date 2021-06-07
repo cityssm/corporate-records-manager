@@ -5,6 +5,7 @@ import * as configFns from "../helpers/configFns.js";
 import handler_view from "../handlers/view.js";
 import handler_doGetStatuses from "../handlers/doGetStatuses.js";
 import handler_doGetURLs from "../handlers/doGetURLs.js";
+import handler_doGetComments from "../handlers/doGetComments.js";
 
 
 export const router = Router();
@@ -16,6 +17,7 @@ router.get("/", (_req, res) => {
 
 router.post("/doGetStatuses", handler_doGetStatuses);
 router.post("/doGetURLs", handler_doGetURLs);
+router.post("/doGetComments", handler_doGetComments);
 
 router.get("/:recordID", handler_view);
 

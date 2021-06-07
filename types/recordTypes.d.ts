@@ -41,6 +41,8 @@ export declare type RecordStatus = {
 export declare type RecordComment = {
     commentLogID: number;
     commentTime: Date;
+    commentDateString?: string;
+    commentTimeString?: string;
     comment: string;
 } & TrackedValue;
 export declare type RecordURL = {

@@ -1,0 +1,42 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Add a New Comment</h2>
+      <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--addComment">
+        <input id="addComment--recordID" name="recordID" type="hidden" />
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addComment--commentDateString">Comment Date</label>
+              <div class="control">
+                <input class="input" id="addComment--commentDateString" name="commentDateString" type="date" required />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addComment--commentTimeString">Comment Time</label>
+              <div class="control">
+                <input class="input" id="addComment--commentTimeString" name="commentTimeString" type="time" required />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="addComment--comment">Comment</label>
+          <div class="control">
+            <textarea class="textarea" id="addComment--comment" name="comment"></textarea>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--addComment">Add Comment</button>
+      <button class="button is-close-modal-button">Cancel</button>
+    </footer>
+  </div>
+</div>

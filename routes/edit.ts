@@ -13,6 +13,10 @@ import handler_doAddURL from "../handlers/doAddURL.js";
 import handler_doUpdateURL from "../handlers/doUpdateURL.js";
 import handler_doRemoveURL from "../handlers/doRemoveURL.js";
 
+import handler_doAddComment from "../handlers/doAddComment.js";
+import handler_doUpdateComment from "../handlers/doUpdateComment.js";
+import handler_doRemoveComment from "../handlers/doRemoveComment.js";
+
 import handler_doSearchDocuShare from "../handlers/doSearchDocuShare.js";
 import handler_doAddDocuShareURL from "../handlers/doAddDocuShareURL.js";
 
@@ -42,6 +46,11 @@ if (configFns.getProperty("integrations.docuShare.isEnabled")) {
   router.post("/doSearchDocuShare", handler_doSearchDocuShare);
   router.post("/doAddDocuShareURL", handler_doAddDocuShareURL);
 }
+
+
+router.post("/doAddComment", handler_doAddComment);
+router.post("/doUpdateComment", handler_doUpdateComment);
+router.post("/doRemoveComment", handler_doRemoveComment);
 
 
 router.get("/:recordID", handler_edit);

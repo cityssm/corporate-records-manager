@@ -61,6 +61,8 @@ export type RecordStatus = {
 export type RecordComment = {
   commentLogID: number;
   commentTime: Date;
+  commentDateString?: string;
+  commentTimeString?: string;
   comment: string;
 } & TrackedValue;
 
