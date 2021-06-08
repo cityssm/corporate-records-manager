@@ -20,19 +20,30 @@
   <div class="column">
     <div class="panel">
       <h2 class="panel-heading"><%= recordType.recordType %> Details</h2>
-      <div class="panel-block">
-        <strong><%= record.recordTitle %></strong>
-      </div>
-      <div class="panel-block">
-        <%= record.recordDescription %>
-      </div>
       <div class="panel-block is-block">
-        <% for (const tag of record.tags) { %>
-          <span class="tag is-medium">
-            <%= tag %>
-          </span>
-        <% } %>
+        <div class="columns">
+          <div class="column">
+            <strong><%= record.recordTitle %></strong>
+          </div>
+          <div class="column is-narrow">
+            <%= dateTimeFns.dateToString(record.recordDate) %>
+          </div>
+        </div>
       </div>
+      <% if (record.recordDescription && record.recordDescription !== "") { %>
+        <div class="panel-block">
+          <%= record.recordDescription %>
+        </div>
+      <% } %>
+      <% if (record.tags.length > 0) { %>
+        <div class="panel-block is-block">
+          <% for (const tag of record.tags) { %>
+            <span class="tag is-medium">
+              <%= tag %>
+            </span>
+          <% } %>
+        </div>
+      <% } %>
     </div>
   </div>
   <div class="column">

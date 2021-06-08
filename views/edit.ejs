@@ -18,19 +18,31 @@
       <div class="panel">
         <h2 class="panel-heading"><%= recordType.recordType %> Details</h2>
         <div class="panel-block is-block">
-          <label class="label" for="record--recordNumber"><%= recordType.recordType %> Number</label>
-          <div class="field has-addons">
-            <div class="control has-icons-right is-expanded">
-              <input class="input" id="record--recordNumber" name="recordNumber" type="text" value="<%= record.recordNumber %>" maxlength="30" required <%= (isNew ? "" : "readonly") %> />
-              <span class="icon is-small is-right">
-                <i class="fas fa-pencil-alt <%= (isNew ? "" : "is-hidden") %>" aria-hidden="true"></i>
-                <i class="fas fa-lock <%= (isNew ? "is-hidden" : "") %>" aria-hidden="true"></i>
-              </span>
+          <div class="columns">
+            <div class="column">
+              <label class="label" for="record--recordNumber"><%= recordType.recordType %> Number</label>
+              <div class="field has-addons">
+                <div class="control has-icons-right is-expanded">
+                  <input class="input" id="record--recordNumber" name="recordNumber" type="text" value="<%= record.recordNumber %>" maxlength="30" required <%= (isNew ? "" : "readonly") %> />
+                  <span class="icon is-small is-right">
+                    <i class="fas fa-pencil-alt <%= (isNew ? "" : "is-hidden") %>" aria-hidden="true"></i>
+                    <i class="fas fa-lock <%= (isNew ? "is-hidden" : "") %>" aria-hidden="true"></i>
+                  </span>
+                </div>
+                <div class="control">
+                  <button class="button has-tooltip-top has-tooltip-arrow is-lock-toggle-button" data-tooltip="Toggle Field" type="button">
+                    <i class="fas fa-unlock" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="control">
-              <button class="button has-tooltip-top has-tooltip-arrow is-lock-toggle-button" data-tooltip="Toggle Field" type="button">
-                <i class="fas fa-unlock" aria-hidden="true"></i>
-              </button>
+            <div class="column">
+              <label class="label" for="record--recordDateString"><%= recordType.recordType %> Date</label>
+              <div class="field">
+                <div class="control">
+                  <input class="input" id="record--recordDateString" name="recordDateString" type="date" value="<%= dateTimeFns.dateToString(isNew ? new Date() : record.recordDate) %>" required />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -38,7 +50,7 @@
           <div class="field">
             <label class="label" for="record--recordTitle"><%= recordType.recordType %> Title</label>
             <div class="control">
-              <input class="input" id="record--recordTitle" name="recordTitle" type="text" value="<%= record.recordTitle %>" maxlength="100" required />
+              <input class="input" id="record--recordTitle" name="recordTitle" type="text" value="<%= record.recordTitle %>" maxlength="200" required />
             </div>
           </div>
         </div>
@@ -46,7 +58,7 @@
           <div class="field">
             <label class="label" for="record--recordDescription"><%= recordType.recordType %> Description</label>
             <div class="control">
-              <textarea class="textarea" id="record--recordDescription" name="recordDescription" maxlength="500"><%= record.recordDescription %></textarea>
+              <textarea class="textarea" id="record--recordDescription" name="recordDescription"><%= record.recordDescription %></textarea>
             </div>
           </div>
         </div>
@@ -67,10 +79,17 @@
           </div>
         </div>
         <div class="panel-block has-background-white-ter is-justify-content-end">
-          <button class="button is-success" type="submit">
-            <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
-            <span>Save Record Changes</span>
-          </button>
+          <div class="buttons">
+            <% if (isNew) { %>
+              <a class="button is-inverted is-danger" href="<%= urlPrefix %>/dashboard">
+                Cancel
+              </a>
+            <% } %>
+            <button class="button is-success" type="submit">
+              <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
+              <span>Save Record Changes</span>
+            </button>
+          </div>
         </div>
       </div>
     </form>

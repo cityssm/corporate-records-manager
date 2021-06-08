@@ -8,7 +8,7 @@ export const getRelatedRecords = async (recordID) => {
         const result = await pool.request()
             .input("recordID", recordID)
             .query("select recordID, recordTypeKey, recordNumber," +
-            " recordTitle, recordDescription," +
+            " recordTitle, recordDescription, recordDate," +
             " recordCreate_userName, recordCreate_datetime," +
             " recordUpdate_userName, recordUpdate_datetime" +
             " from CR.Records" +

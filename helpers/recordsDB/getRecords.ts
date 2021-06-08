@@ -21,7 +21,7 @@ export const getRecords = async (params: {
 
     let sql = "select top 100" +
       " recordID, recordTypeKey, recordNumber," +
-      " recordTitle, recordDescription," +
+      " recordTitle, recordDescription, recordDate," +
       " recordCreate_userName, recordCreate_datetime," +
       " recordUpdate_userName, recordUpdate_datetime" +
       " from CR.Records" +

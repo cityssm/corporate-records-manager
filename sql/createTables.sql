@@ -27,8 +27,9 @@ create table CR.Records (
 	recordID bigint primary key identity not null,
 	recordTypeKey varchar(20) not null,
 	recordNumber varchar(30) not null,
-	recordTitle nvarchar(100),
-	recordDescription nvarchar(500),
+	recordTitle nvarchar(200),
+	recordDescription nvarchar(max),
+	recordDate datetime,
 
 	recordCreate_userName varchar(30) not null,
 	recordCreate_datetime datetime not null default getdate(),

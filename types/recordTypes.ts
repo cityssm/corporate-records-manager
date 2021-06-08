@@ -40,6 +40,8 @@ export type Record = {
   recordNumber: string;
   recordTitle: string;
   recordDescription: string;
+  recordDate: Date;
+  recordDateString?: string;
   tags?: string[];
   statuses?: RecordStatus[];
   urls?: RecordURL[];

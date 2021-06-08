@@ -12,6 +12,7 @@ export const updateRecord = async (recordForm, reqSession) => {
             .input("recordNumber", recordForm.recordNumber)
             .input("recordTitle", recordForm.recordTitle)
             .input("recordDescription", recordForm.recordDescription)
+            .input("recordDate", recordForm.recordDateString)
             .input("recordUpdate_userName", reqSession.user.userName)
             .input("recordUpdate_datetime", new Date())
             .input("recordID", recordForm.recordID)
@@ -20,6 +21,7 @@ export const updateRecord = async (recordForm, reqSession) => {
             " recordNumber = @recordNumber," +
             " recordTitle = @recordTitle," +
             " recordDescription = @recordDescription," +
+            " recordDate = @recordDate," +
             " recordUpdate_userName = @recordUpdate_userName," +
             " recordUpdate_datetime = @recordUpdate_datetime" +
             " where recordDelete_datetime is null" +
