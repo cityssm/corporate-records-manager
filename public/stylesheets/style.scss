@@ -53,6 +53,10 @@ $modal-content-width: 900px;
 
 .panel-block {
   background-color: $white;
+
+  &:first-child {
+    border-radius: $panel-radius $panel-radius 0 0;
+  }
 }
 
 main {
