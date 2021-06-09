@@ -40,7 +40,7 @@
               <label class="label" for="record--recordDateString"><%= recordType.recordType %> Date</label>
               <div class="field">
                 <div class="control">
-                  <input class="input" id="record--recordDateString" name="recordDateString" type="date" value="<%= dateTimeFns.dateToString(isNew ? new Date() : record.recordDate) %>" required />
+                  <input class="input" id="record--recordDateString" name="recordDateString" type="date" value="<%= dateTimeFns.dateToString(record.recordDate) %>" required />
                 </div>
               </div>
             </div>
@@ -50,7 +50,7 @@
           <div class="field">
             <label class="label" for="record--recordTitle"><%= recordType.recordType %> Title</label>
             <div class="control">
-              <input class="input" id="record--recordTitle" name="recordTitle" type="text" value="<%= record.recordTitle %>" maxlength="200" required />
+              <input class="input" id="record--recordTitle" name="recordTitle" type="text" value="<%= record.recordTitle %>" maxlength="300" required />
             </div>
           </div>
         </div>
@@ -166,8 +166,6 @@
     exports.recordURLs = <%- JSON.stringify(record.urls) %>;
     exports.relatedRecords = <%- JSON.stringify(record.related) %>;
     exports.recordComments = <%- JSON.stringify(record.comments) %>;
-
-    exports.recordTypes = <%- JSON.stringify(recordTypes) %>;
   <% } %>
 
   // Config Values

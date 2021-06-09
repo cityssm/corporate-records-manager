@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import app from "../app.js";
 import http from "http";
-import https from "https";
-import fs from "fs";
 import * as configFns from "../helpers/configFns.js";
+import { fork } from "child_process";
 import debug from "debug";
 const debugWWW = debug("corporate-records-manager:www");
 const onError = (error) => {
@@ -38,17 +37,6 @@ if (httpPort) {
     });
     debugWWW("HTTP listening on " + httpPort.toString());
 }
-const httpsConfig = configFns.getProperty("application.https");
-if (httpsConfig) {
-    const httpsServer = https.createServer({
-        key: fs.readFileSync(httpsConfig.keyPath),
-        cert: fs.readFileSync(httpsConfig.certPath),
-        passphrase: httpsConfig.passphrase
-    }, app);
-    httpsServer.listen(httpsConfig.port);
-    httpsServer.on("error", onError);
-    httpsServer.on("listening", function () {
-        onListening(httpsServer);
-    });
-    debugWWW("HTTPS listening on " + httpsConfig.port.toString());
+if (configFns.getProperty("integrations.docuShare.isEnabled")) {
+    fork("./tasks/docuShareLinkFinder.js");
 }

@@ -33,4 +33,5 @@ export interface Config {
 export interface DocuShareCollectionHandle {
     title: string;
     handle: string;
+    recordTypeKeys?: string[];
 }

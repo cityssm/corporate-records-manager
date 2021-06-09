@@ -20,6 +20,7 @@ export const handler: RequestHandler = async (req, res) => {
     recordID: null,
     recordTypeKey: recordTypeKey,
     recordNumber: "",
+    recordDate: new Date(),
     recordTitle: "",
     recordDescription: "",
     tags: []

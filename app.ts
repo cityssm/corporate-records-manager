@@ -24,6 +24,8 @@ import routerView from "./routes/view.js";
 import routerEdit from "./routes/edit.js";
 import routerReports from "./routes/reports.js";
 
+import { getRecordTypes } from "./helpers/recordsDB/configCache.js";
+
 import debug from "debug";
 const debugApp = debug("corporate-records-manager:app");
 
@@ -157,13 +159,14 @@ const sessionChecker = (req: express.Request, res: express.Response, next: expre
 
 
 // Make config objects available to the templates
-app.use(function(req, res, next) {
+app.use(async function(req, res, next) {
   res.locals.configFns = configFns;
   res.locals.dateTimeFns = dateTimeFns;
   res.locals.stringFns = stringFns;
   res.locals.user = req.session.user;
   res.locals.csrfToken = req.csrfToken();
   res.locals.urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
+  res.locals.recordTypes = await getRecordTypes();
   next();
 });
 

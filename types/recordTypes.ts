@@ -38,9 +38,9 @@ export type Record = {
   recordID: number;
   recordTypeKey: string;
   recordNumber: string;
-  recordTitle: string;
-  recordDescription: string;
-  recordDate: Date;
+  recordTitle?: string;
+  recordDescription?: string;
+  recordDate?: Date;
   recordDateString?: string;
   tags?: string[];
   statuses?: RecordStatus[];
@@ -96,10 +96,23 @@ declare module "express-session" {
 };
 
 
+export interface PartialSession {
+  user: User;
+}
+
+
 /*
- * DocuShare Object
+ * DocuShare
  */
 
+
+export interface DocuShareRecordURL {
+  recordID: number;
+  recordTypeKey: string;
+  recordNumber: string;
+  urlID: number;
+  url: string;
+}
 
 declare module "@cityssm/docushare/types" {
   interface DocuShareObject {

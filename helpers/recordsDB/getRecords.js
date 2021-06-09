@@ -29,7 +29,7 @@ export const getRecords = async (params) => {
                     ")";
             }
         }
-        sql += " order by recordCreate_datetime desc";
+        sql += " order by recordDate desc, recordCreate_datetime desc";
         const result = await request.query(sql);
         if (!result.recordset || result.recordset.length === 0) {
             return [];

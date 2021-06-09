@@ -217,12 +217,11 @@ const doImportAgreements = async () => {
       const recordID = (await pool.request()
         .input("recordTypeKey", "agreement")
         .input("recordNumber", oldAgreement.agreementNumber)
-        .input("recordTitle", oldAgreement.party)
-        .input("recordDescription",
-          oldAgreement.description +
+        .input("recordTitle", oldAgreement.party +
           (oldAgreement.location && oldAgreement.location !== ""
-            ? "\nLoaction: " + oldAgreement.location
+            ? " (" + oldAgreement.location + ")"
             : ""))
+        .input("recordDescription", oldAgreement.description)
         .input("recordDate", oldAgreement.agreementDate)
         .input("recordCreate_userName", oldAgreement.creator)
         .input("recordCreate_datetime", oldAgreement.creationTime)
@@ -302,6 +301,163 @@ const doImportAgreements = async () => {
 };
 
 
+const doImportDeeds = async () => {
+
+  try {
+    // Connect to Database
+    const pool: sqlTypes.ConnectionPool =
+      await sqlPool.connect(configFns.getProperty("mssqlConfig"));
+
+    // Get Old Bylaws
+
+    const oldDeedToRecord = new Map<number, number>();
+
+    console.log("Deeds");
+
+    const oldDeeds: LegacyDeed[] = (await pool.request()
+      .query("select deedID, clerkNumber, deedDate," +
+        " t.type as deedType," +
+        " transferor, description," +
+        " creator, creationTime," +
+        " d.isActive" +
+        " from Deed.Deeds d" +
+        " left join DeedConfig.Types t on d.typeID = t.typeID")).recordset;
+
+    for (const oldDeed of oldDeeds) {
+
+      const recordID = (await pool.request()
+        .input("recordTypeKey", "deed")
+        .input("recordNumber", oldDeed.clerkNumber.toString())
+        .input("recordTitle", oldDeed.transferor)
+        .input("recordDescription", oldDeed.description)
+        .input("recordDate", oldDeed.deedDate)
+        .input("recordCreate_userName", oldDeed.creator)
+        .input("recordCreate_datetime", oldDeed.creationTime)
+        .input("recordUpdate_userName", oldDeed.creator)
+        .input("recordUpdate_datetime", oldDeed.creationTime)
+        .input("recordDelete_userName", oldDeed.isActive ? null : "import")
+        .input("recordDelete_datetime", oldDeed.isActive ? null : new Date())
+        .query(SQL_createRecord)).recordset[0].recordID;
+
+      oldDeedToRecord.set(oldDeed.deedID, recordID);
+
+      await pool.request()
+        .input("recordID", recordID)
+        .input("tag", oldDeed.deedType)
+        .query(SQL_createTag);
+    }
+
+    console.log("Deed Instrument Numbers");
+
+    const oldInstrumentNumbers: LegacyDeedInstrumentNumber[] = (await pool.request()
+      .query("select deedID, instrumentNumber" +
+        " from Deed.InstrumentNumbers")).recordset;
+
+    for (const instrumentNumber of oldInstrumentNumbers) {
+
+      const recordID = oldDeedToRecord.get(instrumentNumber.deedID);
+
+      await pool.request()
+        .input("recordID", recordID)
+        .input("tag", instrumentNumber.instrumentNumber)
+        .query(SQL_createTag);
+    }
+
+    console.log("Related Bylaws");
+
+    const oldRelatedBylaws: LegacyRelatedDeed[] = (await pool.request()
+      .query("select deedID, bylawID" +
+        " from Deed.RelatedBylaws")).recordset;
+
+    for (const oldRelated of oldRelatedBylaws) {
+
+      const recordIDA = oldBylawToRecord.get(oldRelated.bylawID);
+      const recordIDB = oldDeedToRecord.get(oldRelated.deedID);
+
+      await addRelatedRecord(recordIDA, recordIDB);
+    }
+
+    console.log("Done Deeds");
+
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+
+const doImportEasements = async () => {
+
+  try {
+    // Connect to Database
+    const pool: sqlTypes.ConnectionPool =
+      await sqlPool.connect(configFns.getProperty("mssqlConfig"));
+
+    // Get Old Bylaws
+
+    const oldEasementToRecord = new Map<number, number>();
+
+    console.log("Easements");
+
+    const oldEasements: LegacyEasement[] = (await pool.request()
+      .query("select easementID, clerkNumber, registrationDate," +
+        " t.type as easementType," +
+        " transferor, description, location," +
+        " creator, creationTime," +
+        " e.isActive" +
+        " from Easement.Easements e" +
+        " left join EasementConfig.Types t on e.typeID = t.typeID")).recordset;
+
+    for (const oldEasement of oldEasements) {
+
+      const recordID = (await pool.request()
+        .input("recordTypeKey", "easement")
+        .input("recordNumber", oldEasement.clerkNumber.toString())
+        .input("recordTitle", oldEasement.transferor +
+          oldEasement.location === ""
+          ? ""
+          : " (" + oldEasement.location + ")")
+        .input("recordDescription", oldEasement.description)
+        .input("recordDate", oldEasement.registrationDate)
+        .input("recordCreate_userName", oldEasement.creator)
+        .input("recordCreate_datetime", oldEasement.creationTime)
+        .input("recordUpdate_userName", oldEasement.creator)
+        .input("recordUpdate_datetime", oldEasement.creationTime)
+        .input("recordDelete_userName", oldEasement.isActive ? null : "import")
+        .input("recordDelete_datetime", oldEasement.isActive ? null : new Date())
+        .query(SQL_createRecord)).recordset[0].recordID;
+
+      oldEasementToRecord.set(oldEasement.easementID, recordID);
+
+      await pool.request()
+        .input("recordID", recordID)
+        .input("tag", oldEasement.easementType)
+        .query(SQL_createTag);
+    }
+
+    console.log("Easement Instrument Numbers");
+
+    const oldInstrumentNumbers: LegacyEasementInstrumentNumber[] = (await pool.request()
+      .query("select easementID, instrumentNumber" +
+        " from Easement.InstrumentNumbers")).recordset;
+
+    for (const instrumentNumber of oldInstrumentNumbers) {
+
+      const recordID = oldEasementToRecord.get(instrumentNumber.easementID);
+
+      await pool.request()
+        .input("recordID", recordID)
+        .input("tag", instrumentNumber.instrumentNumber)
+        .query(SQL_createTag);
+    }
+
+    console.log("Done Easements");
+
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+
 interface LegacyBylaw {
   bylawID: number;
   bylawNumber: string;
@@ -359,9 +515,56 @@ interface LegacyRelatedAgreement {
   bylawID: number;
 }
 
+interface LegacyDeed {
+  deedID: number;
+  clerkNumber: number;
+  deedDate: Date;
+  deedType: string;
+  transferor: string;
+  description: string;
+  creator: string;
+  creationTime: Date;
+  isActive: boolean;
+}
+
+interface LegacyDeedInstrumentNumber {
+  deedID: number;
+  instrumentNumber: string;
+}
+
+interface LegacyRelatedDeed {
+  deedID: number;
+  bylawID: number;
+}
+
+interface LegacyEasement {
+  easementID: number;
+  clerkNumber: number;
+  registrationDate: Date;
+  easementType: string;
+  transferor: string;
+  description: string;
+  location: string;
+  creator: string;
+  creationTime: Date;
+  isActive: boolean;
+}
+
+interface LegacyEasementInstrumentNumber {
+  easementID: number;
+  instrumentNumber: string;
+}
+
+console.log("Import Disabled");
+
+/*
 await doTablePurge();
 await doImportBylaws();
+await doImportDeeds();
+await doImportEasements();
 await doImportAgreements();
 
 console.log("Done");
+*/
+
 process.exit();

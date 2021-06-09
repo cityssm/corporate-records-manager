@@ -38,18 +38,19 @@
     <div class="mt-4" id="container--search"></div>
   </div>
   <% if (user.canUpdate) { %>
-  <div class="column">
-    <div class="panel is-success">
-      <h2 class="panel-heading">Create a New Record</h2>
-      <% for (const recordType of recordTypes) { %>
-        <a class="panel-block" href="<%= urlPrefix %>/new/<%= recordType.recordTypeKey %>">
-          <span class="panel-icon">
-            <i class="fas fa-plus" aria-hidden="true"></i>
-          </span>
-          <%= recordType.recordType %>
-        </a>
-      <% } %>
-  </div>
+    <div class="column">
+      <div class="panel is-success">
+        <h2 class="panel-heading">Create a New Record</h2>
+        <% for (const recordType of recordTypes) { %>
+          <a class="panel-block" href="<%= urlPrefix %>/new/<%= recordType.recordTypeKey %>">
+            <span class="panel-icon">
+              <i class="fas fa-plus" aria-hidden="true"></i>
+            </span>
+            <%= recordType.recordType %>
+          </a>
+        <% } %>
+      </div>
+    </div>
   <% } %>
 </div>
 

@@ -39,12 +39,14 @@ declare const cityssm: cityssmGlobal;
 
         for (const record of responseJSON.records) {
 
+          const recordType: recordTypes.RecordType = exports.getRecordType(record.recordTypeKey);
+
           const panelBlockEle = document.createElement("a");
           panelBlockEle.className = "panel-block is-block";
           panelBlockEle.href = urlPrefix + "/view/" + record.recordID.toString();
 
           panelBlockEle.innerHTML = "<strong>" + cityssm.escapeHTML(record.recordTitle) + "</strong><br />" +
-            cityssm.escapeHTML(record.recordNumber) + "<br />" +
+           recordType.recordType + " " + cityssm.escapeHTML(record.recordNumber) + "<br />" +
             "<span class=\"is-size-7\">" +
             cityssm.escapeHTML(record.recordDescription.length > 500
               ? record.recordDescription.substring(0, 497) + " ..."

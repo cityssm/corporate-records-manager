@@ -2,14 +2,13 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 
 import type * as sqlTypes from "mssql";
-import type * as expressSession from "express-session";
-import type { RecordURL } from "../../types/recordTypes";
+import type { RecordURL, PartialSession } from "../../types/recordTypes";
 
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:addURL");
 
 
-export const addURL = async (urlForm: RecordURL, reqSession: expressSession.Session): Promise<number> => {
+export const addURL = async (urlForm: RecordURL, reqSession: PartialSession): Promise<number> => {
 
   let urlID: number = null;
 

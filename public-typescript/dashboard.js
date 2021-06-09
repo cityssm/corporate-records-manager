@@ -24,11 +24,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             panelEle.className = "panel";
             for (var _i = 0, _a = responseJSON.records; _i < _a.length; _i++) {
                 var record = _a[_i];
+                var recordType = exports.getRecordType(record.recordTypeKey);
                 var panelBlockEle = document.createElement("a");
                 panelBlockEle.className = "panel-block is-block";
                 panelBlockEle.href = urlPrefix + "/view/" + record.recordID.toString();
                 panelBlockEle.innerHTML = "<strong>" + cityssm.escapeHTML(record.recordTitle) + "</strong><br />" +
-                    cityssm.escapeHTML(record.recordNumber) + "<br />" +
+                    recordType.recordType + " " + cityssm.escapeHTML(record.recordNumber) + "<br />" +
                     "<span class=\"is-size-7\">" +
                     cityssm.escapeHTML(record.recordDescription.length > 500
                         ? record.recordDescription.substring(0, 497) + " ..."
