@@ -35,3 +35,8 @@ export interface DocuShareCollectionHandle {
     handle: string;
     recordTypeKeys?: string[];
 }
+export interface ReportDefinition {
+    sql: () => string;
+    paramNames?: string[];
+    columns?: string[];
+}

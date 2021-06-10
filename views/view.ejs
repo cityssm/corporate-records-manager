@@ -49,12 +49,22 @@
   <div class="column">
     <% if (record.statuses.length > 0) { %>
       <div class="panel">
-        <h2 class="panel-heading">Statuses</h2>
-        <% for (const status of record.statuses) { %>
+        <div class="panel-heading">
+          <div class="columns is-mobile">
+            <div class="column">
+              <h2 class="has-text-weight-bold">Statuses</h2>
+            </div>
+            <div class="column is-narrow">
+              <span class="tag is-info"><%= record.statuses.length %></span>
+            </div>
+          </div>
+        </div>
+        <% for (let index = 0; index < record.statuses.length; index += 1) { %>
           <%
+            const status = record.statuses[index];
             const statusType = statusTypes.find((possibleStatusType) => { return possibleStatusType.statusTypeKey === status.statusTypeKey});
           %>
-          <div class="panel-block is-block">
+          <div class="panel-block is-block <%= (index >= 5 ? "is-hidden" : "") %>">
             <strong><%= statusType ? statusType.statusType : status.statusTypeKey %></strong><br />
             <span class="has-tooltip-arrow has-tooltip-right" data-tooltip="<%= dateTimeFns.dateToTimeString(status.statusTime) %>">
               <%= dateTimeFns.dateToString(status.statusTime) %>
@@ -62,11 +72,27 @@
             <span class="is-size-7"><%= status.statusLog %></span>
           </div>
         <% } %>
+        <% if (record.statuses.length > 5) { %>
+          <div class="panel-block">
+            <button class="button is-link is-outlined is-fullwidth is-show-all-button" type="button">
+              Show <%= (record.statuses.length - 5) %> More
+            </button>
+          </div>
+        <% } %>
       </div>
     <% } %>
     <% if (record.urls.length > 0) { %>
       <div class="panel">
-        <h2 class="panel-heading">Links</h2>
+        <div class="panel-heading">
+          <div class="columns is-mobile">
+            <div class="column">
+              <h2 class="has-text-weight-bold">Links</h2>
+            </div>
+            <div class="column is-narrow">
+              <span class="tag is-info"><%= record.urls.length %></span>
+            </div>
+          </div>
+        </div>
         <% for (const url of record.urls) { %>
           <a class="panel-block is-block" href="<%= url.url %>" target="_blank">
             <strong><%= url.urlTitle %></strong><br />
@@ -80,15 +106,32 @@
     <% } %>
     <% if (record.related.length > 0) { %>
       <div class="panel">
-        <h2 class="panel-heading">Related Records</h2>
-        <% for (const relatedRecord of record.related) { %>
+        <div class="panel-heading">
+          <div class="columns is-mobile">
+            <div class="column">
+              <h2 class="has-text-weight-bold">Related Records</h2>
+            </div>
+            <div class="column is-narrow">
+              <span class="tag is-info"><%= record.related.length %></span>
+            </div>
+          </div>
+        </div>
+        <% for (let index = 0; index < record.related.length; index += 1) { %>
           <%
+            const relatedRecord = record.related[index];
             const relatedRecordType = recordTypes.find((possibleRecordType) => { return possibleRecordType.recordTypeKey === relatedRecord.recordTypeKey; });
           %>
-          <a class="panel-block is-block" href="<%= urlPrefix + "/view/" + relatedRecord.recordID.toString() %>" target="_blank">
+          <a class="panel-block is-block <%= (index >= 5 ? "is-hidden" : "") %>" href="<%= urlPrefix + "/view/" + relatedRecord.recordID.toString() %>" target="_blank">
             <strong><%= relatedRecord.recordTitle %></strong><br />
-            <%= relatedRecord.recordNumber %>
+            <%= (relatedRecordType ? relatedRecordType.recordType : relatedRecord.recordTypeKey) %> <%= relatedRecord.recordNumber %>
           </a>
+        <% } %>
+        <% if (record.related.length > 5) { %>
+          <div class="panel-block">
+            <button class="button is-link is-outlined is-fullwidth is-show-all-button" type="button">
+              Show <%= (record.related.length - 5) %> More
+            </button>
+          </div>
         <% } %>
       </div>
     <% } %>
@@ -109,4 +152,5 @@
 </div>
 
 <%- include('_footerA'); -%>
+<script src="<%= urlPrefix %>/javascripts/view.min.js"></script>
 <%- include('_footerB'); -%>

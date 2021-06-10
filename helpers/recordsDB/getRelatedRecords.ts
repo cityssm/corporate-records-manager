@@ -25,7 +25,8 @@ export const getRelatedRecords = async (recordID: number | string): Promise<Reco
         (" and (" +
           "recordID in (select recordID_A from CR.RelatedRecords where recordID_B = @recordID)" +
           " or recordID in (select recordID_B from CR.RelatedRecords where recordID_A = @recordID)" +
-          ")"));
+          ")") +
+        " order by recordDate desc, recordNumber desc");
 
     if (!result.recordset || result.recordset.length === 0) {
       return [];

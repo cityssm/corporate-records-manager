@@ -38,18 +38,6 @@ $modal-content-width: 900px;
   }
 }
 
-.icon-checkbox {
-  display: flex;
-
-  &:focus-within {
-    outline: thin dotted;
-    outline-offset: 2px;
-  }
-
-  input:not(:checked) ~ .fa-layers .icon-checkbox-dot {
-    display: none;
-  }
-}
 
 .panel-block {
   background-color: $white;
@@ -60,20 +48,6 @@ $modal-content-width: 900px;
 }
 
 main {
-  margin-bottom: 100px;
-}
-
-.button.is-fixed-circle {
-  position: fixed;
-  right: 15px;
-  bottom: 15px;
-  z-index: 100;
-  display: inline-block;
-  height: auto;
-  padding: 15px;
-  border-radius: 50%;
-
-  .fa-fw {
-    height: 1.25em;
-  }
+  max-width: $widescreen;
+  margin: 0 auto 50px auto;
 }

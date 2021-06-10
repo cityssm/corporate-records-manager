@@ -2,5 +2,89 @@
 
 <h1 class="title is-1">Reports</h1>
 
+<div class="columns">
+  <div class="column is-two-thirds">
+    <div class="panel">
+      <h2 class="panel-heading">Records</h2>
+      <div class="panel-block is-block">
+        <div class="has-text-weight-bold mb-1">Records by Record Type</div>
+        <form method="get" action="<%= urlPrefix %>/reports/records:byRecordTypeKey">
+          <div class="field has-addons">
+            <div class="control">
+              <label class="button is-static" for="records:byRecordTypeKey--recordTypeKey">
+                Record Type
+              </label>
+            </div>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select id="records:byRecordTypeKey--recordTypeKey" name="recordTypeKey">
+                  <% for (const recordType of recordTypes) { %>
+                    <option value="<%= recordType.recordTypeKey %>"><%= recordType.recordType %></option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+            <div class="control">
+              <button class="button is-info" type="submit">
+                <span class="icon"><i class="fas fa-file-download" aria-hidden="true"></i></span>
+                <span>Generate</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="panel">
+      <h2 class="panel-heading">Full Table Exports</h2>
+      <div class="panel-block is-block">
+        <div class="message is-info">
+          <p class="message-body">
+            The following exports are unfiltered and unformatted.
+            They may contain deleted records.
+          </p>
+        </div>
+      </div>
+      <a class="panel-block" href="<%= urlPrefix %>/reports/table:Records" target="_blank" download>
+        <span class="panel-icon">
+          <i class="fas fa-file-download" aria-hidden="true"></i>
+        </span>
+        <strong>Records Table</strong>
+      </a>
+      <a class="panel-block" href="<%= urlPrefix %>/reports/table:RecordTags" target="_blank" download>
+        <span class="panel-icon">
+          <i class="fas fa-file-download" aria-hidden="true"></i>
+        </span>
+        Record Tags
+      </a>
+      <a class="panel-block" href="<%= urlPrefix %>/reports/table:RecordStatusLog" target="_blank" download>
+        <span class="panel-icon">
+          <i class="fas fa-file-download" aria-hidden="true"></i>
+        </span>
+        Record Status Log
+      </a>
+      <a class="panel-block" href="<%= urlPrefix %>/reports/table:RecordURLs" target="_blank" download>
+        <span class="panel-icon">
+          <i class="fas fa-file-download" aria-hidden="true"></i>
+        </span>
+        Record URLs (Links)
+      </a>
+      <a class="panel-block" href="<%= urlPrefix %>/reports/table:RelatedRecords" target="_blank" download>
+        <span class="panel-icon">
+          <i class="fas fa-file-download" aria-hidden="true"></i>
+        </span>
+        Related Records
+      </a>
+      <a class="panel-block" href="<%= urlPrefix %>/reports/table:RecordCommentLog" target="_blank" download>
+        <span class="panel-icon">
+          <i class="fas fa-file-download" aria-hidden="true"></i>
+        </span>
+        Record Comment Log
+      </a>
+    </div>
+  </div>
+</div>
+
 <%- include('_footerA'); -%>
 <%- include('_footerB'); -%>

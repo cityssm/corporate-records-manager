@@ -29,7 +29,7 @@
     "@cityssm/docushare": "^1.0.1",
     "@cityssm/express-abuse-points": "^0.3.3",
     "@cityssm/expressjs-server-js": "^2.0.1",
-    "@cityssm/mssql-multi-pool": "^1.4.1",
+    "@cityssm/mssql-multi-pool": "^1.4.2",
     "@fontsource/barlow": "^4.4.5",
     "@fortawesome/fontawesome-free": "^5.15.3",
     "compression": "^1.7.4",
@@ -43,6 +43,7 @@
     "express-rate-limit": "^5.2.6",
     "express-session": "^1.17.2",
     "node-cache": "^5.1.2",
+    "papaparse": "^5.3.1",
     "set-interval-async": "^2.0.3"
   },
   "devDependencies": {
@@ -60,6 +61,7 @@
     "@types/gulp-minify": "^3.1.0",
     "@types/http-errors": "^1.8.0",
     "@types/mssql": "^6.0.8",
+    "@types/papaparse": "^5.2.5",
     "@types/set-interval-async": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
