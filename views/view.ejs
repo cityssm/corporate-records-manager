@@ -6,14 +6,18 @@
       <%= recordType.recordType + " " + record.recordNumber %>
     </h1>
   </div>
-  <% if (user.canUpdate) { %>
-    <div class="column is-narrow has-text-right">
+  <div class="column is-narrow has-text-right">
+    <a class="button is-link" href="<%= urlPrefix + "/view/" + record.recordID %>?view=print" target="_blank">
+      <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+      <span>Print Record</span>
+    </a>
+    <% if (user.canUpdate) { %>
       <a class="button is-link" href="<%= urlPrefix + "/edit/" + record.recordID %>">
         <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
         <span>Edit Record</span>
       </a>
-    </div>
-  <% } %>
+    <% } %>
+  </div>
 </div>
 
 <div class="columns">
@@ -31,9 +35,7 @@
         </div>
       </div>
       <% if (record.recordDescription && record.recordDescription !== "") { %>
-        <div class="panel-block">
-          <%= record.recordDescription %>
-        </div>
+        <div class="panel-block has-whitespace-pre"><%= record.recordDescription %></div>
       <% } %>
       <% if (record.tags.length > 0) { %>
         <div class="panel-block is-block">

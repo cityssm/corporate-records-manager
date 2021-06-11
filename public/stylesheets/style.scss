@@ -47,6 +47,11 @@ $modal-content-width: 900px;
   }
 }
 
+
+.has-whitespace-pre {
+  white-space: pre-wrap;
+}
+
 main {
   max-width: $widescreen;
   margin: 0 auto 50px auto;

@@ -1,5 +1,4 @@
 import * as configCache from "../helpers/recordsDB/configCache.js";
-import { getRecordType } from "../helpers/recordsDB/configCache.js";
 import getRecord from "../helpers/recordsDB/getRecord.js";
 import * as configFns from "../helpers/configFns.js";
 export const handler = async (req, res) => {
@@ -8,16 +7,14 @@ export const handler = async (req, res) => {
     if (!record) {
         return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard?error=recordNotAvailable");
     }
-    const recordType = await getRecordType(record.recordTypeKey);
+    const recordType = await configCache.getRecordType(record.recordTypeKey);
     if (!recordType) {
         return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard?error=recordTypeKeyNotAvailable");
     }
-    const recordTypes = await configCache.getRecordTypes();
     const statusTypes = await configCache.getStatusTypes(record.recordTypeKey);
-    res.render("view", {
+    res.render(req.query.view === "print" ? "print" : "view", {
         recordType,
         record,
-        recordTypes,
         statusTypes
     });
 };

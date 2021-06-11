@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="has-background-white-ter" lang="en">
+
+<head>
+  <title>
+    Print: Corporate Records Manager
+  </title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="csrf-token" content="<%= csrfToken %>">
+  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/print.min.css" />
+</head>
+
+<body>
+  <nav class="columns is-mobile has-background-dark has-text-white p-3">
+    <div class="column has-text-weight-bold pb-0">
+      Record Print
+    </div>
+    <div class="column has-text-right pb-0">
+      <a class="has-text-white" id="is-restore-hidden-sections-button" href="#">
+        <span class="icon"><i class="fas fa-trash-restore" aria-hidden="true"></i></span>
+        <span>Restore Hidden Sections</span>
+      </a>
+      <a class="has-text-white ml-2" onclick="window.print()">
+        <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+        <span>Print</span>
+      </a>
+    </div>
+  </nav>
+  <main>
+    <section>
+      <div class="columns">
+        <div class="column">
+          <h1 class="title is-2">
+            <%= recordType.recordType %> <%= record.recordNumber %><br />
+            <small><%= record.recordTitle %></small>
+          </h1>
+        </div>
+        <% if (record.recordDate) { %>
+          <div class="column is-narrow">
+            <%= dateTimeFns.dateToString(record.recordDate) %>
+          </div>
+        <% } %>
+      </div>
+      <p class="has-whitespace-pre"><%= record.recordDescription %></p>
+      <% if (record.tags.length > 0) { %>
+        <p class="tags mt-2">
+          <% for (const tag of record.tags) { %>
+            <span class="tag is-medium">
+              <%= tag %>
+            </span>
+          <% } %>
+        </p>
+      <% } %>
+    </section>
+    <% if (record.statuses.length > 0) { %>
+      <section>
+        <hr />
+        <div class="columns is-mobile">
+          <div class="column">
+            <h2 class="title is-4">
+              Statuses
+              <span class="tag"><%= record.statuses.length %></span>
+            </h2>
+          </div>
+          <div class="column is-narrow">
+            <button class="button is-small is-hide-section-button" type="button">
+              <span class="icon"><i class="fas fa-eye-slash" aria-hidden="true"></i></span>
+              <span>Hide Status Section</span>
+            </button>
+          </div>
+        </div>
+
+        <% for (let index = 0; index < record.statuses.length; index += 1) { %>
+          <%
+            const status = record.statuses[index];
+            const statusType = statusTypes.find((possibleStatusType) => { return possibleStatusType.statusTypeKey === status.statusTypeKey});
+          %>
+          <p class="mb-2">
+            <strong><%= statusType ? statusType.statusType : status.statusTypeKey %></strong><br />
+            <span>
+              <%= dateTimeFns.dateToString(status.statusTime) %>
+            </span><br />
+            <span><%= status.statusLog %></span>
+          </p>
+        <% } %>
+      </section>
+    <% } %>
+    <% if (record.urls.length > 0) { %>
+      <section class="is-hidden">
+        <hr />
+        <div class="columns is-mobile">
+          <div class="column">
+            <h2 class="title is-4">
+              Links
+              <span class="tag"><%= record.urls.length %></span>
+            </h2>
+          </div>
+          <div class="column is-narrow">
+            <button class="button is-small is-hide-section-button" type="button">
+              <span class="icon"><i class="fas fa-eye-slash" aria-hidden="true"></i></span>
+              <span>Hide Link Section</span>
+            </button>
+          </div>
+        </div>
+        <% for (const url of record.urls) { %>
+          <p class="mb-2">
+            <strong><%= url.urlTitle %></strong><br />
+            <%= url.url %><br />
+            <span><%= url.urlDescription %></span>
+          </p>
+        <% } %>
+      </section>
+    <% } %>
+    <% if (record.related.length > 0) { %>
+      <section class="is-hidden">
+        <hr />
+        <div class="columns is-mobile">
+          <div class="column">
+            <h2 class="title is-4">
+              Related Records
+              <span class="tag"><%= record.related.length %></span>
+            </h2>
+          </div>
+          <div class="column is-narrow">
+            <button class="button is-small is-hide-section-button" type="button">
+              <span class="icon"><i class="fas fa-eye-slash" aria-hidden="true"></i></span>
+              <span>Hide Related Records Section</span>
+            </button>
+          </div>
+        </div>
+        <% for (let index = 0; index < record.related.length; index += 1) { %>
+          <%
+            const relatedRecord = record.related[index];
+            const relatedRecordType = recordTypes.find((possibleRecordType) => { return possibleRecordType.recordTypeKey === relatedRecord.recordTypeKey; });
+          %>
+          <p class="mb-2">
+            <strong><%= relatedRecord.recordTitle %></strong><br />
+            <%= (relatedRecordType ? relatedRecordType.recordType : relatedRecord.recordTypeKey) %> <%= relatedRecord.recordNumber %>
+          </p>
+        <% } %>
+      </section>
+    <% } %>
+    <% if (record.comments.length > 0) { %>
+      <section>
+        <hr />
+        <div class="columns is-mobile">
+          <div class="column">
+            <h2 class="title is-4">
+              Comments
+              <span class="tag"><%= record.comments.length %></span>
+            </h2>
+          </div>
+          <div class="column is-narrow">
+            <button class="button is-small is-hide-section-button" type="button">
+              <span class="icon"><i class="fas fa-eye-slash" aria-hidden="true"></i></span>
+              <span>Hide Comments Section</span>
+            </button>
+          </div>
+        </div>
+        <% for (const comment of record.comments) { %>
+          <p class="mb-2">
+            <span>
+              <%= dateTimeFns.dateToString(comment.commentTime) %>
+            </span><br />
+            <span><%= comment.comment %></span>
+          </p>
+        <% } %>
+      </div>
+    <% } %>
+  </main>
+  <script>
+    window.exports = window.exports || {};
+  </script>
+  <script src="<%= urlPrefix %>/javascripts/print.min.js"></script>
+  <script src="<%= urlPrefix %>/lib/fa5/js/all.min.js" defer></script>
+</body>
+</html>

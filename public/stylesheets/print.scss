@@ -1,0 +1,31 @@
+// Dependency imports
+$family-sans-serif: 'Barlow', system-ui, sans-serif;
+$body-size: 16px;
+$modal-content-width: 900px;
+@import '@cityssm/bulma-a11y/bulma-a11y';
+@import '../lib/fontsource-barlow/latin.css';
+
+main {
+  background-color: $white;
+}
+
+@media print {
+  nav,
+  .is-hide-section-button,
+  .is-hidden-print {
+    display: none !important;
+  }
+}
+
+@media screen {
+  main {
+    max-width: 8.5in;
+    padding: 1em;
+    margin: 1em auto;
+    border: 1px solid $black;
+  }
+}
+
+.has-whitespace-pre {
+  white-space: pre-wrap;
+}
