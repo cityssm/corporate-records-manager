@@ -2,40 +2,50 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecords");
-export const getRecords = async (params) => {
+;
+export const getRecords = async (params, options) => {
+    const returnObj = {
+        count: 0,
+        records: []
+    };
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
-        let request = pool.request();
-        let sql = "select top 100" +
-            " recordID, recordTypeKey, recordNumber," +
-            " recordTitle, recordDescription, recordDate," +
-            " recordCreate_userName, recordCreate_datetime," +
-            " recordUpdate_userName, recordUpdate_datetime" +
-            " from CR.Records" +
-            " where recordDelete_datetime is null";
+        let countRequest = pool.request();
+        let resultsRequest = pool.request();
+        let whereSQL = " where recordDelete_datetime is null";
         if (params.recordTypeKey !== "") {
-            request = request.input("recordTypeKey", params.recordTypeKey);
-            sql += " and recordTypeKey = @recordTypeKey";
+            countRequest = countRequest.input("recordTypeKey", params.recordTypeKey);
+            resultsRequest = resultsRequest.input("recordTypeKey", params.recordTypeKey);
+            whereSQL += " and recordTypeKey = @recordTypeKey";
         }
         if (params.searchString !== "") {
             const searchStringSplit = params.searchString.trim().split(" ");
             for (let index = 0; index < searchStringSplit.length; index += 1) {
                 const inputKey = "searchString" + index.toString();
-                request = request.input(inputKey, searchStringSplit[index]);
-                sql += " and (" +
+                countRequest = countRequest.input(inputKey, searchStringSplit[index]);
+                resultsRequest = resultsRequest.input(inputKey, searchStringSplit[index]);
+                whereSQL += " and (" +
                     "recordNumber like '%' + @" + inputKey + " + '%'" +
                     " or recordTitle like '%' + @" + inputKey + " + '%'" +
                     " or recordDescription like '%' + @" + inputKey + " + '%'" +
                     ")";
             }
         }
-        sql += " order by recordDate desc, recordCreate_datetime desc";
-        const result = await request.query(sql);
-        if (!result.recordset || result.recordset.length === 0) {
-            return [];
+        const countResult = await countRequest.query("select count(*) as cnt from CR.Records" + whereSQL);
+        returnObj.count = countResult.recordset[0].cnt;
+        if (returnObj.count === 0) {
+            return returnObj;
         }
-        const records = result.recordset;
-        return records;
+        const result = await resultsRequest.query("select top " + (options.limit + options.offset).toString() +
+            " recordID, recordTypeKey, recordNumber," +
+            " recordTitle, recordDescription, recordDate," +
+            " recordCreate_userName, recordCreate_datetime," +
+            " recordUpdate_userName, recordUpdate_datetime" +
+            " from CR.Records" +
+            whereSQL +
+            " order by recordDate desc, recordCreate_datetime desc");
+        returnObj.records = result.recordset.slice(options.offset);
+        return returnObj;
     }
     catch (e) {
         debugSQL(e);

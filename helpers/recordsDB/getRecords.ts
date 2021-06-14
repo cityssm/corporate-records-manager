@@ -8,28 +8,38 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecords");
 
 
+interface GetRecordsReturn {
+  count: number;
+  records: Record[];
+};
+
+
 export const getRecords = async (params: {
   recordTypeKey: string;
   searchString: string;
-}): Promise<Record[]> => {
+}, options: {
+  limit: number;
+  offset: number;
+}): Promise<GetRecordsReturn> => {
+
+  const returnObj: GetRecordsReturn = {
+    count: 0,
+    records: []
+  };
 
   try {
     const pool: sqlTypes.ConnectionPool =
       await sqlPool.connect(configFns.getProperty("mssqlConfig"));
 
-    let request = pool.request();
+    let countRequest = pool.request();
+    let resultsRequest = pool.request();
 
-    let sql = "select top 100" +
-      " recordID, recordTypeKey, recordNumber," +
-      " recordTitle, recordDescription, recordDate," +
-      " recordCreate_userName, recordCreate_datetime," +
-      " recordUpdate_userName, recordUpdate_datetime" +
-      " from CR.Records" +
-      " where recordDelete_datetime is null";
+    let whereSQL = " where recordDelete_datetime is null";
 
     if (params.recordTypeKey !== "") {
-      request = request.input("recordTypeKey", params.recordTypeKey);
-      sql += " and recordTypeKey = @recordTypeKey";
+      countRequest = countRequest.input("recordTypeKey", params.recordTypeKey);
+      resultsRequest = resultsRequest.input("recordTypeKey", params.recordTypeKey);
+      whereSQL += " and recordTypeKey = @recordTypeKey";
     }
 
     if (params.searchString !== "") {
@@ -40,9 +50,10 @@ export const getRecords = async (params: {
 
         const inputKey = "searchString" + index.toString();
 
-        request = request.input(inputKey, searchStringSplit[index]);
+        countRequest = countRequest.input(inputKey, searchStringSplit[index]);
+        resultsRequest = resultsRequest.input(inputKey, searchStringSplit[index]);
 
-        sql += " and (" +
+        whereSQL += " and (" +
           "recordNumber like '%' + @" + inputKey + " + '%'" +
           " or recordTitle like '%' + @" + inputKey + " + '%'" +
           " or recordDescription like '%' + @" + inputKey + " + '%'" +
@@ -50,17 +61,26 @@ export const getRecords = async (params: {
       }
     }
 
-    sql += " order by recordDate desc, recordCreate_datetime desc";
+    const countResult = await countRequest.query("select count(*) as cnt from CR.Records" + whereSQL);
 
-    const result = await request.query(sql);
+    returnObj.count = countResult.recordset[0].cnt;
 
-    if (!result.recordset || result.recordset.length === 0) {
-      return [];
+    if (returnObj.count === 0) {
+      return returnObj;
     }
 
-    const records: Record[] = result.recordset;
+    const result = await resultsRequest.query("select top " + (options.limit + options.offset).toString() +
+      " recordID, recordTypeKey, recordNumber," +
+      " recordTitle, recordDescription, recordDate," +
+      " recordCreate_userName, recordCreate_datetime," +
+      " recordUpdate_userName, recordUpdate_datetime" +
+      " from CR.Records" +
+      whereSQL +
+      " order by recordDate desc, recordCreate_datetime desc");
 
-    return records;
+    returnObj.records = result.recordset.slice(options.offset);
+
+    return returnObj;
 
   } catch (e) {
     debugSQL(e);
