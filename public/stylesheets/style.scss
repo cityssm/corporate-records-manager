@@ -54,5 +54,6 @@ $modal-content-width: 900px;
 
 main {
   max-width: $widescreen;
+  min-height: calc(100vh - 52px - 48px);
   margin: 0 auto 50px auto;
 }
