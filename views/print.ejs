@@ -135,10 +135,32 @@
             const relatedRecord = record.related[index];
             const relatedRecordType = recordTypes.find((possibleRecordType) => { return possibleRecordType.recordTypeKey === relatedRecord.recordTypeKey; });
           %>
-          <p class="mb-2">
-            <strong><%= relatedRecord.recordTitle %></strong><br />
-            <%= (relatedRecordType ? relatedRecordType.recordType : relatedRecord.recordTypeKey) %> <%= relatedRecord.recordNumber %>
-          </p>
+          <div class="mb-2">
+            <div class="columns mb-0">
+              <div class="column pb-0">
+                <strong><%= (relatedRecordType ? relatedRecordType.recordType : relatedRecord.recordTypeKey) %> <%= relatedRecord.recordNumber %></strong><br />
+                <%= relatedRecord.recordTitle %>
+              </div>
+              <div class="column is-narrow pb-0 has-text-right">
+                <%= dateTimeFns.dateToString(new Date(relatedRecord.recordDate)) %>
+              </div>
+            </div>
+            <div class="is-size-7">
+              <% if (relatedRecord.party && relatedRecord.party !== "") { %>
+                <span class="has-tooltip-right has-tooltip-arrow" data-tooltip="Related Party">
+                  <span class="icon"><i class="fas fa-users" aria-hidden="true"></i></span>
+                  <%= relatedRecord.party %>
+                </span><br />
+              <% } %>
+              <% if (relatedRecord.location && relatedRecord.location !== "") { %>
+                <span class="has-tooltip-right has-tooltip-arrow" data-tooltip="Location">
+                  <span class="icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></span>
+                  <%= relatedRecord.location %>
+                </span><br />
+              <% } %>
+              <%= (record.recordDescription.length > 500 ? record.recordDescription.substring(0, 497) + " ..." : record.recordDescription) %>
+            </div>
+          </div>
         <% } %>
       </section>
     <% } %>

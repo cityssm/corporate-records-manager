@@ -13,6 +13,7 @@ export const handler = async (req, res) => {
     }
     const statusTypes = await configCache.getStatusTypes(record.recordTypeKey);
     res.render(req.query.view === "print" ? "print" : "view", {
+        headTitle: recordType.recordType + " " + record.recordNumber,
         recordType,
         record,
         statusTypes

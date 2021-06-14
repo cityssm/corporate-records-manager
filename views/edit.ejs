@@ -72,6 +72,22 @@
         </div>
         <div class="panel-block is-block">
           <div class="field">
+            <label class="label" for="record--party">Related Party</label>
+            <div class="control">
+              <input class="input" id="record--party" name="party" type="text" value="<%= record.party %>" maxlength="300" />
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <div class="field">
+            <label class="label" for="record--location">Location</label>
+            <div class="control">
+              <input class="input" id="record--location" name="location" type="text" value="<%= record.location %>" maxlength="300" />
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <div class="field">
             <label class="label" for="record--recordDescription"><%= recordType.recordType %> Description</label>
             <div class="control">
               <textarea class="textarea" id="record--recordDescription" name="recordDescription"><%= record.recordDescription %></textarea>

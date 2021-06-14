@@ -23,7 +23,7 @@ export const getRecord = async (recordID: number | string): Promise<Record> => {
     const result = await pool.request()
       .input("recordID", recordID)
       .query("select recordID, recordTypeKey, recordNumber," +
-        " recordTitle, recordDescription, recordDate," +
+        " recordTitle, recordDescription, party, location, recordDate," +
         " recordCreate_userName, recordCreate_datetime," +
         " recordUpdate_userName, recordUpdate_datetime" +
         " from CR.Records" +

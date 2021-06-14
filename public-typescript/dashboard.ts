@@ -1,11 +1,14 @@
 import type * as recordTypes from "../types/recordTypes";
 
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
+import type { CRM } from "../types/clientTypes";
+
 declare const cityssm: cityssmGlobal;
 
 
 (() => {
   const urlPrefix: string = exports.urlPrefix;
+  const crm: CRM = exports.crm;
 
   const limit = parseInt((document.getElementById("search--limit") as HTMLInputElement).value, 10);
   const offsetEle = document.getElementById("search--offset") as HTMLInputElement;
@@ -81,28 +84,10 @@ declare const cityssm: cityssmGlobal;
 
         for (const record of responseJSON.records) {
 
-          const recordType: recordTypes.RecordType = exports.getRecordType(record.recordTypeKey);
-
-          const panelBlockEle = document.createElement("a");
-          panelBlockEle.className = "panel-block is-block";
-          panelBlockEle.href = urlPrefix + "/view/" + record.recordID.toString();
-
-          panelBlockEle.innerHTML = "<div class=\"columns mb-0\">" +
-            ("<div class=\"column pb-0\">" +
-              "<strong>" + cityssm.escapeHTML(record.recordTitle) + "</strong><br />" +
-              recordType.recordType + " " + cityssm.escapeHTML(record.recordNumber) +
-              "</div>") +
-            ("<div class=\"column is-narrow pb-0 has-text-right\">" +
-              cityssm.dateToString(new Date(record.recordDate)) +
-              "</div>") +
-            "</div>" +
-            "<span class=\"is-size-7\">" +
-            cityssm.escapeHTML(record.recordDescription.length > 500
-              ? record.recordDescription.substring(0, 497) + " ..."
-              : record.recordDescription
-            ) +
-            "</span>";
-
+          const panelBlockEle = crm.renderRecordPanelLinkEle(record, {
+            panelTag: "a",
+            includeEditButton: true
+          });
           panelEle.appendChild(panelBlockEle);
         }
 

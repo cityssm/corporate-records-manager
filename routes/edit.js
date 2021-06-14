@@ -15,6 +15,7 @@ import handler_doSearchDocuShare from "../handlers/doSearchDocuShare.js";
 import handler_doAddDocuShareURL from "../handlers/doAddDocuShareURL.js";
 import handler_doSearchRelatedRecords from "../handlers/doSearchRelatedRecords.js";
 import handler_doAddRelatedRecord from "../handlers/doAddRelatedRecord.js";
+import handler_doRemoveRelatedRecord from "../handlers/doRemoveRelatedRecord.js";
 export const router = Router();
 router.get("/", (_req, res) => {
     return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
@@ -32,6 +33,7 @@ if (configFns.getProperty("integrations.docuShare.isEnabled")) {
 }
 router.post("/doSearchRelatedRecords", handler_doSearchRelatedRecords);
 router.post("/doAddRelatedRecord", handler_doAddRelatedRecord);
+router.post("/doRemoveRelatedRecord", handler_doRemoveRelatedRecord);
 router.post("/doAddComment", handler_doAddComment);
 router.post("/doUpdateComment", handler_doUpdateComment);
 router.post("/doRemoveComment", handler_doRemoveComment);

@@ -23,15 +23,17 @@ export const createRecord = async (recordForm: Record, reqSession: expressSessio
       .input("recordNumber", recordForm.recordNumber)
       .input("recordTitle", recordForm.recordTitle)
       .input("recordDescription", recordForm.recordDescription)
+      .input("party", recordForm.party)
+      .input("location", recordForm.location)
       .input("recordDate", recordForm.recordDateString)
       .input("recordCreate_userName", reqSession.user.userName)
       .input("recordUpdate_userName", reqSession.user.userName)
       .query("insert into CR.Records" +
         " (recordTypeKey, recordNumber," +
-        " recordTitle, recordDescription, recordDate," +
+        " recordTitle, recordDescription, party, location, recordDate," +
         " recordCreate_userName, recordUpdate_userName)" +
         " output inserted.recordID" +
-        " values (@recordTypeKey, @recordNumber, @recordTitle, @recordDescription, @recordDate," +
+        " values (@recordTypeKey, @recordNumber, @recordTitle, @recordDescription, @party, @location, @recordDate," +
         " @recordCreate_userName, @recordUpdate_userName)");
 
     if (!result.recordset || result.recordset.length === 0) {

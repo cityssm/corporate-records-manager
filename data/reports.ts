@@ -5,12 +5,15 @@ export const reports: { [reportName: string]: ReportDefinition } = {
 
   "records:byRecordTypeKey": {
     sql: () => {
-      return "select recordID, recordNumber, convert(char(10), recordDate, 23) as recordDate," +
-        " recordTitle, recordDescription" +
-        " from CR.Records" +
-        " where recordDelete_datetime is null" +
-        " and recordTypeKey = @recordTypeKey" +
-        " order by recordID";
+      return "select r.recordID, r.recordNumber," +
+        " convert(char(10), r.recordDate, 23) as recordDate," +
+        " r.recordTitle, r.recordDescription," +
+        " t.tagCSV" +
+        " from CR.Records r" +
+        " left join CR.RecordTagCSV t on r.recordID = t.recordID" +
+        " where r.recordDelete_datetime is null" +
+        " and r.recordTypeKey = @recordTypeKey" +
+        " order by r.recordID";
     },
     paramNames: ["recordTypeKey"]
   },

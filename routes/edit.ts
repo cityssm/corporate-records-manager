@@ -22,6 +22,7 @@ import handler_doAddDocuShareURL from "../handlers/doAddDocuShareURL.js";
 
 import handler_doSearchRelatedRecords from "../handlers/doSearchRelatedRecords.js";
 import handler_doAddRelatedRecord from "../handlers/doAddRelatedRecord.js";
+import handler_doRemoveRelatedRecord from "../handlers/doRemoveRelatedRecord.js";
 
 
 export const router = Router();
@@ -53,6 +54,7 @@ if (configFns.getProperty("integrations.docuShare.isEnabled")) {
 
 router.post("/doSearchRelatedRecords", handler_doSearchRelatedRecords);
 router.post("/doAddRelatedRecord", handler_doAddRelatedRecord);
+router.post("/doRemoveRelatedRecord", handler_doRemoveRelatedRecord);
 
 
 router.post("/doAddComment", handler_doAddComment);

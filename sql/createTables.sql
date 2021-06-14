@@ -29,6 +29,8 @@ create table CR.Records (
 	recordNumber varchar(30) not null,
 	recordTitle nvarchar(200),
 	recordDescription nvarchar(max),
+	party nvarchar(300),
+	location nvarchar(300),
 	recordDate datetime,
 
 	recordCreate_userName varchar(30) not null,
@@ -68,6 +70,19 @@ create table CR.RecordTags (
 	on update no action
 	on delete no action
 )
+
+
+create view CR.RecordTagCSV as
+	select t1.recordID,
+  	stuff((select ',' + tag
+      from CR.RecordTags t2
+      where t1.recordID = t2.recordID
+      order by tag
+      FOR XML PATH(''), TYPE).value('.', 'varchar(max)'),
+      1,1,'')
+    as tagCSV
+    from CR.RecordTags t1
+    group by recordID
 
 
 create table CR.StatusTypes (

@@ -167,6 +167,7 @@ app.use(async function(req, res, next) {
   res.locals.csrfToken = req.csrfToken();
   res.locals.urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
   res.locals.recordTypes = await getRecordTypes();
+  res.locals.headTitle = "";
   next();
 });
 

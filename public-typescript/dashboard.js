@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (function () {
     var urlPrefix = exports.urlPrefix;
+    var crm = exports.crm;
     var limit = parseInt(document.getElementById("search--limit").value, 10);
     var offsetEle = document.getElementById("search--offset");
     var searchFormEle = document.getElementById("form--search");
@@ -53,24 +54,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             panelEle.className = "panel";
             for (var _i = 0, _a = responseJSON.records; _i < _a.length; _i++) {
                 var record = _a[_i];
-                var recordType = exports.getRecordType(record.recordTypeKey);
-                var panelBlockEle = document.createElement("a");
-                panelBlockEle.className = "panel-block is-block";
-                panelBlockEle.href = urlPrefix + "/view/" + record.recordID.toString();
-                panelBlockEle.innerHTML = "<div class=\"columns mb-0\">" +
-                    ("<div class=\"column pb-0\">" +
-                        "<strong>" + cityssm.escapeHTML(record.recordTitle) + "</strong><br />" +
-                        recordType.recordType + " " + cityssm.escapeHTML(record.recordNumber) +
-                        "</div>") +
-                    ("<div class=\"column is-narrow pb-0 has-text-right\">" +
-                        cityssm.dateToString(new Date(record.recordDate)) +
-                        "</div>") +
-                    "</div>" +
-                    "<span class=\"is-size-7\">" +
-                    cityssm.escapeHTML(record.recordDescription.length > 500
-                        ? record.recordDescription.substring(0, 497) + " ..."
-                        : record.recordDescription) +
-                    "</span>";
+                var panelBlockEle = crm.renderRecordPanelLinkEle(record, {
+                    panelTag: "a",
+                    includeEditButton: true
+                });
                 panelEle.appendChild(panelBlockEle);
             }
             searchResultsContainerEle.innerHTML = "";

@@ -71,7 +71,7 @@ export const getRecords = async (params: {
 
     const result = await resultsRequest.query("select top " + (options.limit + options.offset).toString() +
       " recordID, recordTypeKey, recordNumber," +
-      " recordTitle, recordDescription, recordDate," +
+      " recordTitle, recordDescription, party, location, recordDate," +
       " recordCreate_userName, recordCreate_datetime," +
       " recordUpdate_userName, recordUpdate_datetime" +
       " from CR.Records" +

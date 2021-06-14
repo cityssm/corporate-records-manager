@@ -10,12 +10,15 @@ import type * as sqlTypes from "mssql";
 
 const SQL_createRecord = "insert into CR.Records" +
   " (recordTypeKey, recordNumber," +
-  " recordTitle, recordDescription, recordDate," +
+  " recordTitle, recordDescription, party, location," +
+  " recordDate," +
   " recordCreate_userName, recordCreate_datetime," +
   " recordUpdate_userName, recordUpdate_datetime," +
   " recordDelete_userName, recordDelete_datetime)" +
   " output inserted.recordID" +
-  " values (@recordTypeKey, @recordNumber, @recordTitle, @recordDescription, @recordDate," +
+  " values (@recordTypeKey, @recordNumber, @recordTitle, @recordDescription," +
+  " @party, @location," +
+  " @recordDate," +
   " @recordCreate_userName, @recordCreate_datetime," +
   " @recordUpdate_userName, @recordUpdate_datetime," +
   " @recordDelete_userName, @recordDelete_datetime)";
@@ -96,6 +99,8 @@ const doImportBylaws = async () => {
         .input("recordNumber", oldBylaw.bylawNumber)
         .input("recordTitle", oldBylaw.bylawNumber)
         .input("recordDescription", oldBylaw.description)
+        .input("party", "")
+        .input("location", "")
         .input("recordDate", oldBylaw.creationTime)
         .input("recordCreate_userName", oldBylaw.creator)
         .input("recordCreate_datetime", oldBylaw.creationTime)
@@ -157,15 +162,13 @@ const doImportBylaws = async () => {
         .input("recordUpdate_datetime", oldStatus.creationTime)
         .query(SQL_createStatus);
 
-      if (statusTypeKey === "bylaw-new") {
-
-        await pool.request()
-          .input("recordDate", oldStatus.statusDate)
-          .input("recordID", recordID)
-          .query("update CR.Records" +
-            " set recordDate = @recordDate" +
-            " where recordID = @recordID");
-      }
+      await pool.request()
+        .input("recordDate", oldStatus.statusDate)
+        .input("recordID", recordID)
+        .query("update CR.Records" +
+          " set recordDate = @recordDate" +
+          " where recordID = @recordID" +
+          " and recordDate > @recordDate");
     }
 
     console.log("Related Bylaws");
@@ -217,11 +220,10 @@ const doImportAgreements = async () => {
       const recordID = (await pool.request()
         .input("recordTypeKey", "agreement")
         .input("recordNumber", oldAgreement.agreementNumber)
-        .input("recordTitle", oldAgreement.party +
-          (oldAgreement.location && oldAgreement.location !== ""
-            ? " (" + oldAgreement.location + ")"
-            : ""))
+        .input("recordTitle", oldAgreement.agreementNumber)
         .input("recordDescription", oldAgreement.description)
+        .input("party", oldAgreement.party || "")
+        .input("location", oldAgreement.location || "")
         .input("recordDate", oldAgreement.agreementDate)
         .input("recordCreate_userName", oldAgreement.creator)
         .input("recordCreate_datetime", oldAgreement.creationTime)
@@ -328,8 +330,10 @@ const doImportDeeds = async () => {
       const recordID = (await pool.request()
         .input("recordTypeKey", "deed")
         .input("recordNumber", oldDeed.clerkNumber.toString())
-        .input("recordTitle", oldDeed.transferor)
+        .input("recordTitle", oldDeed.clerkNumber.toString())
         .input("recordDescription", oldDeed.description)
+        .input("party", oldDeed.transferor || "")
+        .input("location", "")
         .input("recordDate", oldDeed.deedDate)
         .input("recordCreate_userName", oldDeed.creator)
         .input("recordCreate_datetime", oldDeed.creationTime)
@@ -412,11 +416,10 @@ const doImportEasements = async () => {
       const recordID = (await pool.request()
         .input("recordTypeKey", "easement")
         .input("recordNumber", oldEasement.clerkNumber.toString())
-        .input("recordTitle", oldEasement.transferor +
-          oldEasement.location === ""
-          ? ""
-          : " (" + oldEasement.location + ")")
+        .input("recordTitle", oldEasement.clerkNumber.toString())
         .input("recordDescription", oldEasement.description)
+        .input("party", oldEasement.transferor || "")
+        .input("location", oldEasement.location || "")
         .input("recordDate", oldEasement.registrationDate)
         .input("recordCreate_userName", oldEasement.creator)
         .input("recordCreate_datetime", oldEasement.creationTime)
@@ -555,9 +558,9 @@ interface LegacyEasementInstrumentNumber {
   instrumentNumber: string;
 }
 
-console.log("Import Disabled");
+// console.log("Import Disabled");
 
-/*
+
 await doTablePurge();
 await doImportBylaws();
 await doImportDeeds();
@@ -565,6 +568,6 @@ await doImportEasements();
 await doImportAgreements();
 
 console.log("Done");
-*/
+
 
 process.exit();

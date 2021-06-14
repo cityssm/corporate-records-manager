@@ -20,6 +20,7 @@ export const searchRelatedRecords = async (recordID: number | string, recordType
     let sql = "select top 100" +
       " recordID, recordTypeKey, recordNumber," +
       " recordTitle, recordDescription," +
+      " party, location," +
       " recordCreate_userName, recordCreate_datetime," +
       " recordUpdate_userName, recordUpdate_datetime" +
       " from CR.Records" +
@@ -47,6 +48,8 @@ export const searchRelatedRecords = async (recordID: number | string, recordType
           "recordNumber like '%' + @" + inputKey + " + '%'" +
           " or recordTitle like '%' + @" + inputKey + " + '%'" +
           " or recordDescription like '%' + @" + inputKey + " + '%'" +
+          " or party like '%' + @" + inputKey + " + '%'" +
+          " or location like '%' + @" + inputKey + " + '%'" +
           ")";
       }
     }

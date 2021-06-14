@@ -454,6 +454,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     {
+        var crm_1 = exports.crm;
         var relatedRecords_1 = exports.relatedRecords;
         delete exports.relatedRecords;
         var relatedRecordPanelEle_1 = document.getElementById("panel--relatedRecords");
@@ -480,23 +481,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.confirmModal("Remove Comment", "Are you sure you want to remove this related record?", "Yes, Remove the Related Record", "warning", removeFn);
         };
         var renderRelatedRecordFn_1 = function (relatedRecord, index) {
-            var panelBlockEle = document.createElement("div");
-            panelBlockEle.className = "panel-block is-block";
+            var panelBlockEle = crm_1.renderRecordPanelLinkEle(relatedRecord, {
+                panelTag: "div",
+                includeRemoveButton: true
+            });
             panelBlockEle.setAttribute("data-index", index.toString());
             panelBlockEle.setAttribute("data-record-id", relatedRecord.recordID.toString());
-            panelBlockEle.innerHTML = "<div class=\"columns\">" +
-                ("<div class=\"column\">" +
-                    "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/view/" + relatedRecord.recordID.toString() + "\" target=\"_blank\">" +
-                    relatedRecord.recordTitle +
-                    "</a><br />" +
-                    relatedRecord.recordNumber +
-                    "</div>") +
-                ("<div class=\"column is-narrow\">" +
-                    "<button class=\"button is-danger is-light is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Remove Comment\" type=\"button\">" +
-                    "<span class=\"icon\"><i class=\"fas fa-trash-alt\" aria-hidden=\"true\"></i></span>" +
-                    "</button>" +
-                    "</div>") +
-                "</div>";
             panelBlockEle.getElementsByTagName("button")[0].addEventListener("click", openRemoveRelatedRecordModalFn_1);
             relatedRecordPanelEle_1.appendChild(panelBlockEle);
         };
@@ -581,24 +571,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     panelEle.className = "panel";
                     for (var _i = 0, _a = responseJSON.records; _i < _a.length; _i++) {
                         var relatedRecord = _a[_i];
-                        var panelBlockEle = document.createElement("div");
-                        panelBlockEle.className = "panel-block is-block";
+                        var panelBlockEle = crm_1.renderRecordPanelLinkEle(relatedRecord, {
+                            panelTag: "div",
+                            includeAddButton: true
+                        });
                         panelBlockEle.setAttribute("data-record-id", relatedRecord.recordID.toString());
-                        panelBlockEle.innerHTML = "<div class=\"level\">" +
-                            ("<div class=\"level-left\">" +
-                                "<strong>" + cityssm.escapeHTML(relatedRecord.recordTitle) + "</strong>" +
-                                "</div>") +
-                            ("<div class=\"level-right\">" +
-                                "<a class=\"button is-info mr-1\" href=\"" + urlPrefix + "/view/" + relatedRecord.recordID.toString() + "\" target=\"_blank\">" +
-                                "<span class=\"icon\"><i class=\"fas fa-eye\" aria-hidden=\"true\"></i></span>" +
-                                "<span>View</span>" +
-                                "</a>" +
-                                "<button class=\"button is-success\" type=\"button\">" +
-                                "<span class=\"icon\"><i class=\"fas fa-plus\" aria-hidden=\"true\"></i></span>" +
-                                "<span>Add Related Record</span>" +
-                                "</button>" +
-                                "</div>") +
-                            "</div>";
                         panelBlockEle.getElementsByTagName("button")[0].addEventListener("click", addFn);
                         panelEle.appendChild(panelBlockEle);
                     }
