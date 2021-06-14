@@ -85,8 +85,7 @@ declare const cityssm: cityssmGlobal;
         for (const record of responseJSON.records) {
 
           const panelBlockEle = crm.renderRecordPanelLinkEle(record, {
-            panelTag: "a",
-            includeEditButton: true
+            panelTag: "a"
           });
           panelEle.appendChild(panelBlockEle);
         }

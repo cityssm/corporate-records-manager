@@ -55,8 +55,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             for (var _i = 0, _a = responseJSON.records; _i < _a.length; _i++) {
                 var record = _a[_i];
                 var panelBlockEle = crm.renderRecordPanelLinkEle(record, {
-                    panelTag: "a",
-                    includeEditButton: true
+                    panelTag: "a"
                 });
                 panelEle.appendChild(panelBlockEle);
             }
