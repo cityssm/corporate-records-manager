@@ -6,6 +6,8 @@ interface GetRecordsReturn {
 export declare const getRecords: (params: {
     recordTypeKey: string;
     searchString: string;
+    recordDateStringGTE: string;
+    recordDateStringLTE: string;
 }, options: {
     limit: number;
     offset: number;

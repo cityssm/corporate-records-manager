@@ -17,6 +17,8 @@ interface GetRecordsReturn {
 export const getRecords = async (params: {
   recordTypeKey: string;
   searchString: string;
+  recordDateStringGTE: string;
+  recordDateStringLTE: string;
 }, options: {
   limit: number;
   offset: number;
@@ -40,6 +42,18 @@ export const getRecords = async (params: {
       countRequest = countRequest.input("recordTypeKey", params.recordTypeKey);
       resultsRequest = resultsRequest.input("recordTypeKey", params.recordTypeKey);
       whereSQL += " and recordTypeKey = @recordTypeKey";
+    }
+
+    if (params.recordDateStringGTE && params.recordDateStringGTE !== "") {
+      countRequest = countRequest.input("recordDateStringGTE", params.recordDateStringGTE);
+      resultsRequest = resultsRequest.input("recordDateStringGTE", params.recordDateStringGTE);
+      whereSQL += " and recordDate >= @recordDateStringGTE";
+    }
+
+    if (params.recordDateStringLTE && params.recordDateStringLTE !== "") {
+      countRequest = countRequest.input("recordDateStringLTE", params.recordDateStringLTE);
+      resultsRequest = resultsRequest.input("recordDateStringLTE", params.recordDateStringLTE);
+      whereSQL += " and recordDate <= @recordDateStringLTE";
     }
 
     if (params.searchString !== "") {

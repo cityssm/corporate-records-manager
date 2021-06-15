@@ -2,7 +2,9 @@ import getRecords from "../helpers/recordsDB/getRecords.js";
 export const handler = async (req, res) => {
     const results = await getRecords({
         recordTypeKey: req.body.recordTypeKey,
-        searchString: req.body.searchString
+        searchString: req.body.searchString,
+        recordDateStringGTE: req.body["recordDateString-gte"],
+        recordDateStringLTE: req.body["recordDateString-lte"]
     }, {
         limit: parseInt(req.body.limit, 10),
         offset: parseInt(req.body.offset, 10)

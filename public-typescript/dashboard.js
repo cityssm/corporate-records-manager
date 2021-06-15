@@ -86,7 +86,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
         searchRecordsFn();
     };
     searchFormEle.addEventListener("submit", resetOffsetAndSearchFn);
-    document.getElementById("search--recordTypeKey").addEventListener("change", resetOffsetAndSearchFn);
-    document.getElementById("search--searchString").addEventListener("change", resetOffsetAndSearchFn);
+    var filterEles = searchFormEle.querySelectorAll("input, select");
+    filterEles.forEach(function (filterEle) {
+        filterEle.addEventListener("change", resetOffsetAndSearchFn);
+    });
     searchRecordsFn();
+    document.getElementById("button--searchMoreFiltersToggle").addEventListener("click", function () {
+        var moreFiltersEle = document.getElementById("fieldset--searchMoreFilters");
+        moreFiltersEle.classList.toggle("is-hidden");
+        if (moreFiltersEle.classList.contains("is-hidden")) {
+            moreFiltersEle.disabled = true;
+        }
+        else {
+            moreFiltersEle.disabled = false;
+        }
+        resetOffsetAndSearchFn();
+    });
+})();
+(function () {
+    var maxDateValue = cityssm.dateToString(new Date());
+    var gteEle = document.getElementById("search--recordDateString-gte");
+    var lteEle = document.getElementById("search--recordDateString-lte");
+    gteEle.addEventListener("change", function () {
+        lteEle.min = gteEle.value;
+    });
+    lteEle.addEventListener("change", function () {
+        var lteValue = lteEle.value;
+        if (lteValue === "") {
+            lteValue = maxDateValue;
+        }
+        gteEle.max = lteValue;
+    });
 })();

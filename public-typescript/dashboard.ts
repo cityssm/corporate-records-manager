@@ -130,8 +130,46 @@ declare const cityssm: cityssmGlobal;
 
   searchFormEle.addEventListener("submit", resetOffsetAndSearchFn);
 
-  document.getElementById("search--recordTypeKey").addEventListener("change", resetOffsetAndSearchFn);
-  document.getElementById("search--searchString").addEventListener("change", resetOffsetAndSearchFn);
+  const filterEles = searchFormEle.querySelectorAll("input, select");
+
+  filterEles.forEach((filterEle) => {
+    filterEle.addEventListener("change", resetOffsetAndSearchFn);
+  });
 
   searchRecordsFn();
+
+  document.getElementById("button--searchMoreFiltersToggle").addEventListener("click", () => {
+
+    const moreFiltersEle = document.getElementById("fieldset--searchMoreFilters") as HTMLFieldSetElement;
+
+    moreFiltersEle.classList.toggle("is-hidden");
+
+    if (moreFiltersEle.classList.contains("is-hidden")) {
+      moreFiltersEle.disabled = true;
+    } else {
+      moreFiltersEle.disabled = false;
+    }
+
+    resetOffsetAndSearchFn();
+  });
+})();
+
+(() => {
+  const maxDateValue = cityssm.dateToString(new Date());
+
+  const gteEle = document.getElementById("search--recordDateString-gte") as HTMLInputElement;
+  const lteEle = document.getElementById("search--recordDateString-lte") as HTMLInputElement;
+
+  gteEle.addEventListener("change", () => {
+    lteEle.min = gteEle.value;
+  });
+
+  lteEle.addEventListener("change", () => {
+    let lteValue = lteEle.value;
+    if (lteValue === "") {
+      lteValue = maxDateValue;
+    }
+
+    gteEle.max = lteValue;
+  });
 })();

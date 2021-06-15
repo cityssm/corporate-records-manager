@@ -7,7 +7,9 @@ export const handler: RequestHandler = async (req, res) => {
 
   const results = await getRecords({
     recordTypeKey: req.body.recordTypeKey,
-    searchString: req.body.searchString
+    searchString: req.body.searchString,
+    recordDateStringGTE: req.body["recordDateString-gte"],
+    recordDateStringLTE: req.body["recordDateString-lte"]
   }, {
     limit: parseInt(req.body.limit, 10),
     offset: parseInt(req.body.offset, 10)

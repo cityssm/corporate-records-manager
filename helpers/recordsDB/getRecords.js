@@ -18,6 +18,16 @@ export const getRecords = async (params, options) => {
             resultsRequest = resultsRequest.input("recordTypeKey", params.recordTypeKey);
             whereSQL += " and recordTypeKey = @recordTypeKey";
         }
+        if (params.recordDateStringGTE && params.recordDateStringGTE !== "") {
+            countRequest = countRequest.input("recordDateStringGTE", params.recordDateStringGTE);
+            resultsRequest = resultsRequest.input("recordDateStringGTE", params.recordDateStringGTE);
+            whereSQL += " and recordDate >= @recordDateStringGTE";
+        }
+        if (params.recordDateStringLTE && params.recordDateStringLTE !== "") {
+            countRequest = countRequest.input("recordDateStringLTE", params.recordDateStringLTE);
+            resultsRequest = resultsRequest.input("recordDateStringLTE", params.recordDateStringLTE);
+            whereSQL += " and recordDate <= @recordDateStringLTE";
+        }
         if (params.searchString !== "") {
             const searchStringSplit = params.searchString.trim().split(" ");
             for (let index = 0; index < searchStringSplit.length; index += 1) {
