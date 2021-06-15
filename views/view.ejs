@@ -37,7 +37,7 @@
       <% if (record.party && record.party !== "") { %>
         <div class="panel-block" aria-label="Related Party">
           <span class="panel-icon has-tooltip-right has-tooltip-arrow" data-tooltip="Related Party">
-            <i class="fas fa-users" aria-hidden="true"></i>
+            <i class="fas fa-fw fa-users" aria-hidden="true"></i>
           </span>
           <%= record.party %>
         </div>
@@ -45,7 +45,7 @@
       <% if (record.location && record.location !== "") { %>
         <div class="panel-block" aria-label="Location">
           <span class="panel-icon has-tooltip-right has-tooltip-arrow" data-tooltip="Location">
-            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+            <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i>
           </span>
           <%= record.location %>
         </div>
@@ -53,7 +53,7 @@
       <% if (record.recordDescription && record.recordDescription !== "") { %>
         <div class="panel-block is-align-items-start" aria-label="<%= recordType.recordType %> Description">
           <span class="panel-icon pt-1 has-tooltip-right has-tooltip-arrow" data-tooltip="Description">
-            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <i class="fas fa-fw fa-info-circle" aria-hidden="true"></i>
           </span>
           <span class="has-whitespace-pre"><%= record.recordDescription %></span>
         </div>
@@ -167,7 +167,7 @@
                   <%= relatedRecord.location %>
                 </span><br />
               <% } %>
-              <%= (record.recordDescription.length > 500 ? record.recordDescription.substring(0, 497) + " ..." : record.recordDescription) %> 
+              <%= (record.recordDescription.length > 500 ? record.recordDescription.substring(0, 497) + " ..." : record.recordDescription) %>
             </div>
           </a>
         <% } %>

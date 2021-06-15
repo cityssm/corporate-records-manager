@@ -57,3 +57,9 @@ main {
   min-height: calc(100vh - 52px - 48px);
   margin: 0 auto 50px auto;
 }
+
+
+.icon[data-tooltip],
+.panel-icon[data-tooltip] {
+  border-bottom: 0;
+}
