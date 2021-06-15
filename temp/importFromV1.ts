@@ -558,9 +558,9 @@ interface LegacyEasementInstrumentNumber {
   instrumentNumber: string;
 }
 
-// console.log("Import Disabled");
+console.log("Import Disabled");
 
-
+/*
 await doTablePurge();
 await doImportBylaws();
 await doImportDeeds();
@@ -568,6 +568,6 @@ await doImportEasements();
 await doImportAgreements();
 
 console.log("Done");
-
+*/
 
 process.exit();

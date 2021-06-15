@@ -334,10 +334,5 @@ const doImportEasements = async () => {
         console.log(e);
     }
 };
-await doTablePurge();
-await doImportBylaws();
-await doImportDeeds();
-await doImportEasements();
-await doImportAgreements();
-console.log("Done");
+console.log("Import Disabled");
 process.exit();
