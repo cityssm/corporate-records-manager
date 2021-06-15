@@ -20,7 +20,7 @@ export const updateRecord = async (recordForm: Record, reqSession: expressSessio
     await pool.request()
       .input("recordTypeKey", recordForm.recordTypeKey)
       .input("recordNumber", recordForm.recordNumber)
-      .input("recordTitle", recordForm.recordTitle)
+      .input("recordTitle", recordForm.recordTitle === "" ? recordForm.recordNumber : recordForm.recordTitle)
       .input("recordDescription", recordForm.recordDescription)
       .input("party", recordForm.party)
       .input("location", recordForm.location)
