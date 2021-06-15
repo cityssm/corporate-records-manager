@@ -57,6 +57,8 @@ export const getRecords = async (params: {
           "recordNumber like '%' + @" + inputKey + " + '%'" +
           " or recordTitle like '%' + @" + inputKey + " + '%'" +
           " or recordDescription like '%' + @" + inputKey + " + '%'" +
+          " or party like '%' + @" + inputKey + " + '%'" +
+          " or location like '%' + @" + inputKey + " + '%'" +
           ")";
       }
     }

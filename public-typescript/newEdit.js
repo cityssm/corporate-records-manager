@@ -39,6 +39,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     var openAddTagModalFn = function () {
         var addTagModalCloseFn;
+        var tagInputEle;
+        var suggestedTagLimit = 20;
+        var suggestedTagLastValue = "";
+        var suggestedTags = [];
         var addTagFn = function (tag) {
             var escapedTag = cityssm.escapeHTML(tag);
             var tagEle = document.createElement("span");
@@ -61,10 +65,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
             inputEle.value = "";
             inputEle.focus();
         };
+        var getSuggestedTagsFn = function (keyupEvent) {
+            if (keyupEvent) {
+                if (suggestedTagLastValue === tagInputEle.value ||
+                    (tagInputEle.value.includes(suggestedTagLastValue) && suggestedTags.length < suggestedTagLimit)) {
+                    return;
+                }
+            }
+            suggestedTagLastValue = tagInputEle.value;
+            cityssm.postJSON(urlPrefix + "/edit/doGetSuggestedTags", {
+                recordID: isNew ? "" : recordID,
+                searchString: tagInputEle.value
+            }, function (responseJSON) {
+                var dataListEle = document.getElementById("addTag--tag-datalist");
+                dataListEle.innerHTML = "";
+                if (responseJSON.success) {
+                    suggestedTags = responseJSON.tags;
+                    for (var _i = 0, suggestedTags_1 = suggestedTags; _i < suggestedTags_1.length; _i++) {
+                        var suggestedTag = suggestedTags_1[_i];
+                        var optionEle = document.createElement("option");
+                        optionEle.value = suggestedTag;
+                        dataListEle.appendChild(optionEle);
+                    }
+                }
+            });
+        };
         cityssm.openHtmlModal("tag-add", {
             onshown: function (_modalEle, closeModalFn) {
                 addTagModalCloseFn = closeModalFn;
                 document.getElementById("form--addTag").addEventListener("submit", addTagBySubmitFn);
+                tagInputEle = document.getElementById("addTag--tag");
+                tagInputEle.focus();
+                tagInputEle.addEventListener("keyup", getSuggestedTagsFn);
+                getSuggestedTagsFn();
             }
         });
     };

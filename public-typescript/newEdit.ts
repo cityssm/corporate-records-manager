@@ -69,6 +69,12 @@ declare const cityssm: cityssmGlobal;
 
     let addTagModalCloseFn: () => void;
 
+    let tagInputEle: HTMLInputElement;
+
+    const suggestedTagLimit = 20;
+    let suggestedTagLastValue = "";
+    let suggestedTags = [];
+
     const addTagFn = (tag: string) => {
 
       const escapedTag = cityssm.escapeHTML(tag);
@@ -101,10 +107,49 @@ declare const cityssm: cityssmGlobal;
       inputEle.focus();
     };
 
+    const getSuggestedTagsFn = (keyupEvent?: Event) => {
+
+      if (keyupEvent) {
+        if (suggestedTagLastValue === tagInputEle.value ||
+          (tagInputEle.value.includes(suggestedTagLastValue) && suggestedTags.length < suggestedTagLimit)) {
+          return;
+        }
+      }
+
+      suggestedTagLastValue = tagInputEle.value;
+
+      cityssm.postJSON(urlPrefix + "/edit/doGetSuggestedTags", {
+        recordID: isNew ? "" : recordID,
+        searchString: tagInputEle.value
+      },
+        (responseJSON: { success: boolean; tags?: string[] }) => {
+
+          const dataListEle = document.getElementById("addTag--tag-datalist") as HTMLDataListElement;
+          dataListEle.innerHTML = "";
+
+          if (responseJSON.success) {
+
+            suggestedTags = responseJSON.tags;
+
+            for (const suggestedTag of suggestedTags) {
+
+              const optionEle = document.createElement("option");
+              optionEle.value = suggestedTag;
+              dataListEle.appendChild(optionEle);
+            }
+          }
+        });
+    };
+
     cityssm.openHtmlModal("tag-add", {
       onshown: (_modalEle, closeModalFn) => {
         addTagModalCloseFn = closeModalFn;
         document.getElementById("form--addTag").addEventListener("submit", addTagBySubmitFn);
+
+        tagInputEle = document.getElementById("addTag--tag") as HTMLInputElement;
+        tagInputEle.focus();
+        tagInputEle.addEventListener("keyup", getSuggestedTagsFn);
+        getSuggestedTagsFn();
       }
     });
   };
