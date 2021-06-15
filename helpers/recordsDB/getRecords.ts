@@ -17,8 +17,9 @@ interface GetRecordsReturn {
 export const getRecords = async (params: {
   recordTypeKey: string;
   searchString: string;
-  recordDateStringGTE: string;
-  recordDateStringLTE: string;
+  recordNumber?: string;
+  recordDateStringGTE?: string;
+  recordDateStringLTE?: string;
 }, options: {
   limit: number;
   offset: number;
@@ -42,6 +43,12 @@ export const getRecords = async (params: {
       countRequest = countRequest.input("recordTypeKey", params.recordTypeKey);
       resultsRequest = resultsRequest.input("recordTypeKey", params.recordTypeKey);
       whereSQL += " and recordTypeKey = @recordTypeKey";
+    }
+
+    if (params.recordNumber && params.recordNumber !== "") {
+      countRequest = countRequest.input("recordNumber", params.recordNumber);
+      resultsRequest = resultsRequest.input("recordNumber", params.recordNumber);
+      whereSQL += " and recordNumber like '%' + @recordNumber + '%'";
     }
 
     if (params.recordDateStringGTE && params.recordDateStringGTE !== "") {
@@ -92,7 +99,7 @@ export const getRecords = async (params: {
       " recordUpdate_userName, recordUpdate_datetime" +
       " from CR.Records" +
       whereSQL +
-      " order by recordDate desc, recordCreate_datetime desc");
+      " order by recordDate desc, recordCreate_datetime desc, recordNumber desc");
 
     returnObj.records = result.recordset.slice(options.offset);
 

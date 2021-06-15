@@ -18,6 +18,11 @@ export const getRecords = async (params, options) => {
             resultsRequest = resultsRequest.input("recordTypeKey", params.recordTypeKey);
             whereSQL += " and recordTypeKey = @recordTypeKey";
         }
+        if (params.recordNumber && params.recordNumber !== "") {
+            countRequest = countRequest.input("recordNumber", params.recordNumber);
+            resultsRequest = resultsRequest.input("recordNumber", params.recordNumber);
+            whereSQL += " and recordNumber like '%' + @recordNumber + '%'";
+        }
         if (params.recordDateStringGTE && params.recordDateStringGTE !== "") {
             countRequest = countRequest.input("recordDateStringGTE", params.recordDateStringGTE);
             resultsRequest = resultsRequest.input("recordDateStringGTE", params.recordDateStringGTE);
@@ -55,7 +60,7 @@ export const getRecords = async (params, options) => {
             " recordUpdate_userName, recordUpdate_datetime" +
             " from CR.Records" +
             whereSQL +
-            " order by recordDate desc, recordCreate_datetime desc");
+            " order by recordDate desc, recordCreate_datetime desc, recordNumber desc");
         returnObj.records = result.recordset.slice(options.offset);
         return returnObj;
     }

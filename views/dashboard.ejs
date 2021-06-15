@@ -40,6 +40,16 @@
           <div class="columns">
             <div class="column">
               <div class="field">
+                <label class="label" for="search--recordNumber">Record Number</label>
+                <div class="control">
+                  <input class="input" id="search--recordNumber" name="recordNumber" type="text" maxlength="30" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
                 <label class="label" for="search--recordDateString-gte">Record Date On or After</label>
                 <div class="control has-icons-left">
                   <input class="input" id="search--recordDateString-gte" name="recordDateString-gte" type="date" max="<%= dateTimeFns.dateToString(new Date()) %>" />

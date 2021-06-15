@@ -3,6 +3,7 @@ export const handler = async (req, res) => {
     const results = await getRecords({
         recordTypeKey: req.body.recordTypeKey,
         searchString: req.body.searchString,
+        recordNumber: req.body.recordNumber,
         recordDateStringGTE: req.body["recordDateString-gte"],
         recordDateStringLTE: req.body["recordDateString-lte"]
     }, {
