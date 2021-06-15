@@ -27,6 +27,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
+    var inputEles = formEle.querySelectorAll("input, textarea");
+    inputEles.forEach(function (inputEle) {
+        inputEle.addEventListener("change", setUnsavedChangesFn);
+    });
     var removeTagFn = function (clickEvent) {
         clickEvent.preventDefault();
         var tagEle = clickEvent.currentTarget.closest(".tag");

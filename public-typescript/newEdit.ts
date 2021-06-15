@@ -42,6 +42,12 @@ declare const cityssm: cityssmGlobal;
       });
   });
 
+  const inputEles = formEle.querySelectorAll("input, textarea");
+
+  inputEles.forEach((inputEle) => {
+    inputEle.addEventListener("change", setUnsavedChangesFn);
+  });
+
   /*
    * Tags
    */
