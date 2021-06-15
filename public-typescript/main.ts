@@ -95,7 +95,7 @@ document.getElementById("navbar-burger").addEventListener("click", (clickEvent) 
           "</div>"
           : "") +
         (options.includeAddButton || options.includeRemoveButton
-          ? "<div class=\"column is-narrow\">" +
+          ? "<div class=\"column is-narrow pb-0\">" +
           (options.includeAddButton
             ? "<button class=\"button is-success is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Add Record\" type=\"button\">" +
             "<span class=\"icon\"><i class=\"fas fa-plus\" aria-hidden=\"true\"></i></span>" +
