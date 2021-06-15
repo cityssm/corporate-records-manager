@@ -1,10 +1,11 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
+import { ensureInteger } from "../numberFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:addRelatedRecord");
 export const addRelatedRecord = async (recordIDA, recordIDB) => {
-    const recordIDA_num = typeof (recordIDA) === "number" ? recordIDA : parseInt(recordIDA, 10);
-    const recordIDB_num = typeof (recordIDB) === "number" ? recordIDB : parseInt(recordIDB, 10);
+    const recordIDA_num = ensureInteger(recordIDA);
+    const recordIDB_num = ensureInteger(recordIDB);
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         await pool.request()
