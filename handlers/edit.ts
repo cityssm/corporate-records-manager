@@ -25,6 +25,7 @@ export const handler: RequestHandler = async (req, res) => {
   const statusTypes = await configCache.getStatusTypes(record.recordTypeKey);
 
   res.render("edit", {
+    headTitle: recordType.recordType + " " + record.recordNumber + " Update",
     isNew: false,
     recordType,
     record,

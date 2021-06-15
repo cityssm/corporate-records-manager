@@ -27,6 +27,7 @@ export const handler: RequestHandler = async (req, res) => {
   };
 
   res.render("edit", {
+    headTitle: "New " + recordType.recordType,
     isNew: true,
     recordType,
     record: emptyRecord,
