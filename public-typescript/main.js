@@ -24,6 +24,11 @@ document.getElementById("navbar-burger").addEventListener("click", function (cli
     var getRecordType = function (recordTypeKey) {
         return recordTypeMap.get(recordTypeKey);
     };
+    var currentDate = new Date();
+    currentDate.setHours(0);
+    currentDate.setMinutes(0);
+    currentDate.setSeconds(0);
+    currentDate.setMilliseconds(0);
     var crm = {
         getRecordType: getRecordType,
         renderRecordPanelLinkEle: function (record, options) {
@@ -41,6 +46,8 @@ document.getElementById("navbar-burger").addEventListener("click", function (cli
                     recordType.recordType + " " + cityssm.escapeHTML(record.recordNumber) +
                     "</a>";
             }
+            var recordDate = new Date(record.recordDate);
+            var timeAgo = dateDiff(recordDate, currentDate);
             panelBlockEle.innerHTML = "<div class=\"columns mb-0\">" +
                 ("<div class=\"column pb-0\">" +
                     recordNumberHTML +
@@ -53,7 +60,13 @@ document.getElementById("navbar-burger").addEventListener("click", function (cli
                     "</div>") +
                 (record.recordDate
                     ? "<div class=\"column is-narrow pb-0 has-text-right\">" +
-                        cityssm.dateToString(new Date(record.recordDate)) +
+                        (timeAgo.inDays === 0
+                            ? "<strong class=\"has-tooltip-left has-tooltip-arrow\" data-tooltip=\"Today\">" +
+                                cityssm.dateToString(recordDate) +
+                                "</strong>"
+                            : "<span class=\"has-tooltip-left has-tooltip-arrow\" data-tooltip=\"" + cityssm.escapeHTML(timeAgo.formatted) + " ago\">" +
+                                cityssm.dateToString(recordDate) +
+                                "</span>") +
                         "</div>"
                     : "") +
                 (options.includeAddButton || options.includeRemoveButton
