@@ -51,6 +51,17 @@ const doTablePurge = async () => {
         console.log(e);
     }
 };
+const doTableCleanup = async () => {
+    try {
+        const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
+        await pool.request()
+            .query("update CR.Records" +
+            " set recordDate = cast(convert(varchar(10), recordDate, 111) as datetime)");
+    }
+    catch (e) {
+        console.log(e);
+    }
+};
 const doImportBylaws = async () => {
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
