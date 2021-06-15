@@ -2,9 +2,9 @@
 $family-sans-serif: 'Barlow', system-ui, sans-serif;
 $body-size: 16px;
 $modal-content-width: 900px;
+
 @import '@cityssm/bulma-a11y/bulma-a11y';
 @import '@creativebulma/bulma-tooltip/src/sass/index';
-
 @import '../lib/fontsource-barlow/latin.css';
 
 .has-height-auto {
@@ -38,7 +38,6 @@ $modal-content-width: 900px;
   }
 }
 
-
 .panel-block {
   background-color: $white;
 
@@ -46,7 +45,6 @@ $modal-content-width: 900px;
     border-radius: $panel-radius $panel-radius 0 0;
   }
 }
-
 
 .has-whitespace-pre {
   white-space: pre-wrap;
