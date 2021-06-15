@@ -8,6 +8,7 @@ export const handler: RequestHandler = async (_req, res) => {
   const recordTypes = await getRecordTypes();
 
   res.render("dashboard", {
+    headTitle: "Dashboard",
     recordTypes
   });
 };
