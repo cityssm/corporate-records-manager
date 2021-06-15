@@ -62,10 +62,13 @@ document.getElementById("navbar-burger").addEventListener("click", (clickEvent) 
 
       panelBlockEle.innerHTML = "<div class=\"columns mb-0\">" +
         ("<div class=\"column pb-0\">" +
-          recordNumberHTML + "<br />" +
-          "<span class=\"has-tooltip-right has-tooltip-arrow\" data-tooltip=\"Title\">" +
-          cityssm.escapeHTML(record.recordTitle) +
-          "</span>" +
+          recordNumberHTML +
+          (record.recordTitle !== "" && record.recordTitle !== record.recordNumber
+            ? "<br />" +
+            "<span class=\"has-tooltip-right has-tooltip-arrow\" data-tooltip=\"Title\">" +
+            cityssm.escapeHTML(record.recordTitle) +
+            "</span>"
+            : "") +
           "</div>") +
         (record.recordDate
           ? "<div class=\"column is-narrow pb-0 has-text-right\">" +
