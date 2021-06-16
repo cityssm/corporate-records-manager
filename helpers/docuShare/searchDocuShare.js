@@ -16,6 +16,17 @@ export const searchDocuShare = async (parentCollectionHandle, searchString) => {
     for (const dsObject of dsObjects) {
         dsObject.url = docuShareFns.getURL(dsObject.handle);
     }
-    return result.dsObjects;
+    dsObjects.sort((dsObjectA, dsObjectB) => {
+        const titleA = dsObjectA.title.toUpperCase();
+        const titleB = dsObjectB.title.toUpperCase();
+        if (titleA < titleB) {
+            return -1;
+        }
+        else if (titleA > titleB) {
+            return 1;
+        }
+        return 0;
+    });
+    return dsObjects;
 };
 export default searchDocuShare;
