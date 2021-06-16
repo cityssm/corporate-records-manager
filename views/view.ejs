@@ -52,7 +52,7 @@
       <% } %>
       <% if (record.recordDescription && record.recordDescription !== "") { %>
         <div class="panel-block is-align-items-start" aria-label="<%= recordType.recordType %> Description">
-          <span class="panel-icon pt-1 has-tooltip-right has-tooltip-arrow" data-tooltip="Description">
+          <span class="panel-icon mt-2 has-tooltip-right has-tooltip-arrow" data-tooltip="Description">
             <i class="fas fa-fw fa-info-circle" aria-hidden="true"></i>
           </span>
           <span class="has-whitespace-pre"><%= record.recordDescription %></span>
@@ -60,6 +60,9 @@
       <% } %>
       <% if (record.tags.length > 0) { %>
         <div class="panel-block is-block">
+          <span class="panel-icon mt-2 has-tooltip-right has-tooltip-arrow" data-tooltip="Tags">
+            <i class="fas fa-fw fa-tags" aria-hidden="true"></i>
+          </span>
           <% for (const tag of record.tags) { %>
             <span class="tag is-medium">
               <%= tag %>
