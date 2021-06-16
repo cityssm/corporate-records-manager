@@ -25,11 +25,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 return;
             }
             var pagerEle = document.createElement("div");
-            pagerEle.className = "columns is-mobile is-align-items-center";
-            pagerEle.innerHTML = "<div class=\"column has-text-weight-bold\">" +
+            pagerEle.className = "box p-3 is-flex is-justify-content-space-between is-align-items-center";
+            pagerEle.innerHTML = "<div class=\"span has-text-weight-bold\">" +
                 (offset + 1).toString() + " to " + Math.min(offset + limit, responseJSON.count).toString() + " of " + responseJSON.count.toString() +
                 "</div>" +
-                "<div class=\"column has-text-right\"></div>";
+                "<div class=\"span has-text-right\"></div>";
             if (offset !== 0) {
                 var prevButtonEle = document.createElement("button");
                 prevButtonEle.className = "button is-light is-info has-tooltip-left has-tooltip-arrow";
@@ -38,17 +38,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 prevButtonEle.setAttribute("aria-label", "Previous Results");
                 prevButtonEle.innerHTML = "<i class=\"fas fa-arrow-left\" aria-hidden=\"true\"></i>";
                 prevButtonEle.addEventListener("click", previousFn);
-                pagerEle.getElementsByClassName("column")[1].appendChild(prevButtonEle);
+                pagerEle.getElementsByClassName("span")[1].appendChild(prevButtonEle);
             }
             if (limit + offset < responseJSON.count) {
                 var prevButtonEle = document.createElement("button");
-                prevButtonEle.className = "button is-outlined is-info";
+                prevButtonEle.className = "button is-outlined is-info ml-1";
                 prevButtonEle.type = "button";
                 prevButtonEle.setAttribute("aria-label", "Next Results");
                 prevButtonEle.innerHTML = "<span>Next</span>" +
                     "<span class=\"icon\"><i class=\"fas fa-arrow-right\" aria-hidden=\"true\"></i></span>";
                 prevButtonEle.addEventListener("click", nextFn);
-                pagerEle.getElementsByClassName("column")[1].appendChild(prevButtonEle);
+                pagerEle.getElementsByClassName("span")[1].appendChild(prevButtonEle);
             }
             var panelEle = document.createElement("div");
             panelEle.className = "panel";
