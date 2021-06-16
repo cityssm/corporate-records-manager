@@ -24,6 +24,7 @@ const configOverrides: { [propertyName: string]: any } = {};
 const configFallbackValues = new Map<string, any>();
 
 configFallbackValues.set("application.httpPort", 58009);
+configFallbackValues.set("application.applicationName", "Corporate Records Manager");
 
 configFallbackValues.set("reverseProxy.disableCompression", false);
 configFallbackValues.set("reverseProxy.disableEtag", false);
@@ -41,6 +42,7 @@ configFallbackValues.set("integrations.docuShare.collectionHandles", []);
 
 export function getProperty(propertyName: "application.httpPort"): number;
 export function getProperty(propertyName: "application.userDomain"): string;
+export function getProperty(propertyName: "application.applicationName"): string;
 
 export function getProperty(propertyName: "reverseProxy.disableCompression"): boolean;
 export function getProperty(propertyName: "reverseProxy.disableEtag"): boolean;

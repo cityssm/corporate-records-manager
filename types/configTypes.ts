@@ -8,6 +8,7 @@ export interface Config {
   application?: {
     httpPort?: number;
     userDomain?: string;
+    applicationName?: string;
   };
 
   reverseProxy?: {

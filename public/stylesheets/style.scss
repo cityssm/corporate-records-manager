@@ -13,10 +13,29 @@ $modal-content-width: 900px;
 
 #is-login-page {
   min-height: 100vh;
-  background-image: url('../images/login-background.jpg');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+
+  &.has-background-0 {
+    background-image: url('../images/login-background-0.jpg');
+  }
+
+  &.has-background-1 {
+    background-image: url('../images/login-background-1.jpg');
+  }
+
+  &.has-background-2 {
+    background-image: url('../images/login-background-2.jpg');
+  }
+
+  &.has-background-3 {
+    background-image: url('../images/login-background-3.jpg');
+  }
+
+  &.has-background-4 {
+    background-image: url('../images/login-background-4.jpg');
+  }
 
   body,
   body > .columns {

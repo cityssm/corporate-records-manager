@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="has-background-grey" id="is-login-page" lang="en">
+<html class="has-background-grey has-background-<%= Math.floor(Math.random() * 5) %>" id="is-login-page" lang="en">
 
 <head>
   <title>
-    Login: Corporate Records Manager
+    Login: <%= configFns.getProperty("application.applicationName") %>
   </title>
 
   <meta charset="utf-8">
@@ -16,7 +16,7 @@
     <div class="column is-one-third-widescreen is-half-desktop is-three-quarters-tablet">
       <div class="box mx-3 my-3">
         <h1 class="title is-3 has-text-centered">
-          Corporate Records Manager
+          <%= configFns.getProperty("application.applicationName") %>
         </h1>
         <form method="post" action="<%= urlPrefix %>/login">
           <input name="_csrf" type="hidden" value="<%= csrfToken %>" />

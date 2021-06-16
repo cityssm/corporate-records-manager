@@ -3,6 +3,7 @@ Object.freeze(config);
 const configOverrides = {};
 const configFallbackValues = new Map();
 configFallbackValues.set("application.httpPort", 58009);
+configFallbackValues.set("application.applicationName", "Corporate Records Manager");
 configFallbackValues.set("reverseProxy.disableCompression", false);
 configFallbackValues.set("reverseProxy.disableEtag", false);
 configFallbackValues.set("reverseProxy.blockViaXForwardedFor", false);

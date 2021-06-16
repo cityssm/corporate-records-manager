@@ -3,7 +3,7 @@
 
 <head>
   <title>
-    <%= headTitle === "" ? "" :  headTitle + " - " %>Corporate Records Manager
+    <%= (headTitle === "" ? "" :  headTitle + " - ") + configFns.getProperty("application.applicationName") %>
   </title>
 
   <meta charset="utf-8">
@@ -16,7 +16,7 @@
   <nav class="navbar is-dark">
     <div class="navbar-brand">
       <a class="navbar-item has-text-weight-bold" href="<%= urlPrefix %>/dashboard">
-        Corporate Records Manager
+        <%= configFns.getProperty("application.applicationName") %>
       </a>
       <a class="navbar-burger" id="navbar-burger" role="button" href="#navbar-menu" aria-label="menu" aria-expanded="false" data-target="navbar-menu">
         <span aria-hidden="true"></span>
