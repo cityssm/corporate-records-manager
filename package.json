@@ -1,6 +1,6 @@
 {
   "name": "corporate-records-manager",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "A system for tracking various corporate records administered by the Clerks Department.",
   "type": "module",
   "exports": "./app.js",
@@ -74,5 +74,6 @@
     "gulp": "^4.0.2",
     "gulp-minify": "^3.1.0",
     "nodemon": "^2.0.7"
-  }
+  },
+  "private": true
 }
