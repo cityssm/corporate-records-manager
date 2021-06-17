@@ -129,6 +129,26 @@
               <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
               <span>Save Record Changes</span>
             </button>
+            <% if (!isNew) { %>
+              <div class="dropdown is-right is-hoverable">
+                <div class="dropdown-trigger">
+                  <button class="button" type="button" aria-haspopup="true" aria-controls="dropdown-menu--more">
+                    <span>Options</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu--more" role="menu">
+                  <div class="dropdown-content">
+                    <a class="dropdown-item" id="is-remove-record-button" href="#">
+                      <span class="icon"><i class="fas fa-trash-alt has-text-danger" aria-hidden="true"></i></span>
+                      <span>Remove Record</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            <% } %>
           </div>
         </div>
       </div>

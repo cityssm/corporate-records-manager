@@ -10,6 +10,34 @@ declare const cityssm: cityssmGlobal;
   const urlPrefix: string = exports.urlPrefix;
   const recordID = (document.getElementById("record--recordID") as HTMLInputElement).value;
 
+  document.getElementById("is-remove-record-button").addEventListener("click", (clickEvent) => {
+    clickEvent.preventDefault();
+
+    const removeFn = () => {
+
+      cityssm.postJSON(urlPrefix + "/edit/doRemove", {
+        recordID: recordID
+      }, (responseJSON: { success: boolean; message?: string }) => {
+
+        if (responseJSON.success) {
+          window.location.href = urlPrefix + "/dashboard";
+        } else {
+          cityssm.alertModal("Record Remove Error",
+            cityssm.escapeHTML(responseJSON.message),
+            "OK",
+            "danger");
+        }
+      });
+    };
+
+    cityssm.confirmModal("Remove Record?",
+      "Are you sure you want to remove this record?",
+      "Yes, Remove the Record",
+      "warning",
+      removeFn
+    );
+  });
+
   const clearPanelBlocksFn = (panelEle: HTMLElement) => {
 
     const panelBlockEles = panelEle.getElementsByClassName("panel-block");

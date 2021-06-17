@@ -4,6 +4,7 @@ import * as configFns from "../helpers/configFns.js";
 
 import handler_edit from "../handlers/edit.js";
 import handler_doUpdate from "../handlers/doUpdate.js";
+import handler_doRemove from "../handlers/doRemove.js";
 
 import handler_doGetSuggestedTags from "../handlers/doGetSuggestedTags.js";
 
@@ -36,6 +37,7 @@ router.get("/", (_req, res) => {
 
 
 router.post("/doUpdate", handler_doUpdate);
+router.post("/doRemove", handler_doRemove);
 
 
 router.post("/doGetSuggestedTags", handler_doGetSuggestedTags);

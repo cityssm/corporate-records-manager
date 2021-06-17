@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as configFns from "../helpers/configFns.js";
 import handler_edit from "../handlers/edit.js";
 import handler_doUpdate from "../handlers/doUpdate.js";
+import handler_doRemove from "../handlers/doRemove.js";
 import handler_doGetSuggestedTags from "../handlers/doGetSuggestedTags.js";
 import handler_doAddStatus from "../handlers/doAddStatus.js";
 import handler_doUpdateStatus from "../handlers/doUpdateStatus.js";
@@ -22,6 +23,7 @@ router.get("/", (_req, res) => {
     return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
 });
 router.post("/doUpdate", handler_doUpdate);
+router.post("/doRemove", handler_doRemove);
 router.post("/doGetSuggestedTags", handler_doGetSuggestedTags);
 router.post("/doAddStatus", handler_doAddStatus);
 router.post("/doUpdateStatus", handler_doUpdateStatus);
