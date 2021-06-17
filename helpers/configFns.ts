@@ -33,7 +33,7 @@ configFallbackValues.set("reverseProxy.urlPrefix", "");
 
 configFallbackValues.set("session.cookieName", "corporate-records-manager-user-sid");
 configFallbackValues.set("session.secret", "cityssm/corporate-records-manager");
-configFallbackValues.set("session.maxAgeMillis", 5 * 60 * 60 * 1000);
+configFallbackValues.set("session.maxAgeMillis", 4 * 60 * 60 * 1000);
 configFallbackValues.set("session.doKeepAlive", false);
 
 configFallbackValues.set("integrations.docuShare.isEnabled", false);

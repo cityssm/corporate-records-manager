@@ -8,10 +8,10 @@ export interface Config {
         applicationName?: string;
     };
     reverseProxy?: {
-        disableCompression: boolean;
-        disableEtag: boolean;
-        blockViaXForwardedFor: boolean;
-        urlPrefix: string;
+        disableCompression?: boolean;
+        disableEtag?: boolean;
+        blockViaXForwardedFor?: boolean;
+        urlPrefix?: string;
     };
     session?: {
         cookieName?: string;
