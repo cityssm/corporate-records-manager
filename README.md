@@ -35,4 +35,4 @@ Windows service install scripts are available as well.
 
 ## Getting Started
 
-[Documentation](docs/readme.md)
+[Documentation](docs/)
