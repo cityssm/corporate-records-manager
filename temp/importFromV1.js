@@ -46,6 +46,12 @@ const doTablePurge = async () => {
             await pool.request()
                 .query("delete from " + tableName);
         }
+        const tablesToReseed = ["CR.RecordCommentLog", "CR.RecordStatusLog",
+            "CR.RecordURLs", "CR.Records"];
+        for (const tableName of tablesToReseed) {
+            await pool.request()
+                .query("DBCC CHECKIDENT ('" + tableName + "', RESEED, 1)");
+        }
     }
     catch (e) {
         console.log(e);
