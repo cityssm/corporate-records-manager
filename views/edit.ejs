@@ -37,9 +37,14 @@
           <div class="columns">
             <div class="column">
               <label class="label" for="record--recordNumber"><%= recordType.recordType %> Number</label>
-              <div class="field has-addons">
+              <div class="field has-addons mb-1">
                 <div class="control has-icons-right is-expanded">
-                  <input class="input" id="record--recordNumber" name="recordNumber" type="text" value="<%= record.recordNumber %>" maxlength="30" required <%= (isNew ? "" : "readonly") %> />
+                  <input class="input" id="record--recordNumber" name="recordNumber" type="text"
+                    value="<%= record.recordNumber %>"
+                    minlength="<%= (isNew || record.recordNumber.length >= recordType.minlength ? recordType.minlength : 1) %>"
+                    maxlength="<%= (isNew || record.recordNumber.length <= recordType.maxlength ? recordType.maxlength : 30) %>"
+                    pattern="<%= (isNew || new RegExp(recordType.pattern).test(record.recordNumber) ? recordType.pattern : "") %>"
+                    required <%= (isNew ? "" : "readonly") %> />
                   <span class="icon is-small is-right">
                     <i class="fas fa-pencil-alt <%= (isNew ? "" : "is-hidden") %>" aria-hidden="true"></i>
                     <i class="fas fa-lock <%= (isNew ? "is-hidden" : "") %>" aria-hidden="true"></i>
@@ -51,6 +56,9 @@
                   </button>
                 </div>
               </div>
+              <% if (recordType.patternHelp !== "") { %>
+                <p class="help"><%= recordType.patternHelp %></p>
+              <% } %>
             </div>
             <div class="column">
               <label class="label" for="record--recordDateString"><%= recordType.recordType %> Date</label>

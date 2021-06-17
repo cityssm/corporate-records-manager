@@ -13,6 +13,10 @@ create table CR.Users (
 create table CR.RecordTypes (
 	recordTypeKey varchar(20) primary key not null,
 	recordType varchar(100) not null,
+	minlength tinyint not null default 1 check (minlength > 0 and minlength <= 30),
+	maxlength tinyint not null default 30 check (maxlength > 0 and maxlength <= 30),
+	pattern varchar(50) not null default '',
+	patternHelp varchar(100) not null default '',
 	isActive bit not null default 1
 )
 

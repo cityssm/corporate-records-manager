@@ -6,7 +6,7 @@ export const getRecordTypes = async () => {
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         const result = await pool.request()
-            .query("select recordTypeKey, recordType, isActive" +
+            .query("select recordTypeKey, recordType, minlength, maxlength, pattern, patternHelp, isActive" +
             " from CR.RecordTypes" +
             " order by recordType");
         if (result.recordset && result.recordset.length > 0) {

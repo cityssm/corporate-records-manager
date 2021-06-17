@@ -6,6 +6,10 @@
 export interface RecordType {
   recordTypeKey: string;
   recordType: string;
+  minlength: number;
+  maxlength: number;
+  pattern: string;
+  patternHelp: string;
   isActive: boolean;
 };
 

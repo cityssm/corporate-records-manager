@@ -15,7 +15,7 @@ export const getRecordTypes = async (): Promise<RecordType[]> => {
       await sqlPool.connect(configFns.getProperty("mssqlConfig"));
 
     const result = await pool.request()
-      .query("select recordTypeKey, recordType, isActive" +
+      .query("select recordTypeKey, recordType, minlength, maxlength, pattern, patternHelp, isActive" +
         " from CR.RecordTypes" +
         " order by recordType");
 
