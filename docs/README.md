@@ -1,3 +1,5 @@
+[Home](../)
+
 # Help Documentation
 
 -   [Setup and Configuration](setup.md)
