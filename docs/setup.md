@@ -1,3 +1,7 @@
+[Home](../)
+&middot;
+[Documentation](./)
+
 # Setup and Configuration
 
 Application configuration is done by an application administrator.
