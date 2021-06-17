@@ -1,5 +1,8 @@
-# Corporate Records Manager Help Documentation
+# Help Documentation
 
 ![Update By-Law](screenshot.png)
 
-**Coming soon**
+- [Setup and Configuration](setup.md)
+- [Finding Records](search.md)
+- [Creating and Updating Records](createUpdate.md)
+- [Reporting Options](reporting.md)
