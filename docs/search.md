@@ -1,4 +1,6 @@
-[Documentation Home](./)
+[Home](https://cityssm.github.io/corporate-records-manager/)
+&middot;
+[Documentation](./)
 
 # Finding Records
 

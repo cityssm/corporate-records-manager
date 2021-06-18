@@ -1,4 +1,4 @@
-[Home](../)
+[Home](https://cityssm.github.io/corporate-records-manager/)
 
 # Help Documentation
 
