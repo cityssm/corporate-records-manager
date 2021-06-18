@@ -1,4 +1,4 @@
-[Home](../)
+[Home](../readme.md)
 &middot;
 [Documentation](./)
 

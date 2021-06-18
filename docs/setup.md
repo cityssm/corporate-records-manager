@@ -1,5 +1,5 @@
-[Home](../)
-&middot;
+[Home](../readme.md)
+·
 [Documentation](./)
 
 # Setup and Configuration
@@ -47,9 +47,22 @@ a reverse proxy like IIS.
 
 ### config.mssqlConfig = {};
 
+See the [configuration options](https://www.npmjs.com/package/mssql#configuration-1) for the `node-mssql` package.
+
 ### config.adWebAuthConfig = {};
 
 ### config.integrations.docuShare = {};
+
+DocuShare integrations are powered by
+[the node-docushare project](https://github.com/cityssm/node-docushare).
+
+| Property            | Description                                                                                     | Example                                                                                         |
+| ------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `isEnabled`         | Disabled by default.                                                                            | `true`                                                                                          |
+| `rootURL`           |                                                                                                 | `"http://xerox.local/docushare"`                                                                |
+| `collectionHandles` | An array of handles, their common names, and the recordTypeKeys they are contain documents for. | `[{title: "2000 - 2010 By-Laws", handle: "Collection-101", recordTypeKey: ["bylaw"]}, ..., {}]` |
+| `server`            | Server configuration for node-docushare.                                                        | `{serverName: "192.168.1.2"}`                                                                   |
+| "session"           | User configuration for node-docushare.                                                          | `{userName: "apiUser", password: "p@ssw0rd"}`                                                   |
 
 ## Database Tables
 
