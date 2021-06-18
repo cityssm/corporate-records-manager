@@ -10,7 +10,7 @@ A system for tracking various corporate records administered by the Clerks Depar
 
 [Read the Documentation](https://cityssm.github.io/corporate-records-manager/docs/)
 
-![Edit By-Law Screenshot](docs/screenshot.png)
+![Edit By-Law Screenshot](docs/update.png)
 
 ## Features
 
@@ -37,3 +37,13 @@ but will likely run in environments that support the following.
 -   Run `npm start`.
 
 Windows service install scripts are available as well.
+
+## Related Projects
+
+_Shameless plugs for other related projects for municipalities by the City of Sault Ste. Marie._
+
+[Lottery Licence Manager](https://github.com/cityssm/lottery-licence-manager)<br />
+A web application for managing AGCO's municipal lottery licensing requirements in Ontario.
+
+[node-docushare](https://github.com/cityssm/node-docushare)<br />
+An unofficial DocuShare API for NodeJS.
