@@ -6,7 +6,14 @@
 
 ![Login Screen](login.png)
 
--   [Setup and Configuration](setup.md)
--   [Finding Records](search.md)
--   [Creating and Updating Records](createUpdate.md)
--   [Reporting Options](reporting.md)
+**[Setup and Configuration](setup.md)**<br />
+The config.js file.  The database configuration tables.
+
+**[Finding Records](search.md)**<br />
+Searching and filtering like a pro.
+
+**[Creating and Updating Records](createUpdate.md)**<br />
+And how to delete records too.
+
+**[Reporting Options](reporting.md)**<br />
+Export data in the Excel-friendly CSV format.
