@@ -41,6 +41,16 @@ $modal-content-width: 900px;
   body > .columns {
     min-height: 100vh;
   }
+
+  .box {
+    background-color: rgba($white, 0.92);
+    transition: background-color 100ms;
+
+    &:hover,
+    &:focus-within {
+      background-color: $white;
+    }
+  }
 }
 
 .navbar-burger span {
