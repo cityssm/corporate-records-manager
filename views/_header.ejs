@@ -10,12 +10,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="csrf-token" content="<%= csrfToken %>">
   <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.min.css" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="<%= urlPrefix %>/images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="<%= urlPrefix %>/images/favicon-512x512.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="<%= urlPrefix %>/images/favicon-192x192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="<%= urlPrefix %>/images/favicon-32x32.png" />
+  <link rel="mask-icon" href="<%= urlPrefix %>/images/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="<%= urlPrefix %>/images/favicon.ico" />
 </head>
 
 <body>
   <nav class="navbar is-dark">
     <div class="navbar-brand">
       <a class="navbar-item has-text-weight-bold" href="<%= urlPrefix %>/dashboard">
+        <img class="mr-2" src="<%= urlPrefix %>/images/favicon-32x32.png" alt="" />
         <%= configFns.getProperty("application.applicationName") %>
       </a>
       <a class="navbar-burger" id="navbar-burger" role="button" href="#navbar-menu" aria-label="menu" aria-expanded="false" data-target="navbar-menu">

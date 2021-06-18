@@ -9,67 +9,80 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.min.css" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="<%= urlPrefix %>/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="<%= urlPrefix %>/images/favicon-512x512.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="<%= urlPrefix %>/images/favicon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="<%= urlPrefix %>/images/favicon-32x32.png">
+  <link rel="mask-icon" href="<%= urlPrefix %>/images/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="<%= urlPrefix %>/images/favicon.ico">
 </head>
 
 <body>
   <div class="columns is-vcentered is-centered has-min-page-height is-marginless">
-    <div class="column is-one-third-widescreen is-half-desktop is-three-quarters-tablet">
+    <div class="column is-half-widescreen is-three-quarters-desktop is-four-fifths-tablet">
       <div class="box mx-3 my-3">
         <h1 class="title is-3 has-text-centered">
           <%= configFns.getProperty("application.applicationName") %>
         </h1>
         <form method="post" action="<%= urlPrefix %>/login">
           <input name="_csrf" type="hidden" value="<%= csrfToken %>" />
-          <label class="label" for="login--userName">User Name</label>
-          <div class="field has-addons">
-            <div class="control">
-              <span class="button is-static">
-                <%= configFns.getProperty("application.userDomain") %>\</span>
+          <div class="columns">
+            <div class="column is-hidden-mobile">
+              <img src="<%= urlPrefix %>/images/logo.svg" alt="" loading="lazy" style="width:100%" />
             </div>
-            <div class="control is-expanded">
-              <input class="input" id="login--userName" name="userName" type="text" placeholder="User Name" value="<%= userName %>" autofocus required />
+            <div class="column">
+              <label class="label" for="login--userName">User Name</label>
+              <div class="field has-addons">
+                <div class="control">
+                  <span class="button is-static">
+                    <%= configFns.getProperty("application.userDomain") %>\</span>
+                </div>
+                <div class="control is-expanded">
+                  <input class="input" id="login--userName" name="userName" type="text" placeholder="User Name" value="<%= userName %>" autofocus required />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="login--password">Password</label>
+                <div class="control has-icons-left">
+                  <input class="input" id="login--password" name="password" type="password" placeholder="Password" required />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-key" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="level is-mobile">
+                <div class="level-left has-text-danger">
+                  <% if (message !== "") { %>
+                    <span class="icon">
+                      <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                    </span>
+                    <span>
+                      <%= message %></span>
+                      <% } %>
+                    </div>
+                    <div class="level-right has-text-right">
+                      <button class="button is-link" type="submit">
+                        <span class="icon">
+                          <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                        </span>
+                        <span>Log In</span>
+                      </button>
+                    </div>
+                  </div>
             </div>
           </div>
-          <div class="field">
-            <label class="label" for="login--password">Password</label>
-            <div class="control has-icons-left">
-              <input class="input" id="login--password" name="password" type="password" placeholder="Password" required />
-              <span class="icon is-small is-left">
-                <i class="fas fa-key" aria-hidden="true"></i>
-              </span>
-            </div>
-          </div>
-
-          <div class="level is-mobile">
-            <div class="level-left has-text-danger">
-              <% if (message !== "") { %>
-              <span class="icon">
-                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
-              </span>
-              <span>
-                <%= message %></span>
-              <% } %>
-            </div>
-            <div class="level-right has-text-right">
-              <button class="button is-link" type="submit">
-                <span class="icon">
-                  <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
-                </span>
-                <span>Log In</span>
-              </button>
-            </div>
-          </div>
-
-          <p class="has-text-right is-size-7">
-            <a href="https://cityssm.github.io/corporate-records-manager/docs/" target="_blank" rel="nofollow noreferrer">
-              Help
-            </a>
-            &middot;
-            <a href="https://github.com/cityssm/corporate-records-manager" target="_blank" rel="nofollow noreferrer">
-              GitHub
-            </a>
-          </p>
         </form>
+        <hr />
+        <p class="has-text-right is-size-7">
+          <a href="https://cityssm.github.io/corporate-records-manager/docs/" target="_blank" rel="nofollow noreferrer">
+            Help
+          </a>
+          &middot;
+          <a href="https://github.com/cityssm/corporate-records-manager" target="_blank" rel="nofollow noreferrer">
+            GitHub
+          </a>
+        </p>
       </div>
     </div>
   </div>
