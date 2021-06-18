@@ -1,6 +1,4 @@
-[Home](../readme.md)
-·
-[Documentation](./)
+[Documentation Home](./)
 
 # Setup and Configuration
 

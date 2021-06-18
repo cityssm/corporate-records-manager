@@ -1,6 +1,4 @@
-[Home](../readme.md)
-&middot;
-[Documentation](./)
+[Documentation Home](./)
 
 # Creating and Updating Records
 
