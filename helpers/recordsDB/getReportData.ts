@@ -17,8 +17,6 @@ export const getReportData = async (reportName: string, params: { [paramName: st
     return [];
   }
 
-  debugSQL(params);
-
   try {
     const pool: sqlTypes.ConnectionPool =
       await sqlPool.connect(configFns.getProperty("mssqlConfig"));

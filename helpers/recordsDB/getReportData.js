@@ -8,7 +8,6 @@ export const getReportData = async (reportName, params = {}) => {
     if (!reportDefinition) {
         return [];
     }
-    debugSQL(params);
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         let request = pool.request();
