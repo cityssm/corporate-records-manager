@@ -5,7 +5,8 @@ export const config: configTypes.Config = {
 
   application: {
     applicationName: "Corporate Records Manager",
-    userDomain: "x"
+    userDomain: "",
+    enableTempAdminUser: true
   },
 
   session: {
@@ -13,7 +14,7 @@ export const config: configTypes.Config = {
   },
 
   // ad-web-auth details
-  // https://github.com/cityssm/ad-web-auth
+  // Not used
   adWebAuthConfig: {
     url: "http://127.0.0.1:46464",
     method: "headers",
@@ -22,8 +23,8 @@ export const config: configTypes.Config = {
   },
 
   mssqlConfig: {
-    user: "dbUser",
-    password: "dbP@ssw0rd",
+    user: "SA",
+    password: "Password12!",
     server: "localhost",
     database: "corporateRecords",
     options: {

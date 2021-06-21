@@ -9,6 +9,7 @@ export interface Config {
     httpPort?: number;
     userDomain?: string;
     applicationName?: string;
+    enableTempAdminUser?: boolean;
   };
 
   reverseProxy?: {

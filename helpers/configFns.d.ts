@@ -5,6 +5,7 @@ import type * as docuShareConfig from "@cityssm/docushare/types";
 export declare function getProperty(propertyName: "application.httpPort"): number;
 export declare function getProperty(propertyName: "application.userDomain"): string;
 export declare function getProperty(propertyName: "application.applicationName"): string;
+export declare function getProperty(propertyName: "application.enableTempAdminUser"): boolean;
 export declare function getProperty(propertyName: "reverseProxy.disableCompression"): boolean;
 export declare function getProperty(propertyName: "reverseProxy.disableEtag"): boolean;
 export declare function getProperty(propertyName: "reverseProxy.blockViaXForwardedFor"): boolean;

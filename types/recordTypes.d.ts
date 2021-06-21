@@ -62,6 +62,7 @@ export declare type RecordURL = {
 } & TrackedValue;
 export interface User {
     userName: string;
+    password?: string;
     canUpdate: boolean;
     isAdmin: boolean;
 }

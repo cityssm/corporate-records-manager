@@ -26,8 +26,26 @@ import routerReports from "./routes/reports.js";
 
 import { getRecordTypes } from "./helpers/recordsDB/configCache.js";
 
+import { generatePassword } from "@cityssm/simple-password-generator";
+import type { User } from "./types/recordTypes";
+
 import debug from "debug";
 const debugApp = debug("corporate-records-manager:app");
+
+
+export const tempAdmin: User = {
+  userName: "~tempAdmin",
+  canUpdate: false,
+  isAdmin: true,
+  password: generatePassword({
+    pattern: "xxxxxXXXXXnnnnn",
+    doShufflePattern: true
+  })
+};
+
+if (configFns.getProperty("application.enableTempAdminUser")) {
+  debugApp("WARNING: ~tempAdmin currently enabled.");
+}
 
 
 /*

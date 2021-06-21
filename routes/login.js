@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { tempAdmin } from "../app.js";
 import * as authFns from "../helpers/authFns.js";
 import * as configFns from "../helpers/configFns.js";
 import { getUser } from "../helpers/recordsDB/getUser.js";
@@ -20,9 +21,26 @@ router.route("/")
     }
 })
     .post(async (req, res) => {
-    const userName = req.body.userName.toLowerCase();
+    let userName = req.body.userName;
     const passwordPlain = req.body.password;
+    if (configFns.getProperty("application.enableTempAdminUser") && userName === tempAdmin.userName) {
+        if (passwordPlain === tempAdmin.password) {
+            req.session.user = {
+                userName: tempAdmin.userName,
+                canUpdate: tempAdmin.canUpdate,
+                isAdmin: tempAdmin.isAdmin
+            };
+            return res.redirect(redirectURL);
+        }
+        else {
+            return res.render("login", {
+                userName,
+                message: "Access Denied"
+            });
+        }
+    }
     try {
+        userName = userName.toLowerCase();
         const isAuthenticated = await authFns.authenticate(userName, passwordPlain);
         if (isAuthenticated) {
             const user = await getUser(userName);

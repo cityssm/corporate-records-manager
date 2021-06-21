@@ -1,5 +1,7 @@
 import * as assert from "assert";
 
+import * as pool from "@cityssm/mssql-multi-pool";
+
 import { getRecord } from "../helpers/recordsDB/getRecord.js";
 import { getRecordComments } from "../helpers/recordsDB/getRecordComments.js";
 import { getRecordStatuses } from "../helpers/recordsDB/getRecordStatuses.js";
@@ -12,39 +14,41 @@ import { getRecords } from "../helpers/recordsDB/getRecords.js";
 
 describe("recordsDB - getRecord()", () => {
 
+  after(async () => {
+    await pool.releaseAll();
+  });
+
   it("should execute getRecord()", async () => {
-    await getRecord(1);
-    assert.ok(1);
+    return await getRecord(1);
   });
 
   it("should execute getRecordComments()", async () => {
-    const result = await getRecordComments(1);
-    assert.ok(typeof (result), "object");
+    return await getRecordComments(1);
   });
 
   it("should execute getRecordStatuses()", async () => {
-    const result = await getRecordStatuses(1);
-    assert.ok(typeof (result), "object");
+    return await getRecordStatuses(1);
   });
 
   it("should execute getRecordTags()", async () => {
-    const result = await getRecordTags(1);
-    assert.ok(typeof (result), "object");
+    return await getRecordTags(1);
   });
 
   it("should execute getRecordURLs()", async () => {
-    const result = await getRecordURLs(1);
-    assert.ok(typeof (result), "object");
+    return await getRecordURLs(1);
   });
 
   it("should execute getRelatedRecords()", async () => {
-    const result = await getRelatedRecords(1);
-    assert.ok(typeof (result), "object");
+    return await getRelatedRecords(1);
   });
 });
 
 
 describe("recordsDB - getRecords()", () => {
+
+  after(async () => {
+    await pool.releaseAll();
+  });
 
   const limitOffset = {
     limit: 10,

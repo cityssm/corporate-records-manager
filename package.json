@@ -9,8 +9,8 @@
     "start": "cross-env NODE_ENV=production node ./bin/www",
     "dev": "cross-env NODE_ENV=dev DEBUG=corporate-records-manager:* nodemon ./bin/www",
     "dev:java": "cross-env NODE_ENV=dev DEBUG=java-caller nodemon ./bin/www",
-    "test": "mocha --timeout 10000",
-    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 5000",
+    "test": "mocha --timeout 5000 --exit",
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 5000 --exit",
     "importFromV1": "node ./temp/importFromV1"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "@cityssm/express-abuse-points": "^0.3.3",
     "@cityssm/expressjs-server-js": "^2.0.1",
     "@cityssm/mssql-multi-pool": "^1.4.2",
+    "@cityssm/simple-password-generator": "^2.0.2",
     "@fontsource/barlow": "^4.4.5",
     "@fortawesome/fontawesome-free": "^5.15.3",
     "compression": "^1.7.4",
@@ -75,7 +76,8 @@
     "eslint-plugin-promise": "^5.1.0",
     "gulp": "^4.0.2",
     "gulp-minify": "^3.1.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "puppeteer": "^10.0.0"
   },
   "private": true
 }

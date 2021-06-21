@@ -20,8 +20,21 @@ import routerView from "./routes/view.js";
 import routerEdit from "./routes/edit.js";
 import routerReports from "./routes/reports.js";
 import { getRecordTypes } from "./helpers/recordsDB/configCache.js";
+import { generatePassword } from "@cityssm/simple-password-generator";
 import debug from "debug";
 const debugApp = debug("corporate-records-manager:app");
+export const tempAdmin = {
+    userName: "~tempAdmin",
+    canUpdate: false,
+    isAdmin: true,
+    password: generatePassword({
+        pattern: "xxxxxXXXXXnnnnn",
+        doShufflePattern: true
+    })
+};
+if (configFns.getProperty("application.enableTempAdminUser")) {
+    debugApp("WARNING: ~tempAdmin currently enabled.");
+}
 export const app = express();
 if (!configFns.getProperty("reverseProxy.disableEtag")) {
     app.set("etag", false);

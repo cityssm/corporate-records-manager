@@ -1,7 +1,8 @@
 export const config = {
     application: {
         applicationName: "Corporate Records Manager",
-        userDomain: "x"
+        userDomain: "",
+        enableTempAdminUser: true
     },
     session: {
         maxAgeMillis: 60 * 60 * 1000
@@ -13,8 +14,8 @@ export const config = {
         passwordField: "AD-Password"
     },
     mssqlConfig: {
-        user: "dbUser",
-        password: "dbP@ssw0rd",
+        user: "SA",
+        password: "Password12!",
         server: "localhost",
         database: "corporateRecords",
         options: {

@@ -32,8 +32,8 @@ before_test:
   - sqlcmd -S localhost -U SA -P Password12! -d CorporateRecords -i ./sql/createTables.sql
 
 test_script:
-  - cp ./data/config-sample.js ./data/config.js
-  - c8 --reporter=lcov mocha --timeout 5000
+  - cp ./data/config-appveyor.js ./data/config.js
+  - c8 --reporter=lcov mocha --timeout 5000 --exit
 
 after_test:
   # Send test result to codeclimate
