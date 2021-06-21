@@ -10,7 +10,7 @@
     "dev": "cross-env NODE_ENV=dev DEBUG=corporate-records-manager:* nodemon ./bin/www",
     "dev:java": "cross-env NODE_ENV=dev DEBUG=java-caller nodemon ./bin/www",
     "test": "mocha --timeout 10000",
-    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000",
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 5000",
     "importFromV1": "node ./temp/importFromV1"
   },
   "repository": {
@@ -61,6 +61,7 @@
     "@types/gulp": "^4.0.8",
     "@types/gulp-minify": "^3.1.0",
     "@types/http-errors": "^1.8.0",
+    "@types/mocha": "^8.2.2",
     "@types/mssql": "^6.0.8",
     "@types/papaparse": "^5.2.5",
     "@types/set-interval-async": "^1.0.0",
