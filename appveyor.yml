@@ -25,7 +25,7 @@ before_test:
   - sh: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./codeclimate-test-reporter
   - sh: chmod +x ./codeclimate-test-reporter
   # Ensure SQL Server is up and running
-  - sleep 5
+  - sleep 10
   - sqlcmd -S localhost -U SA -P Password12! -Q 'select @@VERSION'
   # Initialize DB
   - sqlcmd -S localhost -U SA -P Password12! -Q 'create database CorporateRecords'

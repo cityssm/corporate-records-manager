@@ -1,14 +1,45 @@
 import * as assert from "assert";
 
-import { getRecords } from "../helpers/recordsDB/getRecords.js";
 import { getRecord } from "../helpers/recordsDB/getRecord.js";
+import { getRecordComments } from "../helpers/recordsDB/getRecordComments.js";
+import { getRecordStatuses } from "../helpers/recordsDB/getRecordStatuses.js";
+import { getRecordTags } from "../helpers/recordsDB/getRecordTags.js";
+import { getRecordURLs } from "../helpers/recordsDB/getRecordURLs.js";
+import { getRelatedRecords } from "../helpers/recordsDB/getRelatedRecords.js";
+
+import { getRecords } from "../helpers/recordsDB/getRecords.js";
 
 
-describe("recordsDB", () => {
+describe("recordsDB - getRecord()", () => {
 
   it("should execute getRecord()", async () => {
     await getRecord(1);
     assert.ok(1);
+  });
+
+  it("should execute getRecordComments()", async () => {
+    const result = await getRecordComments(1);
+    assert.ok(typeof (result), "object");
+  });
+
+  it("should execute getRecordStatuses()", async () => {
+    const result = await getRecordStatuses(1);
+    assert.ok(typeof (result), "object");
+  });
+
+  it("should execute getRecordTags()", async () => {
+    const result = await getRecordTags(1);
+    assert.ok(typeof (result), "object");
+  });
+
+  it("should execute getRecordURLs()", async () => {
+    const result = await getRecordURLs(1);
+    assert.ok(typeof (result), "object");
+  });
+
+  it("should execute getRelatedRecords()", async () => {
+    const result = await getRelatedRecords(1);
+    assert.ok(typeof (result), "object");
   });
 });
 
