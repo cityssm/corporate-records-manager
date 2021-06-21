@@ -1,0 +1,46 @@
+image: ubuntu
+platform: Any CPU
+
+environment:
+  CODACY_PROJECT_TOKEN:
+    secure: j6nhVW/UMLDWbVaIyAmm01lXiWmhQu821GYoHXrjxlr0JTLuiW8LSAO8ZC3Hlw2u
+  CC_TEST_REPORTER_ID:
+    secure: QmPT1mHJ7p9ljYIseIiZpUvg9UXZ6jC/EoP2BWy4V/TI99DCNTOnIyU6kIiaiJe51Q2h+69v10ti/q3tPDMuxR2ao/itYS6LWAdf6UVH1CU=
+
+stack: "node 14"
+
+services:
+  - mssql
+
+install:
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  # install modules
+  - sh: npm install
+  - sh: npm install -g mocha c8
+
+before_test:
+  # Download codeclimate test report
+  - sh: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./codeclimate-test-reporter
+  - sh: chmod +x ./codeclimate-test-reporter
+  # Ensure SQL Server is up and running
+  - sleep 5
+  - sqlcmd -S localhost -U SA -P Password12! -Q 'select @@VERSION'
+  # Initialize DB
+  - sqlcmd -S localhost -U SA -P Password12! -Q 'create database CorporateRecords'
+  - sqlcmd -S localhost -U SA -P Password12! -d CorporateRecords -i ./sql/createTables.sql
+
+test_script:
+  - cp ./data/config-sample.js ./data/config.js
+  - c8 --reporter=lcov mocha --timeout 30000
+
+after_test:
+  # Send test result to codeclimate
+  - sh: ./codeclimate-test-reporter before-build
+  - sh: ./codeclimate-test-reporter after-build -t lcov --exit-code $?
+  # Send test result to Codacy
+  - sh: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
+
+# Don't actually build.
+build: off

@@ -13,14 +13,12 @@ export const config = {
         passwordField: "AD-Password"
     },
     mssqlConfig: {
-        user: "user",
-        password: "p@ssw0rd",
-        server: "127.0.0.1",
+        user: "SA",
+        password: "Password12!",
+        server: "localhost",
         database: "corporateRecords",
         options: {
-            encrypt: false,
-            enableArithAbort: true,
-            useUTC: false
+            encrypt: false
         }
     }
 };

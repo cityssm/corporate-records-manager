@@ -21,15 +21,18 @@ export const config: configTypes.Config = {
     passwordField: "AD-Password"
   },
 
+  /*
+   * The credentials below help with testing.
+   * In a live system, SA should never be used as you rapplication user.
+   * The application user needs read and write access only.
+   */
   mssqlConfig: {
-    user: "user",
-    password: "p@ssw0rd",
-    server: "127.0.0.1",
+    user: "SA",
+    password: "Password12!",
+    server: "localhost",
     database: "corporateRecords",
     options: {
-      encrypt: false,
-      enableArithAbort: true,
-      useUTC: false
+      encrypt: false
     }
   }
 };
