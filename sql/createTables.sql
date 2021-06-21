@@ -8,6 +8,7 @@ create table CR.Users (
 	canUpdate bit not null default 0,
 	isAdmin bit not null default 0
 )
+GO
 
 
 create table CR.RecordTypes (
@@ -19,12 +20,14 @@ create table CR.RecordTypes (
 	patternHelp varchar(100) not null default '',
 	isActive bit not null default 1
 )
+GO
 
 
 insert into CR.RecordTypes (recordTypeKey, recordType) values ('agreement','Agreement')
 insert into CR.RecordTypes (recordTypeKey, recordType) values ('bylaw',    'By-Law')
 insert into CR.RecordTypes (recordTypeKey, recordType) values ('deed',     'Deed')
 insert into CR.RecordTypes (recordTypeKey, recordType) values ('easement', 'Easement')
+GO
 
 
 create table CR.Records (
@@ -48,6 +51,7 @@ create table CR.Records (
 	on update cascade
 	on delete no action
 )
+GO
 
 
 create table CR.RelatedRecords (
@@ -63,6 +67,7 @@ create table CR.RelatedRecords (
 	on delete no action,
 	constraint ck_relatedrecords check (recordID_A < recordID_B)
 )
+GO
 
 
 create table CR.RecordTags (
@@ -74,6 +79,7 @@ create table CR.RecordTags (
 	on update no action
 	on delete no action
 )
+GO
 
 
 create view CR.RecordTagCSV as
@@ -87,6 +93,7 @@ create view CR.RecordTagCSV as
     as tagCSV
     from CR.RecordTags t1
     group by recordID
+GO
 
 
 create table CR.StatusTypes (
@@ -100,6 +107,7 @@ create table CR.StatusTypes (
 	on update cascade
 	on delete cascade
 )
+GO
 
 
 insert into CR.StatusTypes (statusTypeKey, recordTypeKey, statusType, orderNumber, isActive)
@@ -116,6 +124,8 @@ values ('bylaw-repealing', 'bylaw', 'Repealing', 4, 1)
 
 insert into CR.StatusTypes (statusTypeKey, recordTypeKey, statusType, orderNumber, isActive)
 values ('bylaw-repealed', 'bylaw', 'Repealed', 5, 1)
+
+GO
 
 
 create table CR.RecordStatusLog (
@@ -141,6 +151,7 @@ create table CR.RecordStatusLog (
 	on update cascade
 	on delete no action
 )
+GO
 
 
 create table CR.RecordCommentLog (
@@ -161,6 +172,7 @@ create table CR.RecordCommentLog (
 	on update no action
 	on delete no action
 )
+GO
 
 
 create table CR.RecordURLs (
@@ -182,3 +194,4 @@ create table CR.RecordURLs (
 	on update no action
 	on delete no action
 )
+GO
