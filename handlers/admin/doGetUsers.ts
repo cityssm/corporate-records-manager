@@ -1,11 +1,17 @@
 import type { RequestHandler } from "express";
 
+import getUsers from "../../helpers/recordsDB/getUsers.js";
+
 
 export const handler: RequestHandler = async (_req, res) => {
 
-  res.render("dashboard", {
-    headTitle: "Dashboard"
+  const users = await getUsers();
+
+  return res.json({
+    success: true,
+    users
   });
+
 };
 
 

@@ -19,6 +19,7 @@ import routerNew from "./routes/new.js";
 import routerView from "./routes/view.js";
 import routerEdit from "./routes/edit.js";
 import routerReports from "./routes/reports.js";
+import routerAdmin from "./routes/admin.js";
 import { getRecordTypes } from "./helpers/recordsDB/configCache.js";
 import { generatePassword } from "@cityssm/simple-password-generator";
 import debug from "debug";
@@ -117,6 +118,7 @@ app.use(urlPrefix + "/view", sessionChecker, routerView);
 app.use(urlPrefix + "/new", sessionChecker, permissionHandlers.canUpdate, routerNew);
 app.use(urlPrefix + "/edit", sessionChecker, permissionHandlers.canUpdate, routerEdit);
 app.use(urlPrefix + "/reports", sessionChecker, routerReports);
+app.use(urlPrefix + "/admin", sessionChecker, permissionHandlers.isAdmin, routerAdmin);
 app.use(urlPrefix + "/login", routerLogin);
 app.get(urlPrefix + "/logout", (req, res) => {
     if (req.session.user && req.cookies[sessionCookieName]) {

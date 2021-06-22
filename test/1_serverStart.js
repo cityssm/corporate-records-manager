@@ -35,6 +35,9 @@ describe("corporate-records-manager", () => {
         const pageTests = {
             reports: {
                 goto: "/reports"
+            },
+            admin: {
+                goto: "/admin"
             }
         };
         for (const pageName of Object.keys(pageTests)) {

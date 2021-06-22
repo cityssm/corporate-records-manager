@@ -2,7 +2,7 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getUser");
-export const getUser = async (userName) => {
+export const getUser = async (userName, filterByIsActive = true) => {
     let user = null;
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
@@ -10,8 +10,8 @@ export const getUser = async (userName) => {
             .input("userName", userName)
             .query("select userName, canUpdate, isAdmin" +
             " from CR.Users" +
-            " where isActive = 1" +
-            " and userName = @userName");
+            " where userName = @userName" +
+            (filterByIsActive ? " and isActive = 1" : ""));
         if (result.recordset && result.recordset.length > 0) {
             user = result.recordset[0];
         }

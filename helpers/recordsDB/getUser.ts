@@ -8,7 +8,7 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getUser");
 
 
-export const getUser = async (userName: string): Promise<User> => {
+export const getUser = async (userName: string, filterByIsActive: boolean = true): Promise<User> => {
 
   let user: User = null;
 
@@ -20,8 +20,8 @@ export const getUser = async (userName: string): Promise<User> => {
       .input("userName", userName)
       .query("select userName, canUpdate, isAdmin" +
         " from CR.Users" +
-        " where isActive = 1" +
-        " and userName = @userName");
+        " where userName = @userName" +
+        (filterByIsActive ? " and isActive = 1" : ""));
 
     if (result.recordset && result.recordset.length > 0) {
       user = result.recordset[0];

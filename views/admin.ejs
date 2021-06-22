@@ -1,0 +1,87 @@
+<%- include('_header'); -%>
+
+<h1 class="title is-1">Administration</h1>
+
+<div class="columns">
+  <div class="column is-3">
+    <aside class="menu" id="admin--tabs" role="tablist">
+      <p class="menu-label">
+        Accounts
+      </p>
+      <ul class="menu-list">
+        <li>
+          <a id="adminTab--users" href="#adminTabpanel--users" role="tab" aria-selected="false" aria-controls="adminTabpanel--users">
+            <span class="icon"><i class="fas fa-users" aria-hidden="true"></i></span>
+            <span>Users</span>
+          </a>
+        </li>
+      </ul>
+      <p class="menu-label">
+        Record Configuration
+      </p>
+      <ul class="menu-list">
+        <li>
+          <a id="adminTab--recordTypes" href="#adminTabpanel--recordTypes" role="tab" aria-selected="false" aria-controls="adminTabpanel--recordTypes">
+            <span class="icon"><i class="fas fa-book" aria-hidden="true"></i></span>
+            <span>Record Types</span>
+          </a>
+        </li>
+        <li>
+          <a id="adminTab--statusTypes" href="#adminTabpanel--statusTypes" role="tab" aria-selected="false" aria-controls="adminTabpanel--statusTypes">
+            <span class="icon"><i class="fas fa-star" aria-hidden="true"></i></span>
+            <span>Status Types</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+  </div>
+  <div class="column" id="admin--tabpanels">
+    <div class="message is-info" role="tabpanel">
+      <p class="message-body">
+        <strong>Welcome to the <%= configFns.getProperty("application.applicationName") %> Administration Section.</strong>
+      </p>
+    </div>
+    <div class="is-hidden" id="adminTabpanel--users" role="tabpanel" aria-labelledby="adminTab--users">
+      <div class="columns is-desktop">
+        <div class="column">
+          <h2 class="title is-3">Users</h2>
+        </div>
+        <div class="column">
+          <form id="form--addUser">
+            <div class="field has-addons">
+              <div class="control">
+                <span class="button is-static"><%= configFns.getProperty("application.userDomain") %>\</span>
+              </div>
+              <div class="control is-expanded">
+                <input class="input" id="addUser--userName" name="userName" type="text" placeholder="New User Name" pattern="^[\w/.]+$" maxlength="30" aria-label="New User Name" required />
+              </div>
+              <div class="control">
+                <button class="button is-success" type="submit">
+                  <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                  <span>Add User</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="container--users"></div>
+    </div>
+    <div class="is-hidden" id="adminTabpanel--recordTypes" role="tabpanel" aria-labelledby="adminTab--recordTypes">
+      <h2 class="title is-3">Record Types</h2>
+      <div class="message is-info">
+        <p class="message-body">Coming Soon</p>
+      </div>
+    </div>
+    <div class="is-hidden" id="adminTabpanel--statusTypes" role="tabpanel" aria-labelledby="adminTab--statusTypes">
+      <h2 class="title is-3">Status Types</h2>
+      <div class="message is-info">
+        <p class="message-body">Coming Soon</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('_footerA'); -%>
+<script src="<%= urlPrefix %>/javascripts/admin.min.js"></script>
+<%- include('_footerB'); -%>

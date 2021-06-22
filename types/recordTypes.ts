@@ -91,9 +91,10 @@ export type RecordURL = {
 
 export interface User {
   userName: string;
-  password?: string;
   canUpdate: boolean;
   isAdmin: boolean;
+  isActive?: boolean;
+  password?: string;
 };
 
 

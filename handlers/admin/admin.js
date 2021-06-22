@@ -1,6 +1,6 @@
 export const handler = async (_req, res) => {
-    res.render("dashboard", {
-        headTitle: "Dashboard"
+    res.render("admin", {
+        headTitle: "Administration"
     });
 };
 export default handler;

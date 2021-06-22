@@ -61,6 +61,9 @@ describe("corporate-records-manager", () => {
     } = {
       reports: {
         goto: "/reports"
+      },
+      admin: {
+        goto: "/admin"
       }
     };
 
