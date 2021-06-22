@@ -2,11 +2,11 @@ import { Router } from "express";
 
 import * as configFns from "../helpers/configFns.js";
 
-import handler_view from "../handlers/view.js";
-import handler_doGetStatuses from "../handlers/doGetStatuses.js";
-import handler_doGetURLs from "../handlers/doGetURLs.js";
-import handler_doGetRelatedRecords from "../handlers/doGetRelatedRecords.js";
-import handler_doGetComments from "../handlers/doGetComments.js";
+import handler_view from "../handlers/view/view.js";
+import handler_doGetStatuses from "../handlers/view/doGetStatuses.js";
+import handler_doGetURLs from "../handlers/view/doGetURLs.js";
+import handler_doGetRelatedRecords from "../handlers/view/doGetRelatedRecords.js";
+import handler_doGetComments from "../handlers/view/doGetComments.js";
 
 
 export const router = Router();

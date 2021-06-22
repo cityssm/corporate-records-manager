@@ -1,9 +1,9 @@
 import { Router } from "express";
 
 
-import handler_dashboard from "../handlers/dashboard.js";
+import handler_dashboard from "../handlers/dashboard/dashboard.js";
 
-import handler_doGetRecords from "../handlers/doGetRecords.js";
+import handler_doGetRecords from "../handlers/dashboard/doGetRecords.js";
 
 
 export const router = Router();
