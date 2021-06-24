@@ -307,13 +307,11 @@ declare const cityssm: cityssmGlobal;
     clickEvent.preventDefault();
 
     const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
-    buttonEle.disabled = true;
 
     const trEle = buttonEle.closest("tr");
 
     const recordTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
     const recordType = recordTypes[recordTypeIndex];
-
 
     let formEle: HTMLFormElement;
     let patternEle: HTMLInputElement;
@@ -325,7 +323,6 @@ declare const cityssm: cityssmGlobal;
     const submitFn = (formEvent: Event) => {
 
       formEvent.preventDefault();
-
 
       if (isSubmitting) {
         return;

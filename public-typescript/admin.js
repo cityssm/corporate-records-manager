@@ -204,7 +204,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     var updateRecordTypeFn = function (clickEvent) {
         clickEvent.preventDefault();
         var buttonEle = clickEvent.currentTarget;
-        buttonEle.disabled = true;
         var trEle = buttonEle.closest("tr");
         var recordTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
         var recordType = recordTypes[recordTypeIndex];

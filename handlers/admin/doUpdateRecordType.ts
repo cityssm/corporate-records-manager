@@ -12,8 +12,8 @@ export const handler: RequestHandler = async (req, res) => {
   const recordType: recordTypes.RecordType = {
     recordTypeKey: req.body.recordTypeKey,
     recordType: req.body.recordType,
-    minlength: parseInt(req.body.minlength),
-    maxlength: parseInt(req.body.maxlength),
+    minlength: parseInt(req.body.minlength, 10),
+    maxlength: parseInt(req.body.maxlength, 10),
     pattern: req.body.pattern,
     patternHelp: req.body.patternHelp
   };

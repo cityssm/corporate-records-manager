@@ -6,6 +6,12 @@
       <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
     </header>
     <section class="modal-card-body">
+      <div class="message is-warning">
+        <p class="message-body">
+          Be sure not to change the meaning of the record type,
+          especially if it relates to current records.
+        </p>
+      </div>
       <form id="form--editRecordType">
         <div class="columns">
           <div class="column">
@@ -17,6 +23,9 @@
                   <i class="fas fa-lock" aria-hidden="true"></i>
                 </span>
               </div>
+              <p class="help">
+                Record Type Keys cannot be changed.
+              </p>
             </div>
           </div>
           <div class="column">
