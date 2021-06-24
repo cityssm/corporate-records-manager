@@ -23,19 +23,30 @@ declare const cityssm: cityssmGlobal;
 
   let users: recordTypes.User[] = [];
 
-  const toggleUserSettingFn = (clickEvent: Event) => {
-
-    clickEvent.preventDefault();
+  const getUserFromEventFn = (clickEvent: Event) => {
 
     const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
-    buttonEle.disabled = true;
-
-    const fieldName = buttonEle.getAttribute("data-field");
 
     const trEle = buttonEle.closest("tr");
 
     const userIndex = parseInt(trEle.getAttribute("data-index"), 10);
     const user = users[userIndex];
+
+    return {
+      buttonEle,
+      trEle,
+      userIndex,
+      user
+    };
+  };
+
+  const toggleUserSettingFn = (clickEvent: Event) => {
+
+    const { buttonEle, user } = getUserFromEventFn(clickEvent);
+
+    buttonEle.disabled = true;
+
+    const fieldName = buttonEle.getAttribute("data-field");
 
     const newFieldValue = !user[fieldName];
 
@@ -83,14 +94,9 @@ declare const cityssm: cityssmGlobal;
 
   const removeUserFn = (clickEvent: Event) => {
 
-    clickEvent.preventDefault();
+    const { buttonEle, user, userIndex } = getUserFromEventFn(clickEvent);
 
-    const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
-
-    const trEle = buttonEle.closest("tr");
-
-    const userIndex = parseInt(trEle.getAttribute("data-index"), 10);
-    const userName = users[userIndex].userName;
+    const userName = user.userName;
 
     const removeFn = () => {
 
@@ -258,20 +264,32 @@ declare const cityssm: cityssmGlobal;
   };
 
   const recordTypesContainerEle = document.getElementById("container--recordTypes");
+  const recordTypesFilterEle = document.getElementById("statusTypesFilter--recordTypeKey") as HTMLSelectElement;
 
   let recordTypes: recordTypes.RecordType[] = [];
 
-  const toggleRecordTypeActiveFn = (clickEvent: Event) => {
-
-    clickEvent.preventDefault();
+  const getRecordTypeFromEventFn = (clickEvent: Event) => {
 
     const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
-    buttonEle.disabled = true;
 
     const trEle = buttonEle.closest("tr");
 
     const recordTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
     const recordType = recordTypes[recordTypeIndex];
+
+    return {
+      buttonEle,
+      trEle,
+      recordTypeIndex,
+      recordType
+    };
+  };
+
+  const toggleRecordTypeActiveFn = (clickEvent: Event) => {
+
+    const { buttonEle, recordType } = getRecordTypeFromEventFn(clickEvent);
+
+    buttonEle.disabled = true;
 
     const newIsActive = !recordType.isActive;
 
@@ -304,14 +322,7 @@ declare const cityssm: cityssmGlobal;
 
   const updateRecordTypeFn = (clickEvent: Event) => {
 
-    clickEvent.preventDefault();
-
-    const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
-
-    const trEle = buttonEle.closest("tr");
-
-    const recordTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
-    const recordType = recordTypes[recordTypeIndex];
+    const { recordType, recordTypeIndex } = getRecordTypeFromEventFn(clickEvent);
 
     let formEle: HTMLFormElement;
     let patternEle: HTMLInputElement;
@@ -394,15 +405,7 @@ declare const cityssm: cityssmGlobal;
 
   const removeRecordTypeFn = (clickEvent: Event) => {
 
-    clickEvent.preventDefault();
-
-    const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
-    buttonEle.disabled = true;
-
-    const trEle = buttonEle.closest("tr");
-
-    const recordTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
-    const recordType = recordTypes[recordTypeIndex];
+    const { recordType, recordTypeIndex } = getRecordTypeFromEventFn(clickEvent);
 
     const removeFn = () => {
       cityssm.postJSON(urlPrefix + "/admin/doRemoveRecordType", {
@@ -429,6 +432,8 @@ declare const cityssm: cityssmGlobal;
   };
 
   const renderRecordTypesFn = () => {
+
+    recordTypesFilterEle.innerHTML = "";
 
     if (recordTypes.length === 0) {
       usersContainerEle.innerHTML = "<div class=\"message is-warning\">" +
@@ -460,6 +465,8 @@ declare const cityssm: cityssmGlobal;
     for (let index = 0; index < recordTypes.length; index += 1) {
 
       const recordType = recordTypes[index];
+
+      // Record Type Row
 
       const trEle = document.createElement("tr");
       trEle.setAttribute("data-index", index.toString());
@@ -502,16 +509,24 @@ declare const cityssm: cityssmGlobal;
       }
 
       tbodyEle.appendChild(trEle);
+
+      // Status Types Filter Option
+
+      const optionEle = document.createElement("option");
+      optionEle.value = recordType.recordTypeKey;
+      optionEle.innerText = recordType.recordType;
+      recordTypesFilterEle.append(optionEle);
     }
 
     cityssm.clearElement(recordTypesContainerEle);
     recordTypesContainerEle.appendChild(tableEle);
   };
 
-  const getRecordTypesFn = () => {
+  const getRecordTypesFn = (callbackFn?: () => void) => {
 
     recordTypes = [];
 
+    recordTypesFilterEle.innerHTML = "";
     cityssm.clearElement(recordTypesContainerEle);
     recordTypesContainerEle.innerHTML = getLoadingHTML("Record Types");
 
@@ -520,6 +535,10 @@ declare const cityssm: cityssmGlobal;
 
         recordTypes = responseJSON.recordTypes;
         renderRecordTypesFn();
+
+        if (callbackFn) {
+          callbackFn();
+        }
       });
   };
 
@@ -596,6 +615,217 @@ declare const cityssm: cityssmGlobal;
    * Status Types
    */
 
+  const statusTypesContainerEle = document.getElementById("container--statusTypes");
+
+  let statusTypes: recordTypes.StatusType[] = [];
+
+  const getStatusTypeFromEventFn = (clickEvent: Event) => {
+
+    const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
+
+    const trEle = buttonEle.closest("tr");
+
+    const statusTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
+    const statusType = statusTypes[statusTypeIndex];
+
+    return {
+      buttonEle,
+      trEle,
+      statusTypeIndex,
+      statusType
+    };
+  };
+
+  const toggleStatusTypeActiveFn = (clickEvent: Event) => {
+
+    const { buttonEle, statusType } = getStatusTypeFromEventFn(clickEvent);
+
+    buttonEle.disabled = true;
+
+    const newIsActive = !statusType.isActive;
+
+    cityssm.postJSON(urlPrefix + "/admin/doSetStatusTypeIsActive", {
+      statusTypeKey: statusType.statusTypeKey,
+      isActive: newIsActive
+    }, (responseJSON: { success: boolean; message?: string }) => {
+
+      buttonEle.disabled = false;
+
+      if (responseJSON.success) {
+
+        statusType.isActive = newIsActive;
+
+        if (newIsActive) {
+          buttonEle.innerHTML = "<i class=\"fas fa-check\" aria-label=\"Active Status Type\"></i>";
+
+        } else {
+          buttonEle.innerHTML = "<i class=\"fas fa-minus\" aria-label=\"False\"></i>";
+        }
+
+      } else {
+        cityssm.alertModal("Status Type Not Updated",
+          cityssm.escapeHTML(responseJSON.message),
+          "OK",
+          "danger");
+      }
+    });
+  };
+
+  const setStatusTypeOrderNumberFn = (statusTypeKey: string, newOrderNumber: number) => {
+
+    cityssm.postJSON(urlPrefix + "/admin/doSetStatusTypeOrderNumber", {
+      statusTypeKey: statusTypeKey,
+      orderNumber: newOrderNumber
+    }, (responseJSON: { success: boolean; message?: string; statusTypes?: recordTypes.StatusType[] }) => {
+
+      if (responseJSON.success) {
+        statusTypes = responseJSON.statusTypes;
+        renderStatusTypesFn();
+      } else {
+        cityssm.alertModal("Error Moving Status Type",
+          cityssm.escapeHTML(responseJSON.message),
+          "OK",
+          "danger");
+      }
+    });
+  };
+
+  const moveStatusTypeUpFn = (clickEvent: Event) => {
+
+    const { buttonEle, statusType } = getStatusTypeFromEventFn(clickEvent);
+
+    buttonEle.disabled = true;
+
+    setStatusTypeOrderNumberFn(statusType.statusTypeKey, statusType.orderNumber - 1);
+  };
+
+  const moveStatusTypeDownFn = (clickEvent: Event) => {
+
+    const { buttonEle, statusType } = getStatusTypeFromEventFn(clickEvent);
+
+    buttonEle.disabled = true;
+
+    setStatusTypeOrderNumberFn(statusType.statusTypeKey, statusType.orderNumber + 1);
+  };
+
+  const updateStatusTypeFn = (clickEvent: Event) => {
+
+  };
+
+  const removeStatusTypeFn = (clickEvent: Event) => {
+
+  };
+
+  const renderStatusTypesFn = () => {
+
+    const recordTypeKey = recordTypesFilterEle.value;
+
+    let hasStatusTypes = false;
+
+    const tableEle = document.createElement("table");
+
+    tableEle.className = "table is-fullwidth is-bordered is-striped is-hoverable has-sticky-header";
+    tableEle.innerHTML = "<thead>" +
+      "<tr>" +
+      "<th>Status Type</th>" +
+      "<th class=\"has-text-centered\">Is Active</th>" +
+      "<th class=\"has-text-centered\">Order</th>" +
+      "<th class=\"has-text-centered\">Options</th>" +
+      "</tr>" +
+      "</thead>" +
+      "<tbody></tbody>";
+
+    const tbodyEle = tableEle.getElementsByTagName("tbody")[0];
+
+    for (let index = 0; index < statusTypes.length; index += 1) {
+
+      const statusType = statusTypes[index];
+
+      if (recordTypeKey !== statusType.recordTypeKey) {
+        continue;
+      }
+
+      const trEle = document.createElement("tr");
+
+      trEle.setAttribute("data-index", index.toString());
+
+      trEle.innerHTML = "<th class=\"is-vcentered\">" +
+        statusType.statusType + "<br />" +
+        "<span class=\"is-size-7\"><i class=\"fas fa-key\" aria-hidden=\"true\"></i> " + statusType.statusTypeKey + "</span>" +
+
+        "</th>" +
+        ("<td class=\"has-text-centered\">" +
+          "<button class=\"button is-inverted is-info is-toggle-active-button\" type=\"button\">" +
+          (statusType.isActive
+            ? "<i class=\"fas fa-check\" aria-label=\"Active Status Type\"></i>"
+            : "<i class=\"fas fa-minus\" aria-label=\"False\"></i>") +
+          "</button>" +
+          "</td>") +
+        ("<td class=\"has-text-centered\">" +
+          "<button class=\"button is-inverted is-info is-up-button\" type=\"button\">" +
+          "<i class=\"fas fa-arrow-up\" aria-label=\"Move Status Type Up\"></i>" +
+          "</button>" +
+          " <button class=\"button is-inverted is-info is-down-button\" type=\"button\">" +
+          "<i class=\"fas fa-arrow-down\" aria-label=\"Move Status Type Down\"></i>" +
+          "</button>" +
+          "</td>") +
+
+        ("<td class=\"has-text-centered\">" +
+          "<button class=\"button is-inverted is-info is-update-button\" type=\"button\">" +
+          "<i class=\"fas fa-pencil-alt\" aria-label=\"Update Status Type\"></i>" +
+          "</button>" +
+          (statusType.recordCount === 0
+            ? " <button class=\"button is-inverted is-danger is-remove-button\" type=\"button\">" +
+            "<i class=\"fas fa-trash-alt\" aria-label=\"Remove Status Type\"></i>" +
+            "</button>"
+            : "") +
+          "</td>");
+
+      trEle.getElementsByClassName("is-toggle-active-button")[0].addEventListener("click", toggleStatusTypeActiveFn);
+      trEle.getElementsByClassName("is-up-button")[0].addEventListener("click", moveStatusTypeUpFn);
+      trEle.getElementsByClassName("is-down-button")[0].addEventListener("click", moveStatusTypeDownFn);
+      trEle.getElementsByClassName("is-update-button")[0].addEventListener("click", updateStatusTypeFn);
+
+      if (statusType.recordCount === 0) {
+        trEle.getElementsByClassName("is-remove-button")[0].addEventListener("click", removeStatusTypeFn);
+      }
+
+      tbodyEle.appendChild(trEle);
+
+      hasStatusTypes = true;
+    }
+
+    cityssm.clearElement(statusTypesContainerEle);
+
+    if (hasStatusTypes) {
+
+      const trEles = tbodyEle.getElementsByTagName("tr");
+      (trEles[0].getElementsByClassName("is-up-button")[0] as HTMLButtonElement).disabled = true;
+      (trEles[trEles.length - 1].getElementsByClassName("is-down-button")[0] as HTMLButtonElement).disabled = true;
+
+      statusTypesContainerEle.appendChild(tableEle);
+    } else {
+      statusTypesContainerEle.innerHTML = "<div class=\"message is-info\">" +
+        "<p class=\"message-body\">There are no status types associated with the selected record type.</p>" +
+        "</div>";
+    }
+  };
+
+  const getStatusTypesFn = () => {
+
+    statusTypes = [];
+
+    cityssm.clearElement(statusTypesContainerEle);
+    statusTypesContainerEle.innerHTML = getLoadingHTML("Status Types");
+
+    cityssm.postJSON(urlPrefix + "/admin/doGetStatusTypes", {}, (responseJSON: { statusTypes: recordTypes.StatusType[] }) => {
+      statusTypes = responseJSON.statusTypes;
+      renderStatusTypesFn();
+    });
+  };
+
+  recordTypesFilterEle.addEventListener("change", renderStatusTypesFn);
+
   /*
    * Tabs
    */
@@ -639,6 +869,7 @@ declare const cityssm: cityssmGlobal;
         break;
 
       case "statusTypes":
+        getRecordTypesFn(getStatusTypesFn);
         break;
     }
   };

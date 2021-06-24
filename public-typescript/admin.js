@@ -10,14 +10,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     var usersContainerEle = document.getElementById("container--users");
     var users = [];
-    var toggleUserSettingFn = function (clickEvent) {
-        clickEvent.preventDefault();
+    var getUserFromEventFn = function (clickEvent) {
         var buttonEle = clickEvent.currentTarget;
-        buttonEle.disabled = true;
-        var fieldName = buttonEle.getAttribute("data-field");
         var trEle = buttonEle.closest("tr");
         var userIndex = parseInt(trEle.getAttribute("data-index"), 10);
         var user = users[userIndex];
+        return {
+            buttonEle: buttonEle,
+            trEle: trEle,
+            userIndex: userIndex,
+            user: user
+        };
+    };
+    var toggleUserSettingFn = function (clickEvent) {
+        var _a = getUserFromEventFn(clickEvent), buttonEle = _a.buttonEle, user = _a.user;
+        buttonEle.disabled = true;
+        var fieldName = buttonEle.getAttribute("data-field");
         var newFieldValue = !user[fieldName];
         cityssm.postJSON(urlPrefix + "/admin/doSetUserSetting", {
             userName: user.userName,
@@ -50,11 +58,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     var removeUserFn = function (clickEvent) {
-        clickEvent.preventDefault();
-        var buttonEle = clickEvent.currentTarget;
-        var trEle = buttonEle.closest("tr");
-        var userIndex = parseInt(trEle.getAttribute("data-index"), 10);
-        var userName = users[userIndex].userName;
+        var _a = getUserFromEventFn(clickEvent), buttonEle = _a.buttonEle, user = _a.user, userIndex = _a.userIndex;
+        var userName = user.userName;
         var removeFn = function () {
             buttonEle.disabled = true;
             cityssm.postJSON(urlPrefix + "/admin/doRemoveUser", {
@@ -173,14 +178,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     };
     var recordTypesContainerEle = document.getElementById("container--recordTypes");
+    var recordTypesFilterEle = document.getElementById("statusTypesFilter--recordTypeKey");
     var recordTypes = [];
-    var toggleRecordTypeActiveFn = function (clickEvent) {
-        clickEvent.preventDefault();
+    var getRecordTypeFromEventFn = function (clickEvent) {
         var buttonEle = clickEvent.currentTarget;
-        buttonEle.disabled = true;
         var trEle = buttonEle.closest("tr");
         var recordTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
         var recordType = recordTypes[recordTypeIndex];
+        return {
+            buttonEle: buttonEle,
+            trEle: trEle,
+            recordTypeIndex: recordTypeIndex,
+            recordType: recordType
+        };
+    };
+    var toggleRecordTypeActiveFn = function (clickEvent) {
+        var _a = getRecordTypeFromEventFn(clickEvent), buttonEle = _a.buttonEle, recordType = _a.recordType;
+        buttonEle.disabled = true;
         var newIsActive = !recordType.isActive;
         cityssm.postJSON(urlPrefix + "/admin/doSetRecordTypeIsActive", {
             recordTypeKey: recordType.recordTypeKey,
@@ -202,11 +216,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     var updateRecordTypeFn = function (clickEvent) {
-        clickEvent.preventDefault();
-        var buttonEle = clickEvent.currentTarget;
-        var trEle = buttonEle.closest("tr");
-        var recordTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
-        var recordType = recordTypes[recordTypeIndex];
+        var _a = getRecordTypeFromEventFn(clickEvent), recordType = _a.recordType, recordTypeIndex = _a.recordTypeIndex;
         var formEle;
         var patternEle;
         var editRecordCloseModalFn;
@@ -261,12 +271,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     var removeRecordTypeFn = function (clickEvent) {
-        clickEvent.preventDefault();
-        var buttonEle = clickEvent.currentTarget;
-        buttonEle.disabled = true;
-        var trEle = buttonEle.closest("tr");
-        var recordTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
-        var recordType = recordTypes[recordTypeIndex];
+        var _a = getRecordTypeFromEventFn(clickEvent), recordType = _a.recordType, recordTypeIndex = _a.recordTypeIndex;
         var removeFn = function () {
             cityssm.postJSON(urlPrefix + "/admin/doRemoveRecordType", {
                 recordTypeKey: recordType.recordTypeKey
@@ -283,6 +288,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.confirmModal("Remove Record Type", "Are you sure you want to remove the \"" + cityssm.escapeHTML(recordType.recordType) + "\" record type?", "Yes, Remove It", "warning", removeFn);
     };
     var renderRecordTypesFn = function () {
+        recordTypesFilterEle.innerHTML = "";
         if (recordTypes.length === 0) {
             usersContainerEle.innerHTML = "<div class=\"message is-warning\">" +
                 "<p class=\"message-body\">" +
@@ -343,17 +349,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 trEle.getElementsByClassName("is-remove-button")[0].addEventListener("click", removeRecordTypeFn);
             }
             tbodyEle.appendChild(trEle);
+            var optionEle = document.createElement("option");
+            optionEle.value = recordType.recordTypeKey;
+            optionEle.innerText = recordType.recordType;
+            recordTypesFilterEle.append(optionEle);
         }
         cityssm.clearElement(recordTypesContainerEle);
         recordTypesContainerEle.appendChild(tableEle);
     };
-    var getRecordTypesFn = function () {
+    var getRecordTypesFn = function (callbackFn) {
         recordTypes = [];
+        recordTypesFilterEle.innerHTML = "";
         cityssm.clearElement(recordTypesContainerEle);
         recordTypesContainerEle.innerHTML = getLoadingHTML("Record Types");
         cityssm.postJSON(urlPrefix + "/admin/doGetRecordTypes", {}, function (responseJSON) {
             recordTypes = responseJSON.recordTypes;
             renderRecordTypesFn();
+            if (callbackFn) {
+                callbackFn();
+            }
         });
     };
     document.getElementById("is-add-record-type-button").addEventListener("click", function () {
@@ -402,6 +416,155 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
+    var statusTypesContainerEle = document.getElementById("container--statusTypes");
+    var statusTypes = [];
+    var getStatusTypeFromEventFn = function (clickEvent) {
+        var buttonEle = clickEvent.currentTarget;
+        var trEle = buttonEle.closest("tr");
+        var statusTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
+        var statusType = statusTypes[statusTypeIndex];
+        return {
+            buttonEle: buttonEle,
+            trEle: trEle,
+            statusTypeIndex: statusTypeIndex,
+            statusType: statusType
+        };
+    };
+    var toggleStatusTypeActiveFn = function (clickEvent) {
+        var _a = getStatusTypeFromEventFn(clickEvent), buttonEle = _a.buttonEle, statusType = _a.statusType;
+        buttonEle.disabled = true;
+        var newIsActive = !statusType.isActive;
+        cityssm.postJSON(urlPrefix + "/admin/doSetStatusTypeIsActive", {
+            statusTypeKey: statusType.statusTypeKey,
+            isActive: newIsActive
+        }, function (responseJSON) {
+            buttonEle.disabled = false;
+            if (responseJSON.success) {
+                statusType.isActive = newIsActive;
+                if (newIsActive) {
+                    buttonEle.innerHTML = "<i class=\"fas fa-check\" aria-label=\"Active Status Type\"></i>";
+                }
+                else {
+                    buttonEle.innerHTML = "<i class=\"fas fa-minus\" aria-label=\"False\"></i>";
+                }
+            }
+            else {
+                cityssm.alertModal("Status Type Not Updated", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
+            }
+        });
+    };
+    var setStatusTypeOrderNumberFn = function (statusTypeKey, newOrderNumber) {
+        cityssm.postJSON(urlPrefix + "/admin/doSetStatusTypeOrderNumber", {
+            statusTypeKey: statusTypeKey,
+            orderNumber: newOrderNumber
+        }, function (responseJSON) {
+            if (responseJSON.success) {
+                statusTypes = responseJSON.statusTypes;
+                renderStatusTypesFn();
+            }
+            else {
+                cityssm.alertModal("Error Moving Status Type", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
+            }
+        });
+    };
+    var moveStatusTypeUpFn = function (clickEvent) {
+        var _a = getStatusTypeFromEventFn(clickEvent), buttonEle = _a.buttonEle, statusType = _a.statusType;
+        buttonEle.disabled = true;
+        setStatusTypeOrderNumberFn(statusType.statusTypeKey, statusType.orderNumber - 1);
+    };
+    var moveStatusTypeDownFn = function (clickEvent) {
+        var _a = getStatusTypeFromEventFn(clickEvent), buttonEle = _a.buttonEle, statusType = _a.statusType;
+        buttonEle.disabled = true;
+        setStatusTypeOrderNumberFn(statusType.statusTypeKey, statusType.orderNumber + 1);
+    };
+    var updateStatusTypeFn = function (clickEvent) {
+    };
+    var removeStatusTypeFn = function (clickEvent) {
+    };
+    var renderStatusTypesFn = function () {
+        var recordTypeKey = recordTypesFilterEle.value;
+        var hasStatusTypes = false;
+        var tableEle = document.createElement("table");
+        tableEle.className = "table is-fullwidth is-bordered is-striped is-hoverable has-sticky-header";
+        tableEle.innerHTML = "<thead>" +
+            "<tr>" +
+            "<th>Status Type</th>" +
+            "<th class=\"has-text-centered\">Is Active</th>" +
+            "<th class=\"has-text-centered\">Order</th>" +
+            "<th class=\"has-text-centered\">Options</th>" +
+            "</tr>" +
+            "</thead>" +
+            "<tbody></tbody>";
+        var tbodyEle = tableEle.getElementsByTagName("tbody")[0];
+        for (var index = 0; index < statusTypes.length; index += 1) {
+            var statusType = statusTypes[index];
+            if (recordTypeKey !== statusType.recordTypeKey) {
+                continue;
+            }
+            var trEle = document.createElement("tr");
+            trEle.setAttribute("data-index", index.toString());
+            trEle.innerHTML = "<th class=\"is-vcentered\">" +
+                statusType.statusType + "<br />" +
+                "<span class=\"is-size-7\"><i class=\"fas fa-key\" aria-hidden=\"true\"></i> " + statusType.statusTypeKey + "</span>" +
+                "</th>" +
+                ("<td class=\"has-text-centered\">" +
+                    "<button class=\"button is-inverted is-info is-toggle-active-button\" type=\"button\">" +
+                    (statusType.isActive
+                        ? "<i class=\"fas fa-check\" aria-label=\"Active Status Type\"></i>"
+                        : "<i class=\"fas fa-minus\" aria-label=\"False\"></i>") +
+                    "</button>" +
+                    "</td>") +
+                ("<td class=\"has-text-centered\">" +
+                    "<button class=\"button is-inverted is-info is-up-button\" type=\"button\">" +
+                    "<i class=\"fas fa-arrow-up\" aria-label=\"Move Status Type Up\"></i>" +
+                    "</button>" +
+                    " <button class=\"button is-inverted is-info is-down-button\" type=\"button\">" +
+                    "<i class=\"fas fa-arrow-down\" aria-label=\"Move Status Type Down\"></i>" +
+                    "</button>" +
+                    "</td>") +
+                ("<td class=\"has-text-centered\">" +
+                    "<button class=\"button is-inverted is-info is-update-button\" type=\"button\">" +
+                    "<i class=\"fas fa-pencil-alt\" aria-label=\"Update Status Type\"></i>" +
+                    "</button>" +
+                    (statusType.recordCount === 0
+                        ? " <button class=\"button is-inverted is-danger is-remove-button\" type=\"button\">" +
+                            "<i class=\"fas fa-trash-alt\" aria-label=\"Remove Status Type\"></i>" +
+                            "</button>"
+                        : "") +
+                    "</td>");
+            trEle.getElementsByClassName("is-toggle-active-button")[0].addEventListener("click", toggleStatusTypeActiveFn);
+            trEle.getElementsByClassName("is-up-button")[0].addEventListener("click", moveStatusTypeUpFn);
+            trEle.getElementsByClassName("is-down-button")[0].addEventListener("click", moveStatusTypeDownFn);
+            trEle.getElementsByClassName("is-update-button")[0].addEventListener("click", updateStatusTypeFn);
+            if (statusType.recordCount === 0) {
+                trEle.getElementsByClassName("is-remove-button")[0].addEventListener("click", removeStatusTypeFn);
+            }
+            tbodyEle.appendChild(trEle);
+            hasStatusTypes = true;
+        }
+        cityssm.clearElement(statusTypesContainerEle);
+        if (hasStatusTypes) {
+            var trEles = tbodyEle.getElementsByTagName("tr");
+            trEles[0].getElementsByClassName("is-up-button")[0].disabled = true;
+            trEles[trEles.length - 1].getElementsByClassName("is-down-button")[0].disabled = true;
+            statusTypesContainerEle.appendChild(tableEle);
+        }
+        else {
+            statusTypesContainerEle.innerHTML = "<div class=\"message is-info\">" +
+                "<p class=\"message-body\">There are no status types associated with the selected record type.</p>" +
+                "</div>";
+        }
+    };
+    var getStatusTypesFn = function () {
+        statusTypes = [];
+        cityssm.clearElement(statusTypesContainerEle);
+        statusTypesContainerEle.innerHTML = getLoadingHTML("Status Types");
+        cityssm.postJSON(urlPrefix + "/admin/doGetStatusTypes", {}, function (responseJSON) {
+            statusTypes = responseJSON.statusTypes;
+            renderStatusTypesFn();
+        });
+    };
+    recordTypesFilterEle.addEventListener("change", renderStatusTypesFn);
     var tabEles = document.getElementById("admin--tabs").querySelectorAll("[role='tab']");
     var tabPanelEles = document.getElementById("admin--tabpanels").querySelectorAll("[role='tabpanel']");
     var selectTabFn = function (clickEvent) {
@@ -425,6 +588,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 getRecordTypesFn();
                 break;
             case "statusTypes":
+                getRecordTypesFn(getStatusTypesFn);
                 break;
         }
     };

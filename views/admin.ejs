@@ -83,9 +83,29 @@
     </div>
     <div class="is-hidden" id="adminTabpanel--statusTypes" role="tabpanel" aria-labelledby="adminTab--statusTypes">
       <h2 class="title is-3">Status Types</h2>
-      <div class="message is-info">
-        <p class="message-body">Coming Soon</p>
+      <div class="columns">
+        <div class="column">
+          <div class="field has-addons">
+            <div class="control">
+              <label class="button is-static" for="statusTypesFilter--recordTypeKey">
+                Record Type
+              </label>
+            </div>
+            <div class="control">
+              <div class="select">
+                <select id="statusTypesFilter--recordTypeKey"></select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-narrow">
+          <button class="button is-success" type="button">
+            <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+            <span>Add Status Type</span>
+          </button>
+        </div>
       </div>
+      <div id="container--statusTypes"></div>
     </div>
   </div>
 </div>
