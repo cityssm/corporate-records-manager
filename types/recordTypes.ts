@@ -10,7 +10,8 @@ export interface RecordType {
   maxlength: number;
   pattern: string;
   patternHelp: string;
-  isActive: boolean;
+  isActive?: boolean;
+  recordCount?: number;
 };
 
 
@@ -19,6 +20,7 @@ export interface StatusType {
   recordTypeKey?: string;
   statusType: string;
   isActive: boolean;
+  recordCount?: number;
 };
 
 

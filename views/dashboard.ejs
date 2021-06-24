@@ -84,6 +84,11 @@
       <div class="panel is-success">
         <h2 class="panel-heading">Create a New Record</h2>
         <% for (const recordType of recordTypes) { %>
+          <%
+            if (!recordType.isActive) {
+              continue;
+            }
+          %>
           <a class="panel-block" href="<%= urlPrefix %>/new/<%= recordType.recordTypeKey %>">
             <span class="panel-icon">
               <i class="fas fa-plus" aria-hidden="true"></i>

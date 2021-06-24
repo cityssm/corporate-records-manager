@@ -44,6 +44,11 @@ export const getRecordType = async (recordTypeKey: string) => {
 };
 
 
+export const clearCache = () => {
+  cache.flushAll();
+};
+
+
 export const getStatusTypes = async (recordTypeKey: string) => {
   const statusTypes: recordTypes.StatusType[] =
     await getCachedDataOrDoQuery("statusTypes:" + recordTypeKey, async () => {

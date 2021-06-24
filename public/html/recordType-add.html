@@ -1,0 +1,82 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Add a New Record Type</h2>
+      <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--addRecordType">
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addRecordType--recordTypeKey">Record Type Key</label>
+              <div class="control">
+                <input class="input" id="addRecordType--recordTypeKey" name="recordTypeKey" type="text" pattern="^[a-z\-_]+$" maxlength="20" />
+              </div>
+              <p class="help">
+                Must be unique.
+                Small letters, dashes, and underscores only.
+                Can be generated automatically.
+              </p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addRecordType--recordType">Record Type</label>
+              <div class="control">
+                <input class="input" id="addRecordType--recordType" name="recordType" type="text" maxlength="100" required />
+              </div>
+              <p class="help">
+                Should be unique.
+              </p>
+            </div>
+          </div>
+        </div>
+        <fieldset>
+          <legend class="title is-5">Record Number Validation</legend>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="addRecordType--minlength">Minimum Length</label>
+                <div class="control">
+                  <input class="input" id="addRecordType--minlength" name="minlength" type="number" value="1" min="1" max="30" step="1" required onwheel="return false" />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="addRecordType--maxlength">Maximum Length</label>
+                <div class="control">
+                  <input class="input" id="addRecordType--maxlength" name="maxlength" type="number" value="30" min="1" max="30" step="1" required onwheel="return false" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="addRecordType--pattern">Regular Expression Pattern</label>
+                <div class="control">
+                  <input class="input" id="addRecordType--pattern" name="pattern" type="text" maxlength="50" />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="addRecordType--patternHelp">Regular Expression Help</label>
+                <div class="control">
+                  <input class="input" id="addRecordType--patternHelp" name="patternHelp" type="text" maxlength="100" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--addRecordType">Add Record Type</button>
+      <button class="button is-close-modal-button">Cancel</button>
+    </footer>
+  </div>
+</div>

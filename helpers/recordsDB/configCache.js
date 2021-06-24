@@ -22,6 +22,9 @@ export const getRecordType = async (recordTypeKey) => {
     });
     return recordType;
 };
+export const clearCache = () => {
+    cache.flushAll();
+};
 export const getStatusTypes = async (recordTypeKey) => {
     const statusTypes = await getCachedDataOrDoQuery("statusTypes:" + recordTypeKey, async () => {
         return await db_getStatusTypes(recordTypeKey);

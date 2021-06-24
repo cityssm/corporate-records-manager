@@ -12,7 +12,7 @@ export const handler: RequestHandler = async (req, res) => {
 
   const recordType = await getRecordType(recordTypeKey);
 
-  if (!recordType) {
+  if (!recordType || !recordType.isActive) {
     return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard?error=recordTypeKeyNotAvailable");
   }
 

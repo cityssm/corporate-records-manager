@@ -3,7 +3,7 @@ import * as configFns from "../../helpers/configFns.js";
 export const handler = async (req, res) => {
     const recordTypeKey = req.params.recordTypeKey;
     const recordType = await getRecordType(recordTypeKey);
-    if (!recordType) {
+    if (!recordType || !recordType.isActive) {
         return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard?error=recordTypeKeyNotAvailable");
     }
     const emptyRecord = {

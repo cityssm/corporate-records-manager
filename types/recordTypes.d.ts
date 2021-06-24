@@ -5,13 +5,15 @@ export interface RecordType {
     maxlength: number;
     pattern: string;
     patternHelp: string;
-    isActive: boolean;
+    isActive?: boolean;
+    recordCount?: number;
 }
 export interface StatusType {
     statusTypeKey: string;
     recordTypeKey?: string;
     statusType: string;
     isActive: boolean;
+    recordCount?: number;
 }
 interface TrackedValue {
     recordID?: number;

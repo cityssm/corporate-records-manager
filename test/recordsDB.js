@@ -11,7 +11,7 @@ import getReportData from "../helpers/recordsDB/getReportData.js";
 import reports from "../data/reports.js";
 describe("recordsDB - getRecord()", () => {
     after(async () => {
-        await pool.releaseAll();
+        pool.releaseAll();
     });
     it("should execute getRecord()", async () => {
         return await getRecord(1);
@@ -34,7 +34,7 @@ describe("recordsDB - getRecord()", () => {
 });
 describe("recordsDB - getRecords()", () => {
     after(async () => {
-        await pool.releaseAll();
+        pool.releaseAll();
     });
     const limitOffset = {
         limit: 10,
@@ -91,11 +91,11 @@ describe("recordsDB - getReportData()", () => {
         recordTypeKey: "bylaw"
     };
     after(async () => {
-        await pool.releaseAll();
+        pool.releaseAll();
     });
-    for (const reportName of Object.keys(reports)) {
+    for (const reportName of Object.getOwnPropertyNames(reports)) {
         it("should execute report " + reportName, async () => {
-            const results = getReportData(reportName, params);
+            const results = await getReportData(reportName, params);
             assert.strictEqual(typeof (results), "object");
         });
     }
