@@ -6,9 +6,6 @@
 
 ![Login Screen](login.png)
 
-**[Setup and Configuration](setup.md)**<br />
-The config.js file.  The database configuration tables.
-
 **[Finding Records](search.md)**<br />
 Searching and filtering like a pro.
 
@@ -17,3 +14,11 @@ And how to delete records too.
 
 **[Reporting Options](reporting.md)**<br />
 Export data in the Excel-friendly CSV format.
+
+## System Administrator Documentation
+
+**[Setup and Configuration](setup.md)**<br />
+The config.js file.  The database configuration tables.
+
+**[Administration](admin.md)**<br />
+The administrative views for maintaining users, record types, and status types.

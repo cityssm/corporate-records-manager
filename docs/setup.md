@@ -66,10 +66,11 @@ DocuShare integrations are powered by
 
 ## Database Tables
 
-At the time of this writing, there are no administrative views
-for maintaining the configuration tables.
-Once set up, ongoing maintenance is minimal.
-It is recommended to use a tool like SQL Server Management Studio to make changes.
+To update the configuration tables graphically,
+see the [Administration documentation](admin.md).
+
+Alternatively, you can manually update the configuration tables.
+using a tool like [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms).
 
 ### CR.Users
 
