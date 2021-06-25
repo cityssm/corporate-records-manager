@@ -15,8 +15,11 @@ import handler_doSetRecordTypeIsActive from "../handlers/admin/doSetRecordTypeIs
 import handler_doRemoveRecordType from "../handlers/admin/doRemoveRecordType.js";
 
 import handler_doGetStatusTypes from "../handlers/admin/doGetStatusTypes.js";
+import handler_doAddStatusType from "../handlers/admin/doAddStatusType.js";
+import handler_doUpdateStatusType from "../handlers/admin/doUpdateStatusType.js";
 import handler_doSetStatusTypeIsActive from "../handlers/admin/doSetStatusTypeIsActive.js";
 import handler_doSetStatusTypeOrderNumber from "../handlers/admin/doSetStatusTypeOrderNumber.js";
+import handler_doRemoveStatusType from "../handlers/admin/doRemoveStatusType.js";
 
 
 export const router = Router();
@@ -37,8 +40,11 @@ router.post("/doSetRecordTypeIsActive", handler_doSetRecordTypeIsActive);
 router.post("/doRemoveRecordType", handler_doRemoveRecordType);
 
 router.post("/doGetStatusTypes", handler_doGetStatusTypes);
+router.post("/doAddStatusType", handler_doAddStatusType);
+router.post("/doUpdateStatusType", handler_doUpdateStatusType);
 router.post("/doSetStatusTypeIsActive", handler_doSetStatusTypeIsActive);
 router.post("/doSetStatusTypeOrderNumber", handler_doSetStatusTypeOrderNumber);
+router.post("/doRemoveStatusType", handler_doRemoveStatusType);
 
 
 export default router;

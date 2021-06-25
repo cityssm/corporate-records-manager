@@ -19,7 +19,7 @@ export interface StatusType {
   statusTypeKey: string;
   recordTypeKey?: string;
   statusType: string;
-  isActive: boolean;
+  isActive?: boolean;
   orderNumber?: number;
   recordCount?: number;
 };

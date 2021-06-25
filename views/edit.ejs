@@ -163,7 +163,7 @@
         </div>
       </div>
     <% } else { %>
-      <% if (record.statuses.length > 0 || statusTypes.length > 0) { %>
+      <% if (record.statuses.length > 0 || (statusTypes.length > 0 && statusTypes.find((statusType) => { return statusType.isActive; }))) { %>
         <div class="panel" id="panel--statuses">
           <div class="panel-heading is-flex is-justify-content-space-between">
             <h2 class="has-text-weight-bold">Statuses</h2>

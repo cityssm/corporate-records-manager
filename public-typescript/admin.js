@@ -478,8 +478,50 @@ Object.defineProperty(exports, "__esModule", { value: true });
         setStatusTypeOrderNumberFn(statusType.statusTypeKey, statusType.orderNumber + 1);
     };
     var updateStatusTypeFn = function (clickEvent) {
+        var statusType = getStatusTypeFromEventFn(clickEvent).statusType;
+        var formEle;
+        var updateStatusTypeCloseModalFn;
+        var submitFn = function (formEvent) {
+            formEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/admin/doUpdateStatusType", formEle, function (responseJSON) {
+                if (responseJSON.success) {
+                    updateStatusTypeCloseModalFn();
+                    statusTypes = responseJSON.statusTypes;
+                    renderStatusTypesFn();
+                }
+                else {
+                    cityssm.alertModal("Error Updating Status Type", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
+                }
+            });
+        };
+        cityssm.openHtmlModal("statusType-edit", {
+            onshow: function () {
+                document.getElementById("editStatusType--statusTypeKey").value = statusType.statusTypeKey;
+                document.getElementById("editStatusType--statusType").value = statusType.statusType;
+                formEle = document.getElementById("form--editStatusType");
+                formEle.addEventListener("submit", submitFn);
+            },
+            onshown: function (modalEle, closeModalFn) {
+                updateStatusTypeCloseModalFn = closeModalFn;
+            }
+        });
     };
     var removeStatusTypeFn = function (clickEvent) {
+        var statusType = getStatusTypeFromEventFn(clickEvent).statusType;
+        var removeFn = function () {
+            cityssm.postJSON(urlPrefix + "/admin/doRemoveStatusType", {
+                statusTypeKey: statusType.statusTypeKey
+            }, function (responseJSON) {
+                if (responseJSON.success) {
+                    statusTypes = responseJSON.statusTypes;
+                    renderStatusTypesFn();
+                }
+                else {
+                    cityssm.alertModal("Error Removing Status Type", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
+                }
+            });
+        };
+        cityssm.confirmModal("Remove Status Type", "Are you sure you want to remove the \"" + cityssm.escapeHTML(statusType.statusType) + "\" status type?", "Yes, Remove It", "warning", removeFn);
     };
     var renderStatusTypesFn = function () {
         var recordTypeKey = recordTypesFilterEle.value;
@@ -565,6 +607,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     recordTypesFilterEle.addEventListener("change", renderStatusTypesFn);
+    document.getElementById("is-add-status-type-button").addEventListener("click", function () {
+        var addStatusTypeCloseModalFn;
+        var formEle;
+        var submitFn = function (formEvent) {
+            formEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/admin/doAddStatusType", formEle, function (responseJSON) {
+                if (responseJSON.success) {
+                    addStatusTypeCloseModalFn();
+                    statusTypes = responseJSON.statusTypes;
+                    renderStatusTypesFn();
+                }
+                else {
+                    cityssm.alertModal("Error Adding Status Type", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
+                }
+            });
+        };
+        cityssm.openHtmlModal("statusType-add", {
+            onshow: function () {
+                var recordType = recordTypes.find(function (currentRecordType) {
+                    return currentRecordType.recordTypeKey === recordTypesFilterEle.value;
+                });
+                document.getElementById("addStatusType--recordType").innerText = recordType.recordType;
+                document.getElementById("addStatusType--recordTypeKey").value = recordTypesFilterEle.value;
+                formEle = document.getElementById("form--addStatusType");
+                formEle.addEventListener("submit", submitFn);
+            },
+            onshown: function (_modalEle, closeModalFn) {
+                addStatusTypeCloseModalFn = closeModalFn;
+            }
+        });
+    });
     var tabEles = document.getElementById("admin--tabs").querySelectorAll("[role='tab']");
     var tabPanelEles = document.getElementById("admin--tabpanels").querySelectorAll("[role='tabpanel']");
     var selectTabFn = function (clickEvent) {

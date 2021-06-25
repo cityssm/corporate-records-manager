@@ -710,10 +710,72 @@ declare const cityssm: cityssmGlobal;
 
   const updateStatusTypeFn = (clickEvent: Event) => {
 
+    const { statusType } = getStatusTypeFromEventFn(clickEvent);
+
+    let formEle: HTMLFormElement;
+    let updateStatusTypeCloseModalFn: () => void;
+
+    const submitFn = (formEvent: Event) => {
+      formEvent.preventDefault();
+
+      cityssm.postJSON(urlPrefix + "/admin/doUpdateStatusType", formEle,
+        (responseJSON: { success: true; message?: string; statusTypes?: recordTypes.StatusType[] }) => {
+
+          if (responseJSON.success) {
+
+            updateStatusTypeCloseModalFn();
+            statusTypes = responseJSON.statusTypes;
+            renderStatusTypesFn();
+
+          } else {
+            cityssm.alertModal("Error Updating Status Type",
+              cityssm.escapeHTML(responseJSON.message),
+              "OK",
+              "danger");
+          }
+        });
+    };
+
+    cityssm.openHtmlModal("statusType-edit", {
+      onshow: () => {
+        (document.getElementById("editStatusType--statusTypeKey") as HTMLInputElement).value = statusType.statusTypeKey;
+        (document.getElementById("editStatusType--statusType") as HTMLInputElement).value = statusType.statusType;
+
+        formEle = document.getElementById("form--editStatusType") as HTMLFormElement;
+        formEle.addEventListener("submit", submitFn);
+      },
+      onshown: (modalEle, closeModalFn) => {
+        updateStatusTypeCloseModalFn = closeModalFn;
+      }
+    });
   };
 
   const removeStatusTypeFn = (clickEvent: Event) => {
 
+    const { statusType } = getStatusTypeFromEventFn(clickEvent);
+
+    const removeFn = () => {
+      cityssm.postJSON(urlPrefix + "/admin/doRemoveStatusType", {
+        statusTypeKey: statusType.statusTypeKey
+      }, (responseJSON: { success: boolean; message?: string; statusTypes?: recordTypes.StatusType[] }) => {
+
+        if (responseJSON.success) {
+          statusTypes = responseJSON.statusTypes;
+          renderStatusTypesFn();
+        } else {
+          cityssm.alertModal("Error Removing Status Type",
+            cityssm.escapeHTML(responseJSON.message),
+            "OK",
+            "danger");
+        }
+      });
+    };
+
+    cityssm.confirmModal("Remove Status Type",
+      "Are you sure you want to remove the \"" + cityssm.escapeHTML(statusType.statusType) + "\" status type?",
+      "Yes, Remove It",
+      "warning",
+      removeFn);
   };
 
   const renderStatusTypesFn = () => {
@@ -825,6 +887,51 @@ declare const cityssm: cityssmGlobal;
   };
 
   recordTypesFilterEle.addEventListener("change", renderStatusTypesFn);
+
+  document.getElementById("is-add-status-type-button").addEventListener("click", () => {
+
+    let addStatusTypeCloseModalFn: () => void;
+    let formEle: HTMLFormElement;
+
+    const submitFn = (formEvent: Event) => {
+      formEvent.preventDefault();
+
+      cityssm.postJSON(urlPrefix + "/admin/doAddStatusType", formEle,
+        (responseJSON: { success: boolean; message?: string; statusTypes?: recordTypes.StatusType[] }) => {
+
+          if (responseJSON.success) {
+
+            addStatusTypeCloseModalFn();
+            statusTypes = responseJSON.statusTypes;
+            renderStatusTypesFn();
+
+          } else {
+            cityssm.alertModal("Error Adding Status Type",
+              cityssm.escapeHTML(responseJSON.message),
+              "OK",
+              "danger");
+          }
+        });
+    };
+
+    cityssm.openHtmlModal("statusType-add", {
+      onshow: () => {
+
+        const recordType = recordTypes.find((currentRecordType) => {
+          return currentRecordType.recordTypeKey === recordTypesFilterEle.value;
+        });
+
+        document.getElementById("addStatusType--recordType").innerText = recordType.recordType;
+        (document.getElementById("addStatusType--recordTypeKey") as HTMLInputElement).value = recordTypesFilterEle.value;
+
+        formEle = document.getElementById("form--addStatusType") as HTMLFormElement;
+        formEle.addEventListener("submit", submitFn);
+      },
+      onshown: (_modalEle, closeModalFn) => {
+        addStatusTypeCloseModalFn = closeModalFn;
+      }
+    });
+  });
 
   /*
    * Tabs

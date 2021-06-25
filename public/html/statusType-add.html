@@ -1,0 +1,44 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Add a New <span id="addStatusType--recordType"></span> Status Type</h2>
+      <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--addStatusType">
+        <input id="addStatusType--recordTypeKey" name="recordTypeKey" type="hidden" />
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addStatusType--statusTypeKey">Status Type Key</label>
+              <div class="control">
+                <input class="input" id="addStatusType--statusTypeKey" name="statusTypeKey" type="text" pattern="^[a-z\-_]+$" maxlength="30" />
+              </div>
+              <p class="help">
+                Must be unique.
+                Small letters, dashes, and underscores only.
+                Can be generated automatically.
+              </p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addStatusType--statusType">Status Type</label>
+              <div class="control">
+                <input class="input" id="addStatusType--statusType" name="statusType" type="text" maxlength="100" required />
+              </div>
+              <p class="help">
+                Should be unique.
+              </p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--addStatusType">Add Status Type</button>
+      <button class="button is-close-modal-button">Cancel</button>
+    </footer>
+  </div>
+</div>
