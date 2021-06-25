@@ -11,6 +11,11 @@ create table CR.Users (
 GO
 
 
+-- Grant domain administrator access.
+insert into CR.Users (userName, isActive, canUpdate, isAdmin) values ('administrator', 1, 0, 1)
+GO
+
+
 create table CR.RecordTypes (
 	recordTypeKey varchar(20) primary key not null,
 	recordType varchar(100) not null,
@@ -23,10 +28,10 @@ create table CR.RecordTypes (
 GO
 
 
-insert into CR.RecordTypes (recordTypeKey, recordType) values ('agreement','Agreement')
-insert into CR.RecordTypes (recordTypeKey, recordType) values ('bylaw',    'By-Law')
-insert into CR.RecordTypes (recordTypeKey, recordType) values ('deed',     'Deed')
-insert into CR.RecordTypes (recordTypeKey, recordType) values ('easement', 'Easement')
+insert into CR.RecordTypes (recordTypeKey, recordType) values ('agreement', 'Agreement')
+insert into CR.RecordTypes (recordTypeKey, recordType) values ('bylaw',     'By-Law')
+insert into CR.RecordTypes (recordTypeKey, recordType) values ('deed',      'Deed')
+insert into CR.RecordTypes (recordTypeKey, recordType) values ('easement',  'Easement')
 GO
 
 
