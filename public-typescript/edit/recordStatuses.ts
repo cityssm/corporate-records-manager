@@ -191,10 +191,7 @@ declare const cityssm: cityssmGlobal;
       crmEdit.clearPanelBlocksFn(statusPanelEle);
       statuses = [];
 
-      statusPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
-        "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
-        "Loading Statuses..." +
-        "</div>");
+      statusPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Statuses"));
 
       cityssm.postJSON(urlPrefix + "/view/doGetStatuses", {
         recordID: crmEdit.recordID
@@ -265,10 +262,10 @@ declare const cityssm: cityssmGlobal;
             (document.getElementById("addStatus--statusDateString") as HTMLInputElement).value = cityssm.dateToString(rightNow);
             (document.getElementById("addStatus--statusTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(rightNow);
 
-            document.getElementById("form--addStatus").addEventListener("submit", addFn);
           },
           onshown: (_modalEle, closeModalFn) => {
             closeAddModalFn = closeModalFn;
+            document.getElementById("form--addStatus").addEventListener("submit", addFn);
           }
         });
       });

@@ -22,6 +22,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     var crmEdit = {
         recordID: recordID,
+        getLoadingPanelBlockHTML: function (sectionName) {
+            return "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
+                "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
+                "Loading " + sectionName + "..." +
+                "</div>";
+        },
         clearPanelBlocksFn: function (panelEle) {
             var panelBlockEles = panelEle.getElementsByClassName("panel-block");
             for (var index = 0; index < panelBlockEles.length; index += 1) {

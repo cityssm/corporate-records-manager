@@ -4,6 +4,7 @@ declare const cityssm: cityssmGlobal;
 
 export interface CRMEdit {
   recordID: string;
+  getLoadingPanelBlockHTML: (sectionName: string) => string;
   clearPanelBlocksFn: (panelEle: HTMLElement) => void;
 };
 
@@ -43,6 +44,12 @@ export interface CRMEdit {
   const crmEdit: CRMEdit = {
 
     recordID,
+    getLoadingPanelBlockHTML: (sectionName) => {
+      return "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
+        "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
+        "Loading " + sectionName + "..." +
+        "</div>";
+    },
     clearPanelBlocksFn: (panelEle) => {
 
       const panelBlockEles = panelEle.getElementsByClassName("panel-block");

@@ -101,10 +101,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     var getURLs = function () {
         crmEdit.clearPanelBlocksFn(urlPanelEle);
         urls = [];
-        urlPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
-            "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
-            "Loading Links..." +
-            "</div>");
+        urlPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Links"));
         cityssm.postJSON(urlPrefix + "/view/doGetURLs", {
             recordID: crmEdit.recordID
         }, function (responseJSON) {

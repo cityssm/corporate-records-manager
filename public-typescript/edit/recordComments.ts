@@ -155,10 +155,7 @@ declare const cityssm: cityssmGlobal;
     crmEdit.clearPanelBlocksFn(commentPanelEle);
     comments = [];
 
-    commentPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
-      "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
-      "Loading Comments..." +
-      "</div>");
+    commentPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Comments"));
 
     cityssm.postJSON(urlPrefix + "/view/doGetComments", {
       recordID: crmEdit.recordID
@@ -211,11 +208,10 @@ declare const cityssm: cityssmGlobal;
         const rightNow = new Date();
         (document.getElementById("addComment--commentDateString") as HTMLInputElement).value = cityssm.dateToString(rightNow);
         (document.getElementById("addComment--commentTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(rightNow);
-
-        document.getElementById("form--addComment").addEventListener("submit", addFn);
       },
       onshown: (_modalEle, closeModalFn) => {
         closeAddModalFn = closeModalFn;
+        document.getElementById("form--addComment").addEventListener("submit", addFn);
       }
     });
   });

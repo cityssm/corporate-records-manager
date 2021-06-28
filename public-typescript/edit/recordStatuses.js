@@ -126,10 +126,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         var getStatuses_1 = function () {
             crmEdit.clearPanelBlocksFn(statusPanelEle);
             statuses_1 = [];
-            statusPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
-                "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
-                "Loading Statuses..." +
-                "</div>");
+            statusPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Statuses"));
             cityssm.postJSON(urlPrefix + "/view/doGetStatuses", {
                 recordID: crmEdit.recordID
             }, function (responseJSON) {
@@ -179,10 +176,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         var rightNow = new Date();
                         document.getElementById("addStatus--statusDateString").value = cityssm.dateToString(rightNow);
                         document.getElementById("addStatus--statusTimeString").value = cityssm.dateToTimeString(rightNow);
-                        document.getElementById("form--addStatus").addEventListener("submit", addFn);
                     },
                     onshown: function (_modalEle, closeModalFn) {
                         closeAddModalFn = closeModalFn;
+                        document.getElementById("form--addStatus").addEventListener("submit", addFn);
                     }
                 });
             });

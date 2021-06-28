@@ -93,10 +93,7 @@ declare const cityssm: cityssmGlobal;
     crmEdit.clearPanelBlocksFn(relatedRecordPanelEle);
     relatedRecords = [];
 
-    relatedRecordPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
-      "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
-      "Loading Related Records..." +
-      "</div>");
+    relatedRecordPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Related Records"));
 
     cityssm.postJSON(urlPrefix + "/view/doGetRelatedRecords", {
       recordID: crmEdit.recordID

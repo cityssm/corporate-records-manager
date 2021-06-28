@@ -100,10 +100,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     var getComments = function () {
         crmEdit.clearPanelBlocksFn(commentPanelEle);
         comments = [];
-        commentPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
-            "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
-            "Loading Comments..." +
-            "</div>");
+        commentPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Comments"));
         cityssm.postJSON(urlPrefix + "/view/doGetComments", {
             recordID: crmEdit.recordID
         }, function (responseJSON) {
@@ -141,10 +138,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 var rightNow = new Date();
                 document.getElementById("addComment--commentDateString").value = cityssm.dateToString(rightNow);
                 document.getElementById("addComment--commentTimeString").value = cityssm.dateToTimeString(rightNow);
-                document.getElementById("form--addComment").addEventListener("submit", addFn);
             },
             onshown: function (_modalEle, closeModalFn) {
                 closeAddModalFn = closeModalFn;
+                document.getElementById("form--addComment").addEventListener("submit", addFn);
             }
         });
     });
