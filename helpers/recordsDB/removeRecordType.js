@@ -21,7 +21,6 @@ export const removeRecordType = async (recordTypeKey) => {
         if (result.recordset && result.recordset.length > 0) {
             return true;
         }
-        return true;
     }
     catch (e) {
         debugSQL(e);

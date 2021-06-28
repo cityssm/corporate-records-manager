@@ -32,8 +32,6 @@ export const removeRecordType = async (recordTypeKey: string): Promise<boolean> 
       return true;
     }
 
-    return true;
-
   } catch (e) {
     debugSQL(e);
   }

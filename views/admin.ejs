@@ -33,6 +33,17 @@
           </a>
         </li>
       </ul>
+      <p class="menu-label">
+        Table Maintenance
+      </p>
+      <ul class="menu-list">
+        <li>
+          <a id="adminTab--recordTypes" href="#adminTabpanel--tableCleanup" role="tab" aria-selected="false" aria-controls="adminTabpanel--tableCleanup">
+            <span class="icon"><i class="fas fa-trash-alt" aria-hidden="true"></i></span>
+            <span>Table Cleanup</span>
+          </a>
+        </li>
+      </ul>
     </aside>
   </div>
   <div class="column" id="admin--tabpanels">
@@ -106,6 +117,72 @@
         </div>
       </div>
       <div id="container--statusTypes"></div>
+    </div>
+    <div class="is-hidden" id="adminTabpanel--tableCleanup" role="tabpanel" aria-labelledby="adminTab--tableCleanup">
+      <h2 class="title is-3">Table Cleanup</h2>
+      <div class="message is-info">
+        <p class="message-body">
+          Table Cleanup permanently deletes records that have been marked for deletion.
+        </p>
+      </div>
+      <table class="table is-fullwidth is-bordered is-striped is-hoverable has-sticky-header">
+        <thead>
+          <tr>
+            <th>Table Name</th>
+            <th class="has-text-centered">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="is-vcentered">Records</th>
+            <td class="has-text-centered">
+              <button class="button is-inverted is-danger is-purge-button" data-table="Records" type="button">
+                <i class="fas fa-trash-alt" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <th class="is-vcentered">Record Tags</th>
+            <td class="has-text-centered">
+              <button class="button is-inverted is-danger is-purge-button" data-table="RecordTags" type="button">
+                <i class="fas fa-trash-alt" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <th class="is-vcentered">Record Status Log</th>
+            <td class="has-text-centered">
+              <button class="button is-inverted is-danger is-purge-button" data-table="RecordStatusLog" type="button">
+                <i class="fas fa-trash-alt" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <th class="is-vcentered">Record URLs (Links)</th>
+            <td class="has-text-centered">
+              <button class="button is-inverted is-danger is-purge-button" data-table="RecordURLs" type="button">
+                <i class="fas fa-trash-alt" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <th class="is-vcentered">Related Records</th>
+            <td class="has-text-centered">
+              <button class="button is-inverted is-danger is-purge-button" data-table="RelatedRecords" type="button">
+                <i class="fas fa-trash-alt" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <th class="is-vcentered">Record Comment Log</th>
+            <td class="has-text-centered">
+              <button class="button is-inverted is-danger is-purge-button" data-table="RecordCommentLog" type="button">
+                <i class="fas fa-trash-alt" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

@@ -12,7 +12,8 @@ const adminJavascriptFn = () => {
     "public-typescript/admin/main.js",
     "public-typescript/admin/users.js",
     "public-typescript/admin/recordTypes.js",
-    "public-typescript/admin/statusTypes.js"
+    "public-typescript/admin/statusTypes.js",
+    "public-typescript/admin/tableCleanup.js"
   ], { allowEmpty: true })
     .pipe(concat("admin.js"))
     .pipe(minify({ noSource: true, ext: { min: ".min.js" } }))

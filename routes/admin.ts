@@ -21,6 +21,8 @@ import handler_doSetStatusTypeIsActive from "../handlers/admin/doSetStatusTypeIs
 import handler_doSetStatusTypeOrderNumber from "../handlers/admin/doSetStatusTypeOrderNumber.js";
 import handler_doRemoveStatusType from "../handlers/admin/doRemoveStatusType.js";
 
+import handler_doTableCleanup from "../handlers/admin/doTableCleanup.js";
+
 
 export const router = Router();
 
@@ -45,6 +47,8 @@ router.post("/doUpdateStatusType", handler_doUpdateStatusType);
 router.post("/doSetStatusTypeIsActive", handler_doSetStatusTypeIsActive);
 router.post("/doSetStatusTypeOrderNumber", handler_doSetStatusTypeOrderNumber);
 router.post("/doRemoveStatusType", handler_doRemoveStatusType);
+
+router.post("/doTableCleanup", handler_doTableCleanup);
 
 
 export default router;
