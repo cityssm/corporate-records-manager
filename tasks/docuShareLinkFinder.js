@@ -1,4 +1,4 @@
-import { setIntervalAsync } from "set-interval-async/fixed/index.js";
+import { setIntervalAsync, clearIntervalAsync } from "set-interval-async/fixed/index.js";
 import * as configFns from "../helpers/configFns.js";
 import * as docuShareFns from "../helpers/docuShareFns.js";
 import getRecordNumbersByRecordTypeKey from "../helpers/recordsDB/getRecordNumbersByRecordTypeKey.js";
@@ -77,5 +77,17 @@ const doTask = async () => {
         }
     }
 };
-await doTask();
-setIntervalAsync(doTask, 86400 * 1000);
+doTask().catch(() => { });
+const timer = setIntervalAsync(doTask, 2 * 3600 * 1000);
+if (process) {
+    const stopTimer = () => {
+        clearIntervalAsync(timer)
+            .then(() => {
+            debugTask("Task stopped");
+        })
+            .catch(() => { });
+    };
+    ["beforeExit", "exit", "SIGINT", "SIGTERM"].forEach((shutdownEvent) => {
+        process.on(shutdownEvent, stopTimer);
+    });
+}
