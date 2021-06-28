@@ -30,14 +30,15 @@ router.route("/")
                 canUpdate: tempAdmin.canUpdate,
                 isAdmin: tempAdmin.isAdmin
             };
-            return res.redirect(redirectURL);
+            res.redirect(redirectURL);
         }
         else {
-            return res.render("login", {
+            res.render("login", {
                 userName,
                 message: "Access Denied"
             });
         }
+        return;
     }
     try {
         userName = userName.toLowerCase();
@@ -45,24 +46,26 @@ router.route("/")
         if (isAuthenticated) {
             const user = await getUser(userName);
             if (!user) {
-                return res.render("login", {
+                res.render("login", {
                     userName,
                     message: "Access Denied"
                 });
             }
             else {
                 req.session.user = user;
-                return res.redirect(redirectURL);
+                res.redirect(redirectURL);
             }
         }
-        return res.render("login", {
-            userName,
-            message: "Login Failed"
-        });
+        else {
+            res.render("login", {
+                userName,
+                message: "Login Failed"
+            });
+        }
     }
     catch (e) {
         debugLogin(e);
-        return res.render("login", {
+        res.render("login", {
             userName,
             message: "Login Failed"
         });
