@@ -183,9 +183,11 @@ declare const cityssm: cityssmGlobal;
           "</button>" +
           "</td>") +
         ("<td class=\"has-text-centered\">" +
-          "<button class=\"button is-inverted is-danger is-remove-user-button\" type=\"button\">" +
-          "<i class=\"fas fa-trash-alt\" aria-label=\"Remove User\"></i>" +
-          "</button>" +
+          (exports.user.userName === user.userName
+            ? ""
+            : "<button class=\"button is-inverted is-danger is-remove-user-button\" type=\"button\">" +
+            "<i class=\"fas fa-trash-alt\" aria-label=\"Remove User\"></i>" +
+            "</button>") +
           "</td>");
 
       const buttonEles = trEle.getElementsByTagName("button");

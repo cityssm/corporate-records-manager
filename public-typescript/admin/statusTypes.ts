@@ -67,10 +67,16 @@ declare const cityssm: cityssmGlobal;
     });
   };
 
-  const setStatusTypeOrderNumberFn = (statusTypeKey: string, newOrderNumber: number) => {
+
+  const moveStatusTypeFn = (clickEvent: Event, orderNumberDirection: 1 | -1) => {
+
+    const { buttonEle, statusType } = getStatusTypeFromEventFn(clickEvent);
+    buttonEle.disabled = true;
+
+    const newOrderNumber = statusType.orderNumber + orderNumberDirection;
 
     cityssm.postJSON(urlPrefix + "/admin/doSetStatusTypeOrderNumber", {
-      statusTypeKey: statusTypeKey,
+      statusTypeKey: statusType.statusTypeKey,
       orderNumber: newOrderNumber
     }, (responseJSON: { success: boolean; message?: string; statusTypes?: recordTypes.StatusType[] }) => {
 
@@ -87,21 +93,11 @@ declare const cityssm: cityssmGlobal;
   };
 
   const moveStatusTypeUpFn = (clickEvent: Event) => {
-
-    const { buttonEle, statusType } = getStatusTypeFromEventFn(clickEvent);
-
-    buttonEle.disabled = true;
-
-    setStatusTypeOrderNumberFn(statusType.statusTypeKey, statusType.orderNumber - 1);
+    moveStatusTypeFn(clickEvent, -1);
   };
 
   const moveStatusTypeDownFn = (clickEvent: Event) => {
-
-    const { buttonEle, statusType } = getStatusTypeFromEventFn(clickEvent);
-
-    buttonEle.disabled = true;
-
-    setStatusTypeOrderNumberFn(statusType.statusTypeKey, statusType.orderNumber + 1);
+    moveStatusTypeFn(clickEvent, 1);
   };
 
   const updateStatusTypeFn = (clickEvent: Event) => {

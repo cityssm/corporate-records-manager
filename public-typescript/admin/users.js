@@ -122,9 +122,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</button>" +
                     "</td>") +
                 ("<td class=\"has-text-centered\">" +
-                    "<button class=\"button is-inverted is-danger is-remove-user-button\" type=\"button\">" +
-                    "<i class=\"fas fa-trash-alt\" aria-label=\"Remove User\"></i>" +
-                    "</button>" +
+                    (exports.user.userName === user.userName
+                        ? ""
+                        : "<button class=\"button is-inverted is-danger is-remove-user-button\" type=\"button\">" +
+                            "<i class=\"fas fa-trash-alt\" aria-label=\"Remove User\"></i>" +
+                            "</button>") +
                     "</td>");
             var buttonEles = trEle.getElementsByTagName("button");
             for (var buttonIndex = 0; buttonIndex < buttonEles.length; buttonIndex += 1) {

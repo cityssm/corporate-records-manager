@@ -41,9 +41,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     };
-    var setStatusTypeOrderNumberFn = function (statusTypeKey, newOrderNumber) {
+    var moveStatusTypeFn = function (clickEvent, orderNumberDirection) {
+        var _a = getStatusTypeFromEventFn(clickEvent), buttonEle = _a.buttonEle, statusType = _a.statusType;
+        buttonEle.disabled = true;
+        var newOrderNumber = statusType.orderNumber + orderNumberDirection;
         cityssm.postJSON(urlPrefix + "/admin/doSetStatusTypeOrderNumber", {
-            statusTypeKey: statusTypeKey,
+            statusTypeKey: statusType.statusTypeKey,
             orderNumber: newOrderNumber
         }, function (responseJSON) {
             if (responseJSON.success) {
@@ -56,14 +59,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     var moveStatusTypeUpFn = function (clickEvent) {
-        var _a = getStatusTypeFromEventFn(clickEvent), buttonEle = _a.buttonEle, statusType = _a.statusType;
-        buttonEle.disabled = true;
-        setStatusTypeOrderNumberFn(statusType.statusTypeKey, statusType.orderNumber - 1);
+        moveStatusTypeFn(clickEvent, -1);
     };
     var moveStatusTypeDownFn = function (clickEvent) {
-        var _a = getStatusTypeFromEventFn(clickEvent), buttonEle = _a.buttonEle, statusType = _a.statusType;
-        buttonEle.disabled = true;
-        setStatusTypeOrderNumberFn(statusType.statusTypeKey, statusType.orderNumber + 1);
+        moveStatusTypeFn(clickEvent, 1);
     };
     var updateStatusTypeFn = function (clickEvent) {
         var statusType = getStatusTypeFromEventFn(clickEvent).statusType;
