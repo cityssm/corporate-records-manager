@@ -17,8 +17,8 @@ export const getRecordNumbersByRecordTypeKey = async (recordTypeKey) => {
         const records = result.recordset;
         return records;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
 };
 export default getRecordNumbersByRecordTypeKey;

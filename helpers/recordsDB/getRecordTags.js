@@ -17,8 +17,8 @@ export const getRecordTags = async (recordID) => {
             }
         }
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return tags;
 };

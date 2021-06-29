@@ -2,8 +2,8 @@ import * as assert from "assert";
 import * as pool from "@cityssm/mssql-multi-pool";
 import { getRecordTypes, getStatusTypes } from "../helpers/recordsDB/configCache.js";
 describe("recordsDB - getRecord()", () => {
-    after(async () => {
-        await pool.releaseAll();
+    after(() => {
+        pool.releaseAll();
     });
     it("should execute getRecordTypes()", async () => {
         const recordTypesA = await getRecordTypes();

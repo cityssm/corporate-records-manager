@@ -1,7 +1,7 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 
-import setStatusTypeOrderNumber from "./setStatusTypeOrderNumber.js";
+import { setStatusTypeOrderNumber } from "./setStatusTypeOrderNumber.js";
 
 import type * as sqlTypes from "mssql";
 import type { StatusType } from "../../types/recordTypes";
@@ -46,8 +46,8 @@ export const getAllStatusTypes = async (): Promise<StatusType[]> => {
 
     return statusTypes;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return [];

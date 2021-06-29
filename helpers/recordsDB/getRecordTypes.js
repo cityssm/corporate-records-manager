@@ -23,8 +23,8 @@ export const getRecordTypes = async (includeCounts = false) => {
             return result.recordset;
         }
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return [];
 };

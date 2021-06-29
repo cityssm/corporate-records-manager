@@ -2,11 +2,11 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:removeComment");
-export const removeComment = async (commentLogID, reqSession) => {
+export const removeComment = async (commentLogID, requestSession) => {
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         await pool.request()
-            .input("recordDelete_userName", reqSession.user.userName)
+            .input("recordDelete_userName", requestSession.user.userName)
             .input("recordDelete_datetime", new Date())
             .input("commentLogID", commentLogID)
             .query("update CR.RecordCommentLog" +
@@ -16,8 +16,8 @@ export const removeComment = async (commentLogID, reqSession) => {
             " and commentLogID = @commentLogID");
         return true;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
         return false;
     }
 };

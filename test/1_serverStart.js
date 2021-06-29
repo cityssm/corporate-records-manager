@@ -18,13 +18,13 @@ describe("corporate-records-manager", () => {
             assert.fail("application.enableTempAdminUser must be set to true");
         }
     });
-    after(async () => {
+    after(() => {
         try {
             httpServer.close();
         }
-        catch (_e) {
+        catch (_a) {
         }
-        await pool.releaseAll();
+        pool.releaseAll();
     });
     it("Ensure server starts on port " + portNumber.toString(), (done) => {
         assert.ok(serverStarted);
@@ -57,8 +57,8 @@ describe("corporate-records-manager", () => {
                         formEle.submit();
                     });
                     await page.waitForNavigation();
-                    const res = await page.goto(appURL + pageURLs.goto);
-                    if (res.ok) {
+                    const response = await page.goto(appURL + pageURLs.goto);
+                    if (response.ok) {
                         success = true;
                     }
                     if (pageURLs.waitFor) {

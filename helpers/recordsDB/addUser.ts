@@ -33,11 +33,11 @@ export const addUser = async (userName: string): Promise<User> => {
 
     return user;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
-  return null;
+  return undefined;
 };
 
 

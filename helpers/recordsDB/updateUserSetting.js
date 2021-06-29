@@ -13,8 +13,8 @@ export const updateUserSetting = async (userName, fieldName, fieldValue) => {
             " where userName = @userName");
         return true;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
         return false;
     }
 };

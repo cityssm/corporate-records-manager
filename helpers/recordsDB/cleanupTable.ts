@@ -24,22 +24,22 @@ const cleanupTable = async (tableName: string): Promise<number> => {
       return result.recordset.length;
     }
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return 0;
 };
 
 
-export const cleanupRecordStatusLogTable = async () => {
+export const cleanupRecordStatusLogTable = async (): Promise<number> => {
   return await cleanupTable("RecordStatusLog");
 };
 
-export const cleanupRecordURLsTable = async () => {
+export const cleanupRecordURLsTable = async (): Promise<number> => {
   return await cleanupTable("RecordURLs");
 };
 
-export const cleanupRecordCommentLogTable = async () => {
+export const cleanupRecordCommentLogTable = async (): Promise<number> => {
   return await cleanupTable("RecordCommentLog");
 };

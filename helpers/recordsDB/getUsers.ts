@@ -23,8 +23,8 @@ export const getUsers = async (): Promise<User[]> => {
 
     users = result.recordset;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return users;

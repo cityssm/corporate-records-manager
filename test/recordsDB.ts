@@ -2,17 +2,17 @@ import * as assert from "assert";
 
 import * as pool from "@cityssm/mssql-multi-pool";
 
-import getRecord from "../helpers/recordsDB/getRecord.js";
-import getRecordComments from "../helpers/recordsDB/getRecordComments.js";
-import getRecordStatuses from "../helpers/recordsDB/getRecordStatuses.js";
-import getRecordTags from "../helpers/recordsDB/getRecordTags.js";
-import getRecordURLs from "../helpers/recordsDB/getRecordURLs.js";
-import getRelatedRecords from "../helpers/recordsDB/getRelatedRecords.js";
+import { getRecord } from "../helpers/recordsDB/getRecord.js";
+import { getRecordComments } from "../helpers/recordsDB/getRecordComments.js";
+import { getRecordStatuses } from "../helpers/recordsDB/getRecordStatuses.js";
+import { getRecordTags } from "../helpers/recordsDB/getRecordTags.js";
+import { getRecordURLs } from "../helpers/recordsDB/getRecordURLs.js";
+import { getRelatedRecords } from "../helpers/recordsDB/getRelatedRecords.js";
 
-import getRecords from "../helpers/recordsDB/getRecords.js";
+import { getRecords } from "../helpers/recordsDB/getRecords.js";
 
-import getReportData from "../helpers/recordsDB/getReportData.js";
-import reports from "../data/reports.js";
+import { getReportData } from "../helpers/recordsDB/getReportData.js";
+import { reports } from "../data/reports.js";
 
 
 describe("recordsDB - getRecord()", () => {
@@ -125,7 +125,7 @@ describe("recordsDB - getRecords()", () => {
 
 describe("recordsDB - getReportData()", () => {
 
-  const params = {
+  const parameters = {
     recordTypeKey: "bylaw"
   };
 
@@ -137,7 +137,7 @@ describe("recordsDB - getReportData()", () => {
 
     it("should execute report " + reportName, async () => {
 
-      const results = await getReportData(reportName, params);
+      const results = await getReportData(reportName, parameters);
       assert.strictEqual(typeof (results), "object");
     });
   }

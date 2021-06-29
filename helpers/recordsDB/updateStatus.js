@@ -2,7 +2,7 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:updateStatus");
-export const updateStatus = async (statusForm, reqSession) => {
+export const updateStatus = async (statusForm, requestSession) => {
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         const statusTime = new Date(statusForm.statusDateString + " " + statusForm.statusTimeString);
@@ -10,7 +10,7 @@ export const updateStatus = async (statusForm, reqSession) => {
             .input("statusTypeKey", statusForm.statusTypeKey)
             .input("statusTime", statusTime)
             .input("statusLog", statusForm.statusLog)
-            .input("recordUpdate_userName", reqSession.user.userName)
+            .input("recordUpdate_userName", requestSession.user.userName)
             .input("recordUpdate_datetime", new Date())
             .input("statusLogID", statusForm.statusLogID)
             .query("update CR.RecordStatusLog" +
@@ -23,8 +23,8 @@ export const updateStatus = async (statusForm, reqSession) => {
             " and recordDelete_datetime is null");
         return true;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return false;
 };

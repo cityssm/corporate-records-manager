@@ -15,8 +15,8 @@ const cleanupTable = async (tableName) => {
             return result.recordset.length;
         }
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return 0;
 };

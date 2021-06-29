@@ -21,9 +21,9 @@ export const addUser = async (userName) => {
             " values (@userName, @isActive, @canUpdate, @isAdmin)");
         return user;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
-    return null;
+    return undefined;
 };
 export default addUser;

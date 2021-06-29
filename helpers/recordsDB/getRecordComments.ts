@@ -24,8 +24,8 @@ export const getRecordComments = async (recordID: number | string): Promise<reco
       return result.recordset;
     }
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return [];

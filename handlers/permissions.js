@@ -1,18 +1,18 @@
-export const canUpdate = (req, res, next) => {
-    if (req.session.user.canUpdate) {
+export const canUpdate = (request, response, next) => {
+    if (request.session.user.canUpdate) {
         return next();
     }
-    res.status(403);
-    return res.json({
+    response.status(403);
+    return response.json({
         success: false
     });
 };
-export const isAdmin = (req, res, next) => {
-    if (req.session.user.isAdmin) {
+export const isAdmin = (request, response, next) => {
+    if (request.session.user.isAdmin) {
         return next();
     }
-    res.status(403);
-    return res.json({
+    response.status(403);
+    return response.json({
         success: false
     });
 };

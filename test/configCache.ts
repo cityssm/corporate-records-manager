@@ -7,8 +7,8 @@ import { getRecordTypes, getStatusTypes } from "../helpers/recordsDB/configCache
 
 describe("recordsDB - getRecord()", () => {
 
-  after(async () => {
-    await pool.releaseAll();
+  after(() => {
+    pool.releaseAll();
   });
 
   it("should execute getRecordTypes()", async () => {

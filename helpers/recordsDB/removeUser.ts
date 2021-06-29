@@ -20,8 +20,8 @@ export const removeUser = async (userName: string): Promise<boolean> => {
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return false;

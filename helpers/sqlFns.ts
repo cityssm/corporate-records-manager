@@ -10,7 +10,7 @@ const sanitizeWherePiece = (unsanitizedString: string) => {
 };
 
 
-export const buildWhereClauseLike = (columnNames: string[], queryString: string) => {
+export const buildWhereClauseLike = (columnNames: string[], queryString: string): string => {
 
   let whereClause = "";
 

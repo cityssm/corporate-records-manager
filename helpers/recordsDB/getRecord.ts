@@ -1,11 +1,11 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 
-import getRecordTags from "./getRecordTags.js";
-import getRecordStatuses from "./getRecordStatuses.js";
-import getRecordURLs from "./getRecordURLs.js";
-import getRelatedRecords from "./getRelatedRecords.js";
-import getRecordComments from "./getRecordComments.js";
+import { getRecordTags } from "./getRecordTags.js";
+import { getRecordStatuses } from "./getRecordStatuses.js";
+import { getRecordURLs } from "./getRecordURLs.js";
+import { getRelatedRecords } from "./getRelatedRecords.js";
+import { getRecordComments } from "./getRecordComments.js";
 
 import type * as sqlTypes from "mssql";
 import type { Record } from "../../types/recordTypes";
@@ -31,7 +31,7 @@ export const getRecord = async (recordID: number | string): Promise<Record> => {
         " and recordID = @recordID");
 
     if (!result.recordset || result.recordset.length === 0) {
-      return null;
+      return undefined;
     }
 
     const record: Record = result.recordset[0];
@@ -44,8 +44,8 @@ export const getRecord = async (recordID: number | string): Promise<Record> => {
 
     return record;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 };
 

@@ -2,8 +2,8 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:addComment");
-export const addComment = async (commentForm, reqSession) => {
-    let commentLogID = null;
+export const addComment = async (commentForm, requestSession) => {
+    let commentLogID;
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         const commentTime = new Date(commentForm.commentDateString + " " + commentForm.commentTimeString);
@@ -11,8 +11,8 @@ export const addComment = async (commentForm, reqSession) => {
             .input("recordID", commentForm.recordID)
             .input("commentTime", commentTime)
             .input("comment", commentForm.comment)
-            .input("recordCreate_userName", reqSession.user.userName)
-            .input("recordUpdate_userName", reqSession.user.userName)
+            .input("recordCreate_userName", requestSession.user.userName)
+            .input("recordUpdate_userName", requestSession.user.userName)
             .query("insert into CR.RecordCommentLog" +
             " (recordID, commentTime, comment," +
             " recordCreate_userName, recordUpdate_userName)" +
@@ -20,12 +20,12 @@ export const addComment = async (commentForm, reqSession) => {
             " values (@recordID, @commentTime, @comment," +
             " @recordCreate_userName, @recordUpdate_userName)");
         if (!result.recordset || result.recordset.length === 0) {
-            return null;
+            return undefined;
         }
         commentLogID = result.recordset[0].commentLogID;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return commentLogID;
 };

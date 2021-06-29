@@ -4,5 +4,5 @@ export const ensureInteger = (possibleNumber: number | string): number => {
     return possibleNumber;
   }
 
-  return parseInt(possibleNumber, 10);
+  return Number.parseInt(possibleNumber, 10);
 };

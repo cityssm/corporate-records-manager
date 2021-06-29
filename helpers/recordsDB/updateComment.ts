@@ -9,7 +9,7 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:updateComment");
 
 
-export const updateComment = async (commentForm: RecordComment, reqSession: expressSession.Session): Promise<boolean> => {
+export const updateComment = async (commentForm: RecordComment, requestSession: expressSession.Session): Promise<boolean> => {
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -20,7 +20,7 @@ export const updateComment = async (commentForm: RecordComment, reqSession: expr
     await pool.request()
       .input("commentTime", commentTime)
       .input("comment", commentForm.comment)
-      .input("recordUpdate_userName", reqSession.user.userName)
+      .input("recordUpdate_userName", requestSession.user.userName)
       .input("recordUpdate_datetime", new Date())
       .input("commentLogID", commentForm.commentLogID)
       .query("update CR.RecordCommentLog" +
@@ -33,8 +33,8 @@ export const updateComment = async (commentForm: RecordComment, reqSession: expr
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return false;

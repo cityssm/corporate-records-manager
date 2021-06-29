@@ -32,8 +32,8 @@ export const addRecordType = async (recordType: RecordType): Promise<boolean> =>
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return false;

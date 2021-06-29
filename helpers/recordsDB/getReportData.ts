@@ -9,7 +9,7 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getReportData");
 
 
-export const getReportData = async (reportName: string, params: { [paramName: string]: any } = {}): Promise<Array<{}>> => {
+export const getReportData = async (reportName: string, parameters: { [paramName: string]: unknown } = {}): Promise<Array<unknown>> => {
 
   const reportDefinition = reportDefinitions[reportName];
 
@@ -23,8 +23,8 @@ export const getReportData = async (reportName: string, params: { [paramName: st
 
     let request = pool.request();
 
-    for (const paramName of (reportDefinition.paramNames || [])) {
-      request = request.input(paramName, params[paramName]);
+    for (const parameterName of (reportDefinition.paramNames || [])) {
+      request = request.input(parameterName, parameters[parameterName]);
     }
 
     const result = await request.query(reportDefinition.sql());
@@ -35,8 +35,8 @@ export const getReportData = async (reportName: string, params: { [paramName: st
 
     return result.recordset;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 };
 

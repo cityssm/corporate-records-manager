@@ -26,8 +26,8 @@ export const setStatusTypeOrderNumber = async (statusTypeKey, orderNumber, updat
         }
         return true;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return false;
 };

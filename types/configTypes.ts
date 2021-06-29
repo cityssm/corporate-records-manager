@@ -46,7 +46,7 @@ export interface DocuShareCollectionHandle {
   title: string;
   handle: string;
   recordTypeKeys?: string[];
-};
+}
 
 
 export interface ReportDefinition {

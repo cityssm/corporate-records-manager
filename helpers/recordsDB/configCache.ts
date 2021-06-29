@@ -1,7 +1,7 @@
 import type * as recordTypes from "../../types/recordTypes";
 
-import db_getRecordTypes from "./getRecordTypes.js";
-import db_getStatusTypes from "./getStatusTypes.js";
+import database_getRecordTypes from "./getRecordTypes.js";
+import database_getStatusTypes from "./getStatusTypes.js";
 
 import NodeCache from "node-cache";
 
@@ -9,15 +9,15 @@ import NodeCache from "node-cache";
 const cache = new NodeCache({ stdTTL: 600 });
 
 
-const getCachedDataOrDoQuery = async (cacheKey: string, dbFunction: () => Promise<any[]>) => {
+const getCachedDataOrDoQuery = async (cacheKey: string, databaseFunction: () => Promise<unknown[]>) => {
 
-  let result: any[] = cache.get(cacheKey);
+  let result: unknown[] = cache.get(cacheKey);
 
   if (result) {
     return result;
   }
 
-  result = await dbFunction();
+  result = await databaseFunction();
 
   cache.set(cacheKey, result);
 
@@ -25,18 +25,18 @@ const getCachedDataOrDoQuery = async (cacheKey: string, dbFunction: () => Promis
 };
 
 
-export const getRecordTypes = async () => {
-  const recordTypes: recordTypes.RecordType[] =
-    await getCachedDataOrDoQuery("recordTypes", db_getRecordTypes);
+export const getRecordTypes = async (): Promise<recordTypes.RecordType[]> => {
+  const recordTypes =
+    await getCachedDataOrDoQuery("recordTypes", database_getRecordTypes) as recordTypes.RecordType[];
   return recordTypes;
 };
 
 
-export const getRecordType = async (recordTypeKey: string) => {
+export const getRecordType = async (recordTypeKey: string): Promise<recordTypes.RecordType> => {
 
-  const recordTypes = await getRecordTypes();
+  const recordTypesList = await getRecordTypes();
 
-  const recordType = recordTypes.find((possibleValue) => {
+  const recordType = recordTypesList.find((possibleValue) => {
     return possibleValue.recordTypeKey === recordTypeKey;
   });
 
@@ -44,15 +44,15 @@ export const getRecordType = async (recordTypeKey: string) => {
 };
 
 
-export const clearCache = () => {
+export const clearCache = (): void => {
   cache.flushAll();
 };
 
 
-export const getStatusTypes = async (recordTypeKey: string) => {
-  const statusTypes: recordTypes.StatusType[] =
+export const getStatusTypes = async (recordTypeKey: string): Promise<recordTypes.StatusType[]> => {
+  const statusTypes =
     await getCachedDataOrDoQuery("statusTypes:" + recordTypeKey, async () => {
-      return await db_getStatusTypes(recordTypeKey);
-    });
+      return await database_getStatusTypes(recordTypeKey);
+    }) as recordTypes.StatusType[];
   return statusTypes;
 };

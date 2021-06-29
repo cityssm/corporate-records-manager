@@ -8,9 +8,9 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:addURL");
 
 
-export const addURL = async (urlForm: RecordURL, reqSession: PartialSession): Promise<number> => {
+export const addURL = async (urlForm: RecordURL, requestSession: PartialSession): Promise<number> => {
 
-  let urlID: number = null;
+  let urlID: number;
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -21,8 +21,8 @@ export const addURL = async (urlForm: RecordURL, reqSession: PartialSession): Pr
       .input("url", urlForm.url)
       .input("urlTitle", urlForm.urlTitle)
       .input("urlDescription", urlForm.urlDescription)
-      .input("recordCreate_userName", reqSession.user.userName)
-      .input("recordUpdate_userName", reqSession.user.userName)
+      .input("recordCreate_userName", requestSession.user.userName)
+      .input("recordUpdate_userName", requestSession.user.userName)
       .query("insert into CR.RecordURLs" +
         " (recordID, url," +
         " urlTitle, urlDescription," +
@@ -32,13 +32,13 @@ export const addURL = async (urlForm: RecordURL, reqSession: PartialSession): Pr
         " @recordCreate_userName, @recordUpdate_userName)");
 
     if (!result.recordset || result.recordset.length === 0) {
-      return null;
+      return undefined;
     }
 
     urlID = result.recordset[0].urlID;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return urlID;

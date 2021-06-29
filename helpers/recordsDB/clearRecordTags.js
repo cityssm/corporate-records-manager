@@ -10,8 +10,8 @@ export const clearRecordTags = async (recordID) => {
             .query("delete from CR.RecordTags" +
             " where recordID = @recordID");
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
         return false;
     }
     return true;

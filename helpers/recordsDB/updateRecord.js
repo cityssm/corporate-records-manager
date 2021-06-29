@@ -1,10 +1,10 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
-import clearRecordTags from "./clearRecordTags.js";
-import setRecordTags from "./setRecordTags.js";
+import { clearRecordTags } from "./clearRecordTags.js";
+import { setRecordTags } from "./setRecordTags.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:updateRecord");
-export const updateRecord = async (recordForm, reqSession) => {
+export const updateRecord = async (recordForm, requestSession) => {
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         await pool.request()
@@ -15,7 +15,7 @@ export const updateRecord = async (recordForm, reqSession) => {
             .input("party", recordForm.party)
             .input("location", recordForm.location)
             .input("recordDate", recordForm.recordDateString)
-            .input("recordUpdate_userName", reqSession.user.userName)
+            .input("recordUpdate_userName", requestSession.user.userName)
             .input("recordUpdate_datetime", new Date())
             .input("recordID", recordForm.recordID)
             .query("update CR.Records" +
@@ -34,8 +34,8 @@ export const updateRecord = async (recordForm, reqSession) => {
         await setRecordTags(recordForm.recordID, recordForm.tags);
         return true;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
         return false;
     }
 };

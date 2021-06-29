@@ -7,7 +7,7 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:setStatusTypeOrderNumber");
 
 
-export const setStatusTypeOrderNumber = async (statusTypeKey: string, orderNumber: number, updateOtherStatusType: boolean = false): Promise<boolean> => {
+export const setStatusTypeOrderNumber = async (statusTypeKey: string, orderNumber: number, updateOtherStatusType = false): Promise<boolean> => {
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -37,8 +37,8 @@ export const setStatusTypeOrderNumber = async (statusTypeKey: string, orderNumbe
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return false;

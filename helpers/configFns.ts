@@ -9,7 +9,8 @@ import type * as docuShareConfig from "@cityssm/docushare/types";
  */
 
 
-import config from "../data/config.js";
+// eslint-disable-next-line node/no-unpublished-import
+import { config } from "../data/config.js";
 
 Object.freeze(config);
 
@@ -18,12 +19,9 @@ Object.freeze(config);
  * SET UP FALLBACK VALUES
  */
 
+const configFallbackValues = new Map<string, unknown>();
 
-const configOverrides: { [propertyName: string]: any } = {};
-
-const configFallbackValues = new Map<string, any>();
-
-configFallbackValues.set("application.httpPort", 58009);
+configFallbackValues.set("application.httpPort", 58_009);
 configFallbackValues.set("application.applicationName", "Corporate Records Manager");
 configFallbackValues.set("application.enableTempAdminUser", false);
 
@@ -66,25 +64,20 @@ export function getProperty(propertyName: "integrations.docuShare.session"): doc
 export function getProperty(propertyName: "integrations.docuShare.collectionHandles"): configTypes.DocuShareCollectionHandle[];
 
 
-export function getProperty(propertyName: string): any {
-
-  if (configOverrides.hasOwnProperty(propertyName)) {
-    return configOverrides[propertyName];
-  }
+export function getProperty(propertyName: string): unknown {
 
   const propertyNameSplit = propertyName.split(".");
 
-  let currentObj = config;
+  let currentObject = config;
 
-  for (let index = 0; index < propertyNameSplit.length; index += 1) {
+  for (const propertyNamePiece of propertyNameSplit) {
 
-    currentObj = currentObj[propertyNameSplit[index]];
+    currentObject = currentObject[propertyNamePiece];
 
-    if (!currentObj) {
+    if (!currentObject) {
       return configFallbackValues.get(propertyName);
     }
-
   }
 
-  return currentObj;
+  return currentObject;
 }

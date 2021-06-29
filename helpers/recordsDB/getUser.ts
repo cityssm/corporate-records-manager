@@ -8,9 +8,9 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getUser");
 
 
-export const getUser = async (userName: string, filterByIsActive: boolean = true): Promise<User> => {
+export const getUser = async (userName: string, filterByIsActive = true): Promise<User> => {
 
-  let user: User = null;
+  let user: User;
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -27,8 +27,8 @@ export const getUser = async (userName: string, filterByIsActive: boolean = true
       user = result.recordset[0];
     }
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return user;

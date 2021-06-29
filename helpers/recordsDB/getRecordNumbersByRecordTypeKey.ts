@@ -29,8 +29,8 @@ export const getRecordNumbersByRecordTypeKey = async (recordTypeKey: string): Pr
 
     return records;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 };
 

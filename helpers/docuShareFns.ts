@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-export const doSetup = () => {
+export const doSetup = (): void => {
 
   ds.setupJava({
     dsapiPath: path.join(__dirname, "..", "java", "dsapi.jar")
@@ -22,12 +22,12 @@ export const doSetup = () => {
 };
 
 
-export const getIDFromHandle = (handle: string) => {
+export const getIDFromHandle = (handle: string): string => {
   return handle.split("-")[1];
 };
 
 
-export const getURL = (handle: string) => {
+export const getURL = (handle: string): string => {
 
   return configFns.getProperty("integrations.docuShare.rootURL") +
     "/dsweb/View/" +

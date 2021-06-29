@@ -1,5 +1,4 @@
 (() => {
-
   const showAllFn = (clickEvent: MouseEvent) => {
 
     clickEvent.preventDefault();
@@ -20,5 +19,4 @@
   for (let index = 0; index < showAllButtonEles.length; index += 1) {
     showAllButtonEles[index].addEventListener("click", showAllFn);
   }
-
 })();

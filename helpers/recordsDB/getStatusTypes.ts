@@ -25,8 +25,8 @@ export const getStatusTypes = async (recordTypeKey: string): Promise<StatusType[
       return result.recordset;
     }
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return [];

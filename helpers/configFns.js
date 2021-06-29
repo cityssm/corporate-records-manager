@@ -1,6 +1,5 @@
-import config from "../data/config.js";
+import { config } from "../data/config.js";
 Object.freeze(config);
-const configOverrides = {};
 const configFallbackValues = new Map();
 configFallbackValues.set("application.httpPort", 58009);
 configFallbackValues.set("application.applicationName", "Corporate Records Manager");
@@ -16,16 +15,13 @@ configFallbackValues.set("session.doKeepAlive", false);
 configFallbackValues.set("integrations.docuShare.isEnabled", false);
 configFallbackValues.set("integrations.docuShare.collectionHandles", []);
 export function getProperty(propertyName) {
-    if (configOverrides.hasOwnProperty(propertyName)) {
-        return configOverrides[propertyName];
-    }
     const propertyNameSplit = propertyName.split(".");
-    let currentObj = config;
-    for (let index = 0; index < propertyNameSplit.length; index += 1) {
-        currentObj = currentObj[propertyNameSplit[index]];
-        if (!currentObj) {
+    let currentObject = config;
+    for (const propertyNamePiece of propertyNameSplit) {
+        currentObject = currentObject[propertyNamePiece];
+        if (!currentObject) {
             return configFallbackValues.get(propertyName);
         }
     }
-    return currentObj;
+    return currentObject;
 }

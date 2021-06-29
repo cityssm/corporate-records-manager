@@ -11,8 +11,8 @@ export const removeUser = async (userName) => {
             " where userName = @userName");
         return true;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return false;
 };

@@ -1,7 +1,7 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
-import clearRecordTags from "./clearRecordTags.js";
-import setRecordTags from "./setRecordTags.js";
+import { clearRecordTags } from "./clearRecordTags.js";
+import { setRecordTags } from "./setRecordTags.js";
 
 import type * as sqlTypes from "mssql";
 import type * as expressSession from "express-session";
@@ -11,7 +11,7 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:updateRecord");
 
 
-export const updateRecord = async (recordForm: Record, reqSession: expressSession.Session): Promise<boolean> => {
+export const updateRecord = async (recordForm: Record, requestSession: expressSession.Session): Promise<boolean> => {
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -25,7 +25,7 @@ export const updateRecord = async (recordForm: Record, reqSession: expressSessio
       .input("party", recordForm.party)
       .input("location", recordForm.location)
       .input("recordDate", recordForm.recordDateString)
-      .input("recordUpdate_userName", reqSession.user.userName)
+      .input("recordUpdate_userName", requestSession.user.userName)
       .input("recordUpdate_datetime", new Date())
       .input("recordID", recordForm.recordID)
       .query("update CR.Records" +
@@ -46,8 +46,8 @@ export const updateRecord = async (recordForm: Record, reqSession: expressSessio
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
     return false;
   }
 };

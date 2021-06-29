@@ -2,8 +2,8 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:addURL");
-export const addURL = async (urlForm, reqSession) => {
-    let urlID = null;
+export const addURL = async (urlForm, requestSession) => {
+    let urlID;
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         const result = await pool.request()
@@ -11,8 +11,8 @@ export const addURL = async (urlForm, reqSession) => {
             .input("url", urlForm.url)
             .input("urlTitle", urlForm.urlTitle)
             .input("urlDescription", urlForm.urlDescription)
-            .input("recordCreate_userName", reqSession.user.userName)
-            .input("recordUpdate_userName", reqSession.user.userName)
+            .input("recordCreate_userName", requestSession.user.userName)
+            .input("recordUpdate_userName", requestSession.user.userName)
             .query("insert into CR.RecordURLs" +
             " (recordID, url," +
             " urlTitle, urlDescription," +
@@ -21,12 +21,12 @@ export const addURL = async (urlForm, reqSession) => {
             " values (@recordID, @url, @urlTitle, @urlDescription," +
             " @recordCreate_userName, @recordUpdate_userName)");
         if (!result.recordset || result.recordset.length === 0) {
-            return null;
+            return undefined;
         }
         urlID = result.recordset[0].urlID;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return urlID;
 };

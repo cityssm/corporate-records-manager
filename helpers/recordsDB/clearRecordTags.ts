@@ -19,8 +19,8 @@ export const clearRecordTags = async (recordID: number): Promise<boolean> => {
         " where recordID = @recordID");
 
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
     return false;
   }
 

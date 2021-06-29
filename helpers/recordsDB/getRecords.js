@@ -2,9 +2,8 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecords");
-;
-export const getRecords = async (params, options) => {
-    const returnObj = {
+export const getRecords = async (parameters, options) => {
+    const returnObject = {
         count: 0,
         records: []
     };
@@ -13,32 +12,32 @@ export const getRecords = async (params, options) => {
         let countRequest = pool.request();
         let resultsRequest = pool.request();
         let whereSQL = " where recordDelete_datetime is null";
-        if (params.recordTypeKey !== "") {
-            countRequest = countRequest.input("recordTypeKey", params.recordTypeKey);
-            resultsRequest = resultsRequest.input("recordTypeKey", params.recordTypeKey);
+        if (parameters.recordTypeKey !== "") {
+            countRequest = countRequest.input("recordTypeKey", parameters.recordTypeKey);
+            resultsRequest = resultsRequest.input("recordTypeKey", parameters.recordTypeKey);
             whereSQL += " and recordTypeKey = @recordTypeKey";
         }
-        if (params.recordNumber && params.recordNumber !== "") {
-            countRequest = countRequest.input("recordNumber", params.recordNumber);
-            resultsRequest = resultsRequest.input("recordNumber", params.recordNumber);
+        if (parameters.recordNumber && parameters.recordNumber !== "") {
+            countRequest = countRequest.input("recordNumber", parameters.recordNumber);
+            resultsRequest = resultsRequest.input("recordNumber", parameters.recordNumber);
             whereSQL += " and recordNumber like '%' + @recordNumber + '%'";
         }
-        if (params.recordDateStringGTE && params.recordDateStringGTE !== "") {
-            countRequest = countRequest.input("recordDateStringGTE", params.recordDateStringGTE);
-            resultsRequest = resultsRequest.input("recordDateStringGTE", params.recordDateStringGTE);
+        if (parameters.recordDateStringGTE && parameters.recordDateStringGTE !== "") {
+            countRequest = countRequest.input("recordDateStringGTE", parameters.recordDateStringGTE);
+            resultsRequest = resultsRequest.input("recordDateStringGTE", parameters.recordDateStringGTE);
             whereSQL += " and recordDate >= @recordDateStringGTE";
         }
-        if (params.recordDateStringLTE && params.recordDateStringLTE !== "") {
-            countRequest = countRequest.input("recordDateStringLTE", params.recordDateStringLTE);
-            resultsRequest = resultsRequest.input("recordDateStringLTE", params.recordDateStringLTE);
+        if (parameters.recordDateStringLTE && parameters.recordDateStringLTE !== "") {
+            countRequest = countRequest.input("recordDateStringLTE", parameters.recordDateStringLTE);
+            resultsRequest = resultsRequest.input("recordDateStringLTE", parameters.recordDateStringLTE);
             whereSQL += " and recordDate <= @recordDateStringLTE";
         }
-        if (params.searchString !== "") {
-            const searchStringSplit = params.searchString.trim().split(" ");
-            for (let index = 0; index < searchStringSplit.length; index += 1) {
+        if (parameters.searchString !== "") {
+            const searchStringSplit = parameters.searchString.trim().split(" ");
+            for (const [index, element] of searchStringSplit.entries()) {
                 const inputKey = "searchString" + index.toString();
-                countRequest = countRequest.input(inputKey, searchStringSplit[index]);
-                resultsRequest = resultsRequest.input(inputKey, searchStringSplit[index]);
+                countRequest = countRequest.input(inputKey, element);
+                resultsRequest = resultsRequest.input(inputKey, element);
                 whereSQL += " and (" +
                     "recordNumber like '%' + @" + inputKey + " + '%'" +
                     " or recordTitle like '%' + @" + inputKey + " + '%'" +
@@ -49,9 +48,9 @@ export const getRecords = async (params, options) => {
             }
         }
         const countResult = await countRequest.query("select count(*) as cnt from CR.Records" + whereSQL);
-        returnObj.count = countResult.recordset[0].cnt;
-        if (returnObj.count === 0) {
-            return returnObj;
+        returnObject.count = countResult.recordset[0].cnt;
+        if (returnObject.count === 0) {
+            return returnObject;
         }
         const result = await resultsRequest.query("select top " + (options.limit + options.offset).toString() +
             " recordID, recordTypeKey, recordNumber," +
@@ -61,11 +60,11 @@ export const getRecords = async (params, options) => {
             " from CR.Records" +
             whereSQL +
             " order by recordDate desc, recordCreate_datetime desc, recordNumber desc");
-        returnObj.records = result.recordset.slice(options.offset);
-        return returnObj;
+        returnObject.records = result.recordset.slice(options.offset);
+        return returnObject;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
 };
 export default getRecords;

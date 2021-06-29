@@ -1,9 +1,9 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
-import setRecordTags from "./setRecordTags.js";
+import { setRecordTags } from "./setRecordTags.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:createRecord");
-export const createRecord = async (recordForm, reqSession) => {
+export const createRecord = async (recordForm, requestSession) => {
     let recordID;
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
@@ -15,8 +15,8 @@ export const createRecord = async (recordForm, reqSession) => {
             .input("party", recordForm.party)
             .input("location", recordForm.location)
             .input("recordDate", recordForm.recordDateString)
-            .input("recordCreate_userName", reqSession.user.userName)
-            .input("recordUpdate_userName", reqSession.user.userName)
+            .input("recordCreate_userName", requestSession.user.userName)
+            .input("recordUpdate_userName", requestSession.user.userName)
             .query("insert into CR.Records" +
             " (recordTypeKey, recordNumber," +
             " recordTitle, recordDescription, party, location, recordDate," +
@@ -25,13 +25,13 @@ export const createRecord = async (recordForm, reqSession) => {
             " values (@recordTypeKey, @recordNumber, @recordTitle, @recordDescription, @party, @location, @recordDate," +
             " @recordCreate_userName, @recordUpdate_userName)");
         if (!result.recordset || result.recordset.length === 0) {
-            return null;
+            return undefined;
         }
         recordID = result.recordset[0].recordID;
         await setRecordTags(recordID, recordForm.tags);
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return recordID;
 };

@@ -9,4 +9,4 @@ export interface CRM {
     includeAddButton?: boolean;
     includeRemoveButton?: boolean;
   }) => HTMLElement;
-};
+}

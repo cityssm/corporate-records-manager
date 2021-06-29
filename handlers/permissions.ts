@@ -1,29 +1,29 @@
 import { RequestHandler } from "express";
 
 
-export const canUpdate: RequestHandler = (req, res, next) => {
+export const canUpdate: RequestHandler = (request, response, next) => {
 
-  if (req.session.user.canUpdate) {
+  if (request.session.user.canUpdate) {
     return next();
   }
 
-  res.status(403);
+  response.status(403);
 
-  return res.json({
+  return response.json({
     success: false
   });
 };
 
 
-export const isAdmin: RequestHandler = (req, res, next) => {
+export const isAdmin: RequestHandler = (request, response, next) => {
 
-  if (req.session.user.isAdmin) {
+  if (request.session.user.isAdmin) {
     return next();
   }
 
-  res.status(403);
+  response.status(403);
 
-  return res.json({
+  return response.json({
     success: false
   });
 };

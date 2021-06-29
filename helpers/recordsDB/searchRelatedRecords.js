@@ -24,9 +24,9 @@ export const searchRelatedRecords = async (recordID, recordTypeKey, searchString
         }
         if (searchString !== "") {
             const searchStringSplit = searchString.trim().split(" ");
-            for (let index = 0; index < searchStringSplit.length; index += 1) {
+            for (const [index, element] of searchStringSplit.entries()) {
                 const inputKey = "searchString" + index.toString();
-                request = request.input(inputKey, searchStringSplit[index]);
+                request = request.input(inputKey, element);
                 sql += " and (" +
                     "recordNumber like '%' + @" + inputKey + " + '%'" +
                     " or recordTitle like '%' + @" + inputKey + " + '%'" +
@@ -43,8 +43,8 @@ export const searchRelatedRecords = async (recordID, recordTypeKey, searchString
         const records = result.recordset;
         return records;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
 };
 export default searchRelatedRecords;

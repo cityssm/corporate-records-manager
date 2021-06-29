@@ -8,14 +8,14 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:removeRecord");
 
 
-export const removeRecord = async (recordID: number | string, reqSession: expressSession.Session): Promise<boolean> => {
+export const removeRecord = async (recordID: number | string, requestSession: expressSession.Session): Promise<boolean> => {
 
   try {
     const pool: sqlTypes.ConnectionPool =
       await sqlPool.connect(configFns.getProperty("mssqlConfig"));
 
     await pool.request()
-      .input("recordDelete_userName", reqSession.user.userName)
+      .input("recordDelete_userName", requestSession.user.userName)
       .input("recordDelete_datetime", new Date())
       .input("recordID", recordID)
       .query("update CR.Records" +
@@ -26,8 +26,8 @@ export const removeRecord = async (recordID: number | string, reqSession: expres
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
     return false;
   }
 };

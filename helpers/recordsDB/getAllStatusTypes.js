@@ -1,6 +1,6 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
-import setStatusTypeOrderNumber from "./setStatusTypeOrderNumber.js";
+import { setStatusTypeOrderNumber } from "./setStatusTypeOrderNumber.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getAllStatusTypes");
 export const getAllStatusTypes = async () => {
@@ -31,8 +31,8 @@ export const getAllStatusTypes = async () => {
         }
         return statusTypes;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return [];
 };

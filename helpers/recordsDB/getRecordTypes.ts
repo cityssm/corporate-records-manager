@@ -8,7 +8,7 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecordTypes");
 
 
-export const getRecordTypes = async (includeCounts: boolean = false): Promise<RecordType[]> => {
+export const getRecordTypes = async (includeCounts = false): Promise<RecordType[]> => {
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -35,8 +35,8 @@ export const getRecordTypes = async (includeCounts: boolean = false): Promise<Re
       return result.recordset;
     }
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return [];

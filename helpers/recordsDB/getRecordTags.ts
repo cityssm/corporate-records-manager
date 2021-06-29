@@ -28,8 +28,8 @@ export const getRecordTags = async (recordID: number | string): Promise<string[]
       }
     }
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return tags;

@@ -24,8 +24,8 @@ export const getRelatedRecords = async (recordID) => {
         const records = result.recordset;
         return records;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
 };
 export default getRelatedRecords;

@@ -13,8 +13,8 @@ export const updateStatusType = async (statusType) => {
             " where statusTypeKey = @statusTypeKey");
         return true;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return false;
 };

@@ -137,7 +137,7 @@ if (process) {
       .catch(() => { });
   };
 
-  ["beforeExit", "exit", "SIGINT", "SIGTERM"].forEach((shutdownEvent) => {
+  for (const shutdownEvent of ["beforeExit", "exit", "SIGINT", "SIGTERM"]) {
     process.on(shutdownEvent, stopTimer);
-  });
+  }
 }

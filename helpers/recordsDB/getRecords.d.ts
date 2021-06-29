@@ -3,7 +3,7 @@ interface GetRecordsReturn {
     count: number;
     records: Record[];
 }
-export declare const getRecords: (params: {
+export declare const getRecords: (parameters: {
     recordTypeKey: string;
     searchString: string;
     recordNumber?: string;

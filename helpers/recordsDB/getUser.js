@@ -3,7 +3,7 @@ import * as configFns from "../configFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getUser");
 export const getUser = async (userName, filterByIsActive = true) => {
-    let user = null;
+    let user;
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         const result = await pool.request()
@@ -16,8 +16,8 @@ export const getUser = async (userName, filterByIsActive = true) => {
             user = result.recordset[0];
         }
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return user;
 };

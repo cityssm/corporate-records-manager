@@ -7,7 +7,7 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getSuggestedRecordTags");
 
 
-export const getSuggestedRecordTags = async (recordID: number | string, searchString: string = ""): Promise<string[]> => {
+export const getSuggestedRecordTags = async (recordID: number | string, searchString = ""): Promise<string[]> => {
 
   const tags: string[] = [];
 
@@ -36,11 +36,11 @@ export const getSuggestedRecordTags = async (recordID: number | string, searchSt
 
       const searchStringSplit = searchString.trim().split(" ");
 
-      for (let index = 0; index < searchStringSplit.length; index += 1) {
+      for (const [index, element] of searchStringSplit.entries()) {
 
         const inputKey = "searchString" + index.toString();
 
-        request = request.input(inputKey, searchStringSplit[index]);
+        request = request.input(inputKey, element);
 
         sql += " and tag like '%' + @" + inputKey + " + '%'";
       }
@@ -60,8 +60,8 @@ export const getSuggestedRecordTags = async (recordID: number | string, searchSt
       }
     }
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return tags;

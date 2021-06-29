@@ -34,14 +34,14 @@ describe("corporate-records-manager", () => {
     }
   });
 
-  after(async() => {
+  after(() => {
     try {
       httpServer.close();
-    } catch (_e) {
+    } catch {
       // ignore
     }
 
-    await pool.releaseAll();
+    pool.releaseAll();
   });
 
   it("Ensure server starts on port " + portNumber.toString(), (done) => {
@@ -98,9 +98,9 @@ describe("corporate-records-manager", () => {
 
           // Navigate to the page
 
-          const res = await page.goto(appURL + pageURLs.goto);
+          const response = await page.goto(appURL + pageURLs.goto);
 
-          if (res.ok) {
+          if (response.ok) {
             success = true;
           }
 

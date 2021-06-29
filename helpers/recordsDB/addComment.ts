@@ -9,9 +9,9 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:addComment");
 
 
-export const addComment = async (commentForm: RecordComment, reqSession: expressSession.Session): Promise<number> => {
+export const addComment = async (commentForm: RecordComment, requestSession: expressSession.Session): Promise<number> => {
 
-  let commentLogID: number = null;
+  let commentLogID: number;
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -23,8 +23,8 @@ export const addComment = async (commentForm: RecordComment, reqSession: express
       .input("recordID", commentForm.recordID)
       .input("commentTime", commentTime)
       .input("comment", commentForm.comment)
-      .input("recordCreate_userName", reqSession.user.userName)
-      .input("recordUpdate_userName", reqSession.user.userName)
+      .input("recordCreate_userName", requestSession.user.userName)
+      .input("recordUpdate_userName", requestSession.user.userName)
       .query("insert into CR.RecordCommentLog" +
         " (recordID, commentTime, comment," +
         " recordCreate_userName, recordUpdate_userName)" +
@@ -33,13 +33,13 @@ export const addComment = async (commentForm: RecordComment, reqSession: express
         " @recordCreate_userName, @recordUpdate_userName)");
 
     if (!result.recordset || result.recordset.length === 0) {
-      return null;
+      return undefined;
     }
 
     commentLogID = result.recordset[0].commentLogID;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return commentLogID;

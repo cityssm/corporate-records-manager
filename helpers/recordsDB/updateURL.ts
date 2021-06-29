@@ -9,7 +9,7 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:updateURL");
 
 
-export const updateURL = async (recordURL: recordTypes.RecordURL, reqSession: expressSession.Session): Promise<boolean> => {
+export const updateURL = async (recordURL: recordTypes.RecordURL, requestSession: expressSession.Session): Promise<boolean> => {
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -19,7 +19,7 @@ export const updateURL = async (recordURL: recordTypes.RecordURL, reqSession: ex
       .input("url", recordURL.url)
       .input("urlTitle", recordURL.urlTitle)
       .input("urlDescription", recordURL.urlDescription)
-      .input("recordUpdate_userName", reqSession.user.userName)
+      .input("recordUpdate_userName", requestSession.user.userName)
       .input("recordUpdate_datetime", new Date())
       .input("urlID", recordURL.urlID)
       .query("update CR.RecordURLs" +
@@ -33,8 +33,8 @@ export const updateURL = async (recordURL: recordTypes.RecordURL, reqSession: ex
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
     return false;
   }
 };

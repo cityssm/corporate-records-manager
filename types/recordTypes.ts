@@ -12,7 +12,7 @@ export interface RecordType {
   patternHelp: string;
   isActive?: boolean;
   recordCount?: number;
-};
+}
 
 
 export interface StatusType {
@@ -22,7 +22,7 @@ export interface StatusType {
   isActive?: boolean;
   orderNumber?: number;
   recordCount?: number;
-};
+}
 
 
 /*
@@ -38,7 +38,7 @@ interface TrackedValue {
   recordUpdate_datetime?: Date;
   recordDelete_userName?: string;
   recordDelete_datetime?: Date;
-};
+}
 
 
 export type Record = {
@@ -98,14 +98,14 @@ export interface User {
   isAdmin: boolean;
   isActive?: boolean;
   password?: string;
-};
+}
 
 
 declare module "express-session" {
   interface Session {
     user: User;
   }
-};
+}
 
 
 export interface PartialSession {

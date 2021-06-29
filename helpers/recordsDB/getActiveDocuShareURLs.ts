@@ -28,8 +28,8 @@ export const getActiveDocuShareURLs = async (): Promise<recordTypes.DocuShareRec
       return result.recordset;
     }
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return [];

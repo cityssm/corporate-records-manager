@@ -1,10 +1,10 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
-import getRecordTags from "./getRecordTags.js";
-import getRecordStatuses from "./getRecordStatuses.js";
-import getRecordURLs from "./getRecordURLs.js";
-import getRelatedRecords from "./getRelatedRecords.js";
-import getRecordComments from "./getRecordComments.js";
+import { getRecordTags } from "./getRecordTags.js";
+import { getRecordStatuses } from "./getRecordStatuses.js";
+import { getRecordURLs } from "./getRecordURLs.js";
+import { getRelatedRecords } from "./getRelatedRecords.js";
+import { getRecordComments } from "./getRecordComments.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecord");
 export const getRecord = async (recordID) => {
@@ -20,7 +20,7 @@ export const getRecord = async (recordID) => {
             " where recordDelete_datetime is null" +
             " and recordID = @recordID");
         if (!result.recordset || result.recordset.length === 0) {
-            return null;
+            return undefined;
         }
         const record = result.recordset[0];
         record.tags = await getRecordTags(recordID);
@@ -30,8 +30,8 @@ export const getRecord = async (recordID) => {
         record.comments = await getRecordComments(recordID);
         return record;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
 };
 export default getRecord;

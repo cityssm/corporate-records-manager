@@ -12,8 +12,8 @@ export const getUsers = async () => {
             " order by userName");
         users = result.recordset;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return users;
 };

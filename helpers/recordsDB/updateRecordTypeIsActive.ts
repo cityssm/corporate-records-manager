@@ -22,8 +22,8 @@ export const updateRecordTypeIsActive = async (recordTypeKey: string, isActive: 
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
     return false;
   }
 };

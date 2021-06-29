@@ -23,8 +23,8 @@ export const updateStatusType = async (statusType: StatusType): Promise<boolean>
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return false;

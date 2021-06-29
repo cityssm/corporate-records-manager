@@ -3,7 +3,7 @@ import * as configFns from "../configFns.js";
 import reportDefinitions from "../../data/reports.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getReportData");
-export const getReportData = async (reportName, params = {}) => {
+export const getReportData = async (reportName, parameters = {}) => {
     const reportDefinition = reportDefinitions[reportName];
     if (!reportDefinition) {
         return [];
@@ -11,8 +11,8 @@ export const getReportData = async (reportName, params = {}) => {
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         let request = pool.request();
-        for (const paramName of (reportDefinition.paramNames || [])) {
-            request = request.input(paramName, params[paramName]);
+        for (const parameterName of (reportDefinition.paramNames || [])) {
+            request = request.input(parameterName, parameters[parameterName]);
         }
         const result = await request.query(reportDefinition.sql());
         if (!result.recordset || result.recordset.length === 0) {
@@ -20,8 +20,8 @@ export const getReportData = async (reportName, params = {}) => {
         }
         return result.recordset;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
 };
 export default getReportData;

@@ -36,8 +36,8 @@ export const getRelatedRecords = async (recordID: number | string): Promise<Reco
 
     return records;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 };
 

@@ -25,8 +25,8 @@ export const updateUserSetting = async (userName: string, fieldName: FieldName, 
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
     return false;
   }
 };

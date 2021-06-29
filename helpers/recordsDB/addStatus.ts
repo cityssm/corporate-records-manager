@@ -9,9 +9,9 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:addStatus");
 
 
-export const addStatus = async (statusForm: RecordStatus, reqSession: expressSession.Session): Promise<number> => {
+export const addStatus = async (statusForm: RecordStatus, requestSession: expressSession.Session): Promise<number> => {
 
-  let statusLogID: number = null;
+  let statusLogID: number;
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -24,8 +24,8 @@ export const addStatus = async (statusForm: RecordStatus, reqSession: expressSes
       .input("statusTypeKey", statusForm.statusTypeKey)
       .input("statusTime", statusTime)
       .input("statusLog", statusForm.statusLog)
-      .input("recordCreate_userName", reqSession.user.userName)
-      .input("recordUpdate_userName", reqSession.user.userName)
+      .input("recordCreate_userName", requestSession.user.userName)
+      .input("recordUpdate_userName", requestSession.user.userName)
       .query("insert into CR.RecordStatusLog" +
         " (recordID, statusTypeKey," +
         " statusTime, statusLog," +
@@ -35,13 +35,13 @@ export const addStatus = async (statusForm: RecordStatus, reqSession: expressSes
         " @recordCreate_userName, @recordUpdate_userName)");
 
     if (!result.recordset || result.recordset.length === 0) {
-      return null;
+      return undefined;
     }
 
     statusLogID = result.recordset[0].statusLogID;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return statusLogID;

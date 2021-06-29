@@ -9,7 +9,7 @@ import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:updateStatus");
 
 
-export const updateStatus = async (statusForm: RecordStatus, reqSession: expressSession.Session): Promise<boolean> => {
+export const updateStatus = async (statusForm: RecordStatus, requestSession: expressSession.Session): Promise<boolean> => {
 
   try {
     const pool: sqlTypes.ConnectionPool =
@@ -21,7 +21,7 @@ export const updateStatus = async (statusForm: RecordStatus, reqSession: express
       .input("statusTypeKey", statusForm.statusTypeKey)
       .input("statusTime", statusTime)
       .input("statusLog", statusForm.statusLog)
-      .input("recordUpdate_userName", reqSession.user.userName)
+      .input("recordUpdate_userName", requestSession.user.userName)
       .input("recordUpdate_datetime", new Date())
       .input("statusLogID", statusForm.statusLogID)
       .query("update CR.RecordStatusLog" +
@@ -35,8 +35,8 @@ export const updateStatus = async (statusForm: RecordStatus, reqSession: express
 
     return true;
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
   }
 
   return false;

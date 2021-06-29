@@ -22,8 +22,8 @@ export const addRecordType = async (recordType) => {
             " @isActive)");
         return true;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return false;
 };

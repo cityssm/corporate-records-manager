@@ -20,9 +20,9 @@ export const getSuggestedRecordTags = async (recordID, searchString = "") => {
         }
         if (searchString !== "") {
             const searchStringSplit = searchString.trim().split(" ");
-            for (let index = 0; index < searchStringSplit.length; index += 1) {
+            for (const [index, element] of searchStringSplit.entries()) {
                 const inputKey = "searchString" + index.toString();
-                request = request.input(inputKey, searchStringSplit[index]);
+                request = request.input(inputKey, element);
                 sql += " and tag like '%' + @" + inputKey + " + '%'";
             }
         }
@@ -37,8 +37,8 @@ export const getSuggestedRecordTags = async (recordID, searchString = "") => {
             }
         }
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return tags;
 };

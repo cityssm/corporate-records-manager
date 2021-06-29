@@ -22,8 +22,8 @@ export const updateRecordType = async (recordType) => {
             " where recordTypeKey = @recordTypeKey");
         return true;
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return false;
 };

@@ -8,6 +8,7 @@ document.getElementById("is-restore-hidden-sections-button").addEventListener("c
   }
 });
 
+
 (() => {
   const hideSectionFn = (clickEvent: MouseEvent) => {
     clickEvent.preventDefault();

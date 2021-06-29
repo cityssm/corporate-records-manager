@@ -25,8 +25,8 @@ export const setRecordTags = async (recordID: number, recordTags: string | strin
           " values (@recordID, @tag)");
     }
 
-  } catch (e) {
-    debugSQL(e);
+  } catch (error) {
+    debugSQL(error);
     return false;
   }
 

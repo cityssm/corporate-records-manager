@@ -15,8 +15,8 @@ export const getStatusTypes = async (recordTypeKey) => {
             return result.recordset;
         }
     }
-    catch (e) {
-        debugSQL(e);
+    catch (error) {
+        debugSQL(error);
     }
     return [];
 };
