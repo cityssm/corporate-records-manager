@@ -1,6 +1,4 @@
-#!/usr/bin/env node
-
-import app from "../app.js";
+import { app } from "../app.js";
 
 import http from "http";
 import https from "https";
@@ -23,11 +21,14 @@ const onError = (error: Error) => {
   switch (error.code) {
     case "EACCES":
       debugWWW("Requires elevated privileges");
+
+      // eslint-disable-next-line no-process-exit, unicorn/no-process-exit
       process.exit(1);
     // break;
 
     case "EADDRINUSE":
       debugWWW("Port is already in use.");
+      // eslint-disable-next-line no-process-exit, unicorn/no-process-exit
       process.exit(1);
     // break;
 

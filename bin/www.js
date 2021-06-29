@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-import app from "../app.js";
+import { app } from "../app.js";
 import http from "http";
 import * as configFns from "../helpers/configFns.js";
 import { fork } from "child_process";
