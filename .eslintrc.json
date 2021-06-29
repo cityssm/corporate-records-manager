@@ -22,6 +22,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
+    "node/no-missing-import": "off",
     "unicorn/empty-brace-spaces": "off",
     "unicorn/filename-case": [
       "error", {
