@@ -1,23 +1,23 @@
-document.getElementById("is-restore-hidden-sections-button").addEventListener("click", (clickEvent) => {
+document.querySelector("#is-restore-hidden-sections-button").addEventListener("click", (clickEvent) => {
   clickEvent.preventDefault();
 
-  const sectionEles = document.getElementsByTagName("section");
+  const sectionEles = document.querySelectorAll("section");
 
-  for (let index = 0; index < sectionEles.length; index += 1) {
-    sectionEles[index].classList.remove("is-hidden");
+  for (const sectionEle of sectionEles) {
+    sectionEle.classList.remove("is-hidden");
   }
 });
 
 
 (() => {
-  const hideSectionFn = (clickEvent: MouseEvent) => {
+  const hideSectionFunction = (clickEvent: MouseEvent) => {
     clickEvent.preventDefault();
     (clickEvent.currentTarget as HTMLElement).closest("section").classList.add("is-hidden");
   };
 
-  const hideButtonEles = document.getElementsByClassName("is-hide-section-button");
+  const hideButtonEles = document.querySelectorAll(".is-hide-section-button");
 
-  for (let index = 0; index < hideButtonEles.length; index += 1) {
-    hideButtonEles[index].addEventListener("click", hideSectionFn);
+  for (const hideButtonEle of hideButtonEles) {
+    hideButtonEle.addEventListener("click", hideSectionFunction);
   }
 })();

@@ -1,15 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-;
-(function () {
-    var urlPrefix = exports.urlPrefix;
-    var recordID = document.getElementById("record--recordID").value;
-    document.getElementById("is-remove-record-button").addEventListener("click", function (clickEvent) {
+(() => {
+    const urlPrefix = exports.urlPrefix;
+    const recordID = document.querySelector("#record--recordID").value;
+    document.querySelector("#is-remove-record-button").addEventListener("click", (clickEvent) => {
         clickEvent.preventDefault();
-        var removeFn = function () {
+        const removeFunction = () => {
             cityssm.postJSON(urlPrefix + "/edit/doRemove", {
                 recordID: recordID
-            }, function (responseJSON) {
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     window.location.href = urlPrefix + "/dashboard";
                 }
@@ -18,19 +17,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         };
-        cityssm.confirmModal("Remove Record?", "Are you sure you want to remove this record?", "Yes, Remove the Record", "warning", removeFn);
+        cityssm.confirmModal("Remove Record?", "Are you sure you want to remove this record?", "Yes, Remove the Record", "warning", removeFunction);
     });
-    var crmEdit = {
-        recordID: recordID,
-        getLoadingPanelBlockHTML: function (sectionName) {
+    const crmEdit = {
+        recordID,
+        getLoadingPanelBlockHTML: (sectionName) => {
             return "<div class=\"panel-block is-block has-text-centered has-text-grey\">" +
                 "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
                 "Loading " + sectionName + "..." +
                 "</div>";
         },
-        clearPanelBlocksFn: function (panelEle) {
-            var panelBlockEles = panelEle.getElementsByClassName("panel-block");
-            for (var index = 0; index < panelBlockEles.length; index += 1) {
+        clearPanelBlocksFunction: (panelEle) => {
+            const panelBlockEles = panelEle.querySelectorAll(".panel-block");
+            for (let index = 0; index < panelBlockEles.length; index += 1) {
                 panelBlockEles[index].remove();
                 index -= 1;
             }

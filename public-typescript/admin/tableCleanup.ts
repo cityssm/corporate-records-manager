@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 declare const cityssm: cityssmGlobal;
 
@@ -5,14 +7,14 @@ declare const cityssm: cityssmGlobal;
 (() => {
   const urlPrefix: string = exports.urlPrefix;
 
-  const purgeTableFn = (clickEvent: Event) => {
+  const purgeTableFunction = (clickEvent: Event) => {
 
     const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
     buttonEle.disabled = true;
 
-    const tableName = buttonEle.getAttribute("data-table");
+    const tableName = buttonEle.dataset.table;
 
-    const purgeFn = () => {
+    const purgeFunction = () => {
 
       cityssm.postJSON(urlPrefix + "/admin/doTableCleanup", {
         tableName
@@ -42,12 +44,12 @@ declare const cityssm: cityssmGlobal;
       "Are you sure you want to permanently delete all deleted records in the " + tableName + " table?",
       "Yes, Cleanup",
       "warning",
-      purgeFn);
+      purgeFunction);
   };
 
-  const purgeButtonEles = document.getElementById("adminTabpanel--tableCleanup").getElementsByClassName("is-purge-button");
+  const purgeButtonEles = document.querySelector("#adminTabpanel--tableCleanup").querySelectorAll(".is-purge-button");
 
-  for (let buttonIndex = 0; buttonIndex < purgeButtonEles.length; buttonIndex += 1) {
-    purgeButtonEles[buttonIndex].addEventListener("click", purgeTableFn);
+  for (const purgeButtonEle of purgeButtonEles) {
+    purgeButtonEle.addEventListener("click", purgeTableFunction);
   }
 })();

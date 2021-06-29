@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type * as recordTypes from "../../types/recordTypes";
 
 
@@ -7,10 +9,10 @@ export interface CRMAdmin {
 
   recordTypes?: recordTypes.RecordType[];
 
-  getUsersFn?: () => void;
-  getRecordTypesFn?: (callbackFn?: () => void) => void;
-  getStatusTypesFn?: () => void;
-};
+  getUsersFunction?: () => void;
+  getRecordTypesFunction?: (callbackFunction?: () => void) => void;
+  getStatusTypesFunction?: () => void;
+}
 
 
 (() => {
@@ -23,9 +25,9 @@ export interface CRMAdmin {
 
     isValidRegex: (possibleRegexString) => {
       try {
-        RegExp(possibleRegexString);
+        new RegExp(possibleRegexString);
         return true;
-      } catch (_e) {
+      } catch {
         return false;
       }
     },
@@ -45,51 +47,51 @@ export interface CRMAdmin {
    * Tabs
    */
 
-  const tabEles = document.getElementById("admin--tabs").querySelectorAll("[role='tab']");
-  const tabPanelEles = document.getElementById("admin--tabpanels").querySelectorAll("[role='tabpanel']");
+  const tabEles = document.querySelector("#admin--tabs").querySelectorAll("[role='tab']");
+  const tabPanelEles = document.querySelector("#admin--tabpanels").querySelectorAll("[role='tabpanel']");
 
-  const selectTabFn = (clickEvent: Event) => {
+  const selectTabFunction = (clickEvent: Event) => {
 
     clickEvent.preventDefault();
 
     const selectedTabEle = clickEvent.currentTarget as HTMLElement;
 
     // Hide all tabpanels
-    tabPanelEles.forEach((tabPanelEle) => {
+    for (const tabPanelEle of tabPanelEles) {
       tabPanelEle.classList.add("is-hidden");
-    });
+    }
 
     // Deactivate all tabs
-    tabEles.forEach((tabEle) => {
+    for (const tabEle of tabEles) {
       tabEle.classList.remove("is-active");
       tabEle.setAttribute("aria-selected", "false");
-    });
+    }
 
     // Select tab
     selectedTabEle.classList.add("is-active");
     selectedTabEle.setAttribute("aria-selected", "true");
 
     // Display tabpanel
-    document.getElementById(selectedTabEle.getAttribute("aria-controls")).classList.remove("is-hidden");
+    document.querySelector("#" + selectedTabEle.getAttribute("aria-controls")).classList.remove("is-hidden");
 
     // Load the tabpanel content
     switch (selectedTabEle.getAttribute("aria-controls").split("--")[1]) {
 
       case "users":
-        crmAdmin.getUsersFn();
+        crmAdmin.getUsersFunction();
         break;
 
       case "recordTypes":
-        crmAdmin.getRecordTypesFn();
+        crmAdmin.getRecordTypesFunction();
         break;
 
       case "statusTypes":
-        crmAdmin.getRecordTypesFn(crmAdmin.getStatusTypesFn);
+        crmAdmin.getRecordTypesFunction(crmAdmin.getStatusTypesFunction);
         break;
     }
   };
 
-  tabEles.forEach((tabEle) => {
-    tabEle.addEventListener("click", selectTabFn);
-  });
+  for (const tabEle of tabEles) {
+    tabEle.addEventListener("click", selectTabFunction);
+  }
 })();

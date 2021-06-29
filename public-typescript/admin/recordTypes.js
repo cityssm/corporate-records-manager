@@ -1,53 +1,50 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-(function () {
-    var crmAdmin = exports.crmAdmin;
-    var urlPrefix = exports.urlPrefix;
-    var recordTypesContainerEle = document.getElementById("container--recordTypes");
-    var recordTypesFilterEle = document.getElementById("statusTypesFilter--recordTypeKey");
+(() => {
+    const crmAdmin = exports.crmAdmin;
+    const urlPrefix = exports.urlPrefix;
+    const recordTypesContainerEle = document.querySelector("#container--recordTypes");
+    const recordTypesFilterEle = document.querySelector("#statusTypesFilter--recordTypeKey");
     crmAdmin.recordTypes = [];
-    var getRecordTypeFromEventFn = function (clickEvent) {
-        var buttonEle = clickEvent.currentTarget;
-        var trEle = buttonEle.closest("tr");
-        var recordTypeIndex = parseInt(trEle.getAttribute("data-index"), 10);
-        var recordType = crmAdmin.recordTypes[recordTypeIndex];
+    const getRecordTypeFromEventFunction = (clickEvent) => {
+        const buttonEle = clickEvent.currentTarget;
+        const trEle = buttonEle.closest("tr");
+        const recordTypeIndex = Number.parseInt(trEle.getAttribute("data-index"), 10);
+        const recordType = crmAdmin.recordTypes[recordTypeIndex];
         return {
-            buttonEle: buttonEle,
-            trEle: trEle,
-            recordTypeIndex: recordTypeIndex,
-            recordType: recordType
+            buttonEle,
+            trEle,
+            recordTypeIndex,
+            recordType
         };
     };
-    var toggleRecordTypeActiveFn = function (clickEvent) {
-        var _a = getRecordTypeFromEventFn(clickEvent), buttonEle = _a.buttonEle, recordType = _a.recordType;
+    const toggleRecordTypeActiveFunction = (clickEvent) => {
+        const { buttonEle, recordType } = getRecordTypeFromEventFunction(clickEvent);
         buttonEle.disabled = true;
-        var newIsActive = !recordType.isActive;
+        const newIsActive = !recordType.isActive;
         cityssm.postJSON(urlPrefix + "/admin/doSetRecordTypeIsActive", {
             recordTypeKey: recordType.recordTypeKey,
             isActive: newIsActive
-        }, function (responseJSON) {
+        }, (responseJSON) => {
             buttonEle.disabled = false;
             if (responseJSON.success) {
                 recordType.isActive = newIsActive;
-                if (newIsActive) {
-                    buttonEle.innerHTML = "<i class=\"fas fa-check\" aria-label=\"Active Record Type\"></i>";
-                }
-                else {
-                    buttonEle.innerHTML = "<i class=\"fas fa-minus\" aria-label=\"False\"></i>";
-                }
+                buttonEle.innerHTML = newIsActive
+                    ? "<i class=\"fas fa-check\" aria-label=\"Active Record Type\"></i>"
+                    : "<i class=\"fas fa-minus\" aria-label=\"False\"></i>";
             }
             else {
                 cityssm.alertModal("Record Type Not Updated", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
             }
         });
     };
-    var updateRecordTypeFn = function (clickEvent) {
-        var _a = getRecordTypeFromEventFn(clickEvent), recordType = _a.recordType, recordTypeIndex = _a.recordTypeIndex;
-        var formEle;
-        var patternEle;
-        var editRecordCloseModalFn;
-        var isSubmitting = false;
-        var submitFn = function (formEvent) {
+    const updateRecordTypeFunction = (clickEvent) => {
+        const { recordType, recordTypeIndex } = getRecordTypeFromEventFunction(clickEvent);
+        let formEle;
+        let patternEle;
+        let editRecordCloseModalFunction;
+        let isSubmitting = false;
+        const submitFunction = (formEvent) => {
             formEvent.preventDefault();
             if (isSubmitting) {
                 return;
@@ -57,13 +54,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 return;
             }
             isSubmitting = true;
-            cityssm.postJSON(urlPrefix + "/admin/doUpdateRecordType", formEle, function (responseJSON) {
+            cityssm.postJSON(urlPrefix + "/admin/doUpdateRecordType", formEle, (responseJSON) => {
                 if (responseJSON.success) {
                     crmAdmin.recordTypes[recordTypeIndex] = responseJSON.recordType;
                     crmAdmin.recordTypes[recordTypeIndex].isActive = recordType.isActive;
                     crmAdmin.recordTypes[recordTypeIndex].recordCount = recordType.recordCount;
-                    renderRecordTypesFn();
-                    editRecordCloseModalFn();
+                    renderRecordTypesFunction();
+                    editRecordCloseModalFunction();
                 }
                 else {
                     isSubmitting = false;
@@ -72,15 +69,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         };
         cityssm.openHtmlModal("recordType-edit", {
-            onshow: function () {
-                formEle = document.getElementById("form--editRecordType");
-                document.getElementById("editRecordType--recordTypeKey").value = recordType.recordTypeKey;
-                document.getElementById("editRecordType--recordType").value = recordType.recordType;
-                document.getElementById("editRecordType--minlength").value = recordType.minlength.toString();
-                document.getElementById("editRecordType--maxlength").value = recordType.maxlength.toString();
-                patternEle = document.getElementById("editRecordType--pattern");
+            onshow: () => {
+                formEle = document.querySelector("#form--editRecordType");
+                document.querySelector("#editRecordType--recordTypeKey").value = recordType.recordTypeKey;
+                document.querySelector("#editRecordType--recordType").value = recordType.recordType;
+                document.querySelector("#editRecordType--minlength").value = recordType.minlength.toString();
+                document.querySelector("#editRecordType--maxlength").value = recordType.maxlength.toString();
+                patternEle = document.querySelector("#editRecordType--pattern");
                 patternEle.value = recordType.pattern;
-                patternEle.addEventListener("keyup", function () {
+                patternEle.addEventListener("keyup", () => {
                     if (crmAdmin.isValidRegex(patternEle.value)) {
                         patternEle.classList.remove("is-danger");
                     }
@@ -88,32 +85,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         patternEle.classList.add("is-danger");
                     }
                 });
-                document.getElementById("editRecordType--patternHelp").value = recordType.patternHelp;
-                formEle.addEventListener("submit", submitFn);
+                document.querySelector("#editRecordType--patternHelp").value = recordType.patternHelp;
+                formEle.addEventListener("submit", submitFunction);
             },
-            onshown: function (_modalEle, closeModalFn) {
-                editRecordCloseModalFn = closeModalFn;
+            onshown: (_modalEle, closeModalFunction) => {
+                editRecordCloseModalFunction = closeModalFunction;
             }
         });
     };
-    var removeRecordTypeFn = function (clickEvent) {
-        var _a = getRecordTypeFromEventFn(clickEvent), recordType = _a.recordType, recordTypeIndex = _a.recordTypeIndex;
-        var removeFn = function () {
+    const removeRecordTypeFunction = (clickEvent) => {
+        const { recordType, recordTypeIndex } = getRecordTypeFromEventFunction(clickEvent);
+        const removeFunction = () => {
             cityssm.postJSON(urlPrefix + "/admin/doRemoveRecordType", {
                 recordTypeKey: recordType.recordTypeKey
-            }, function (responseJSON) {
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     crmAdmin.recordTypes.splice(recordTypeIndex, 1);
-                    renderRecordTypesFn();
+                    renderRecordTypesFunction();
                 }
                 else {
                     cityssm.alertModal("Error Removing Record Type", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
                 }
             });
         };
-        cityssm.confirmModal("Remove Record Type", "Are you sure you want to remove the \"" + cityssm.escapeHTML(recordType.recordType) + "\" record type?", "Yes, Remove It", "warning", removeFn);
+        cityssm.confirmModal("Remove Record Type", "Are you sure you want to remove the \"" + cityssm.escapeHTML(recordType.recordType) + "\" record type?", "Yes, Remove It", "warning", removeFunction);
     };
-    var renderRecordTypesFn = function () {
+    const renderRecordTypesFunction = () => {
         recordTypesFilterEle.innerHTML = "";
         if (crmAdmin.recordTypes.length === 0) {
             recordTypesContainerEle.innerHTML = "<div class=\"message is-warning\">" +
@@ -124,7 +121,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "</div>";
             return;
         }
-        var tableEle = document.createElement("table");
+        const tableEle = document.createElement("table");
         tableEle.className = "table is-fullwidth is-bordered is-striped is-hoverable has-sticky-header";
         tableEle.innerHTML = "<thead>" +
             "<tr>" +
@@ -136,11 +133,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             "</tr>" +
             "</thead>" +
             "<tbody></tbody>";
-        var tbodyEle = tableEle.getElementsByTagName("tbody")[0];
-        for (var index = 0; index < crmAdmin.recordTypes.length; index += 1) {
-            var recordType = crmAdmin.recordTypes[index];
-            var trEle = document.createElement("tr");
-            trEle.setAttribute("data-index", index.toString());
+        const tbodyEle = tableEle.querySelector("tbody");
+        for (let index = 0; index < crmAdmin.recordTypes.length; index += 1) {
+            const recordType = crmAdmin.recordTypes[index];
+            const trEle = document.createElement("tr");
+            trEle.dataset.index = index.toString();
             trEle.innerHTML = "<th class=\"is-vcentered\">" +
                 recordType.recordType + "<br />" +
                 "<span class=\"is-size-7\"><i class=\"fas fa-key\" aria-hidden=\"true\"></i> " + recordType.recordTypeKey + "</span>" +
@@ -169,39 +166,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</button>"
                         : "") +
                     "</td>");
-            trEle.getElementsByClassName("is-toggle-active-button")[0].addEventListener("click", toggleRecordTypeActiveFn);
-            trEle.getElementsByClassName("is-update-button")[0].addEventListener("click", updateRecordTypeFn);
+            trEle.querySelector(".is-toggle-active-button").addEventListener("click", toggleRecordTypeActiveFunction);
+            trEle.querySelector(".is-update-button").addEventListener("click", updateRecordTypeFunction);
             if (recordType.recordCount === 0) {
-                trEle.getElementsByClassName("is-remove-button")[0].addEventListener("click", removeRecordTypeFn);
+                trEle.querySelector(".is-remove-button").addEventListener("click", removeRecordTypeFunction);
             }
-            tbodyEle.appendChild(trEle);
-            var optionEle = document.createElement("option");
+            tbodyEle.append(trEle);
+            const optionEle = document.createElement("option");
             optionEle.value = recordType.recordTypeKey;
-            optionEle.innerText = recordType.recordType;
+            optionEle.textContent = recordType.recordType;
             recordTypesFilterEle.append(optionEle);
         }
         cityssm.clearElement(recordTypesContainerEle);
-        recordTypesContainerEle.appendChild(tableEle);
+        recordTypesContainerEle.append(tableEle);
     };
-    crmAdmin.getRecordTypesFn = function (callbackFn) {
+    crmAdmin.getRecordTypesFunction = (callbackFunction) => {
         crmAdmin.recordTypes = [];
         recordTypesFilterEle.innerHTML = "";
         cityssm.clearElement(recordTypesContainerEle);
         recordTypesContainerEle.innerHTML = crmAdmin.getLoadingHTML("Record Types");
-        cityssm.postJSON(urlPrefix + "/admin/doGetRecordTypes", {}, function (responseJSON) {
+        cityssm.postJSON(urlPrefix + "/admin/doGetRecordTypes", {}, (responseJSON) => {
             crmAdmin.recordTypes = responseJSON.recordTypes;
-            renderRecordTypesFn();
-            if (callbackFn) {
-                callbackFn();
+            renderRecordTypesFunction();
+            if (callbackFunction) {
+                callbackFunction();
             }
         });
     };
-    document.getElementById("is-add-record-type-button").addEventListener("click", function () {
-        var formEle;
-        var patternEle;
-        var addRecordCloseModalFn;
-        var isSubmitting = false;
-        var submitFn = function (formEvent) {
+    document.querySelector("#is-add-record-type-button").addEventListener("click", () => {
+        let formEle;
+        let patternEle;
+        let addRecordCloseModalFunction;
+        let isSubmitting = false;
+        const submitFunction = (formEvent) => {
             formEvent.preventDefault();
             if (isSubmitting) {
                 return;
@@ -211,11 +208,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 return;
             }
             isSubmitting = true;
-            cityssm.postJSON(urlPrefix + "/admin/doAddRecordType", formEle, function (responseJSON) {
+            cityssm.postJSON(urlPrefix + "/admin/doAddRecordType", formEle, (responseJSON) => {
                 if (responseJSON.success) {
                     crmAdmin.recordTypes.unshift(responseJSON.recordType);
-                    renderRecordTypesFn();
-                    addRecordCloseModalFn();
+                    renderRecordTypesFunction();
+                    addRecordCloseModalFunction();
                 }
                 else {
                     isSubmitting = false;
@@ -224,10 +221,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         };
         cityssm.openHtmlModal("recordType-add", {
-            onshow: function () {
-                formEle = document.getElementById("form--addRecordType");
-                patternEle = document.getElementById("addRecordType--pattern");
-                patternEle.addEventListener("keyup", function () {
+            onshow: () => {
+                formEle = document.querySelector("#form--addRecordType");
+                patternEle = document.querySelector("#addRecordType--pattern");
+                patternEle.addEventListener("keyup", () => {
                     if (crmAdmin.isValidRegex(patternEle.value)) {
                         patternEle.classList.remove("is-danger");
                     }
@@ -235,10 +232,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         patternEle.classList.add("is-danger");
                     }
                 });
-                formEle.addEventListener("submit", submitFn);
+                formEle.addEventListener("submit", submitFunction);
             },
-            onshown: function (_modalEle, closeModalFn) {
-                addRecordCloseModalFn = closeModalFn;
+            onshown: (_modalEle, closeModalFunction) => {
+                addRecordCloseModalFunction = closeModalFunction;
             }
         });
     });

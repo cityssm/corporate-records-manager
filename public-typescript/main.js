@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-document.getElementById("navbar-burger").addEventListener("click", function (clickEvent) {
+document.querySelector("#navbar-burger").addEventListener("click", (clickEvent) => {
     clickEvent.preventDefault();
-    var toggleButtonEle = clickEvent.currentTarget;
-    var menuEle = document.getElementById("navbar-menu");
+    const toggleButtonEle = clickEvent.currentTarget;
+    const menuEle = document.querySelector("#navbar-menu");
     menuEle.classList.toggle("is-active");
     if (menuEle.classList.contains("is-active")) {
         toggleButtonEle.setAttribute("aria-expanded", "true");
@@ -14,29 +14,28 @@ document.getElementById("navbar-burger").addEventListener("click", function (cli
         toggleButtonEle.classList.remove("is-active");
     }
 });
-(function () {
-    var urlPrefix = exports.urlPrefix;
-    var recordTypeMap = new Map();
-    for (var _i = 0, _a = exports.recordTypes; _i < _a.length; _i++) {
-        var recordType = _a[_i];
+(() => {
+    const urlPrefix = exports.urlPrefix;
+    const recordTypeMap = new Map();
+    for (const recordType of exports.recordTypes) {
         recordTypeMap.set(recordType.recordTypeKey, recordType);
     }
-    var getRecordType = function (recordTypeKey) {
+    const getRecordType = (recordTypeKey) => {
         return recordTypeMap.get(recordTypeKey);
     };
-    var currentDate = new Date();
+    const currentDate = new Date();
     currentDate.setHours(0);
     currentDate.setMinutes(0);
     currentDate.setSeconds(0);
     currentDate.setMilliseconds(0);
-    var crm = {
-        getRecordType: getRecordType,
-        renderRecordPanelLinkEle: function (record, options) {
-            var recordType = getRecordType(record.recordTypeKey);
-            var panelBlockEle = document.createElement(options.panelTag);
+    const crm = {
+        getRecordType,
+        renderRecordPanelLinkEle: (record, options) => {
+            const recordType = getRecordType(record.recordTypeKey);
+            const panelBlockEle = document.createElement(options.panelTag);
             panelBlockEle.className = "panel-block is-block";
-            var url = urlPrefix + "/view/" + record.recordID.toString();
-            var recordNumberHTML = "";
+            const url = urlPrefix + "/view/" + record.recordID.toString();
+            let recordNumberHTML = "";
             if (options.panelTag === "a") {
                 panelBlockEle.href = url;
                 recordNumberHTML = "<strong>" + recordType.recordType + " " + cityssm.escapeHTML(record.recordNumber) + "</strong>";
@@ -46,8 +45,8 @@ document.getElementById("navbar-burger").addEventListener("click", function (cli
                     recordType.recordType + " " + cityssm.escapeHTML(record.recordNumber) +
                     "</a>";
             }
-            var recordDate = new Date(record.recordDate);
-            var timeAgo = dateDiff(recordDate, currentDate);
+            const recordDate = new Date(record.recordDate);
+            const timeAgo = dateDiff(recordDate, currentDate);
             panelBlockEle.innerHTML = "<div class=\"columns mb-0\">" +
                 ("<div class=\"column pb-0\">" +
                     recordNumberHTML +
@@ -98,7 +97,7 @@ document.getElementById("navbar-burger").addEventListener("click", function (cli
                         "</span><br />"
                     : "") +
                 cityssm.escapeHTML(record.recordDescription.length > 500
-                    ? record.recordDescription.substring(0, 497) + " ..."
+                    ? record.recordDescription.slice(0, 497) + " ..."
                     : record.recordDescription) +
                 "</div>";
             return panelBlockEle;

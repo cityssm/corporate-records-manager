@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type * as recordTypes from "../../types/recordTypes";
 import type { CRMAdmin } from "./main.js";
 
@@ -14,17 +16,17 @@ declare const cityssm: cityssmGlobal;
    * Users
    */
 
-  const usersContainerEle = document.getElementById("container--users");
+  const usersContainerEle = document.querySelector("#container--users") as HTMLElement;
 
   let users: recordTypes.User[] = [];
 
-  const getUserFromEventFn = (clickEvent: Event) => {
+  const getUserFromEventFunction = (clickEvent: Event) => {
 
     const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
 
     const trEle = buttonEle.closest("tr");
 
-    const userIndex = parseInt(trEle.getAttribute("data-index"), 10);
+    const userIndex = Number.parseInt(trEle.getAttribute("data-index"), 10);
     const user = users[userIndex];
 
     return {
@@ -35,13 +37,13 @@ declare const cityssm: cityssmGlobal;
     };
   };
 
-  const toggleUserSettingFn = (clickEvent: Event) => {
+  const toggleUserSettingFunction = (clickEvent: Event) => {
 
-    const { buttonEle, user } = getUserFromEventFn(clickEvent);
+    const { buttonEle, user } = getUserFromEventFunction(clickEvent);
 
     buttonEle.disabled = true;
 
-    const fieldName = buttonEle.getAttribute("data-field");
+    const fieldName = buttonEle.dataset.field;
 
     const newFieldValue = !user[fieldName];
 
@@ -87,13 +89,13 @@ declare const cityssm: cityssmGlobal;
     });
   };
 
-  const removeUserFn = (clickEvent: Event) => {
+  const removeUserFunction = (clickEvent: Event) => {
 
-    const { buttonEle, user, userIndex } = getUserFromEventFn(clickEvent);
+    const { buttonEle, user, userIndex } = getUserFromEventFunction(clickEvent);
 
     const userName = user.userName;
 
-    const removeFn = () => {
+    const removeFunction = () => {
 
       buttonEle.disabled = true;
 
@@ -104,7 +106,7 @@ declare const cityssm: cityssmGlobal;
 
           if (responseJSON.success) {
             users.splice(userIndex, 1);
-            renderUsersFn();
+            renderUsersFunction();
 
           } else {
             cityssm.alertModal("Error Removing User",
@@ -121,10 +123,10 @@ declare const cityssm: cityssmGlobal;
       "Are you sure you want to remove all access for \"" + userName + "\"?",
       "Yes, Remove User",
       "warning",
-      removeFn);
+      removeFunction);
   };
 
-  const renderUsersFn = () => {
+  const renderUsersFunction = () => {
 
     if (users.length === 0) {
       usersContainerEle.innerHTML = "<div class=\"message is-warning\">" +
@@ -151,14 +153,12 @@ declare const cityssm: cityssmGlobal;
       "</thead>" +
       "<tbody></tbody>";
 
-    const tbodyEle = tableEle.getElementsByTagName("tbody")[0];
+    const tbodyEle = tableEle.querySelectorAll("tbody")[0];
 
-    for (let index = 0; index < users.length; index += 1) {
-
-      const user = users[index];
+    for (const [index, user] of users.entries()) {
 
       const trEle = document.createElement("tr");
-      trEle.setAttribute("data-index", index.toString());
+      trEle.dataset.index = index.toString();
 
       trEle.innerHTML = "<th class=\"is-vcentered\">" + user.userName + "</th>" +
         ("<td class=\"has-text-centered\">" +
@@ -190,26 +190,26 @@ declare const cityssm: cityssmGlobal;
             "</button>") +
           "</td>");
 
-      const buttonEles = trEle.getElementsByTagName("button");
+      const buttonEles = trEle.querySelectorAll("button");
 
-      for (let buttonIndex = 0; buttonIndex < buttonEles.length; buttonIndex += 1) {
+      for (const buttonEle of buttonEles) {
 
-        if (buttonEles[buttonIndex].classList.contains("is-remove-user-button")) {
-          buttonEles[buttonIndex].addEventListener("click", removeUserFn);
+        if (buttonEle.classList.contains("is-remove-user-button")) {
+          buttonEle.addEventListener("click", removeUserFunction);
 
         } else {
-          buttonEles[buttonIndex].addEventListener("click", toggleUserSettingFn);
+          buttonEle.addEventListener("click", toggleUserSettingFunction);
         }
       }
 
-      tbodyEle.appendChild(trEle);
+      tbodyEle.append(trEle);
     }
 
     cityssm.clearElement(usersContainerEle);
-    usersContainerEle.appendChild(tableEle);
+    usersContainerEle.append(tableEle);
   };
 
-  crmAdmin.getUsersFn = () => {
+  crmAdmin.getUsersFunction = () => {
 
     users = [];
 
@@ -220,11 +220,11 @@ declare const cityssm: cityssmGlobal;
       (responseJSON: { users: recordTypes.User[] }) => {
 
         users = responseJSON.users;
-        renderUsersFn();
+        renderUsersFunction();
       });
   };
 
-  document.getElementById("form--addUser").addEventListener("submit", (formEvent: Event) => {
+  document.querySelector("#form--addUser").addEventListener("submit", (formEvent: Event) => {
 
     formEvent.preventDefault();
 
@@ -236,7 +236,7 @@ declare const cityssm: cityssmGlobal;
         if (responseJSON.success) {
           addFormEle.reset();
           users.unshift(responseJSON.user);
-          renderUsersFn();
+          renderUsersFunction();
         } else {
           cityssm.alertModal("Error Creating New User",
             cityssm.escapeHTML(responseJSON.message),

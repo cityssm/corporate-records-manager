@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-(function () {
-    var urlPrefix = exports.urlPrefix;
-    var recordID = document.getElementById("record--recordID").value;
-    var isNew = (recordID === "");
-    var formEle = document.getElementById("form--record");
-    var setUnsavedChangesFn = function () {
+(() => {
+    const urlPrefix = exports.urlPrefix;
+    const recordID = document.querySelector("#record--recordID").value;
+    const isNew = (recordID === "");
+    const formEle = document.querySelector("#form--record");
+    const setUnsavedChangesFunction = () => {
         cityssm.enableNavBlocker();
     };
-    formEle.addEventListener("submit", function (submitEvent) {
+    formEle.addEventListener("submit", (submitEvent) => {
         submitEvent.preventDefault();
-        var submitURL = urlPrefix +
+        const submitURL = urlPrefix +
             (isNew ? "/new/doCreate" : "/edit/doUpdate");
-        cityssm.postJSON(submitURL, formEle, function (responseJSON) {
+        cityssm.postJSON(submitURL, formEle, (responseJSON) => {
             if (responseJSON.success) {
                 cityssm.disableNavBlocker();
                 if (isNew) {
@@ -27,108 +27,105 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    var inputEles = formEle.querySelectorAll("input, textarea");
-    inputEles.forEach(function (inputEle) {
-        inputEle.addEventListener("change", setUnsavedChangesFn);
-    });
-    var removeTagFn = function (clickEvent) {
+    const inputEles = formEle.querySelectorAll("input, textarea");
+    for (const inputEle of inputEles) {
+        inputEle.addEventListener("change", setUnsavedChangesFunction);
+    }
+    const removeTagFunction = (clickEvent) => {
         clickEvent.preventDefault();
-        var tagEle = clickEvent.currentTarget.closest(".tag");
-        var removeFn = function () {
+        const tagEle = clickEvent.currentTarget.closest(".tag");
+        const removeFunction = () => {
             tagEle.remove();
-            setUnsavedChangesFn();
+            setUnsavedChangesFunction();
         };
-        var tag = tagEle.getElementsByTagName("input")[0].value;
-        cityssm.confirmModal("Remove Tag?", "Are you sure you want to remove the <span class=\"tag\">" + cityssm.escapeHTML(tag) + "</span> tag?", "Yes, Remove the Tag", "warning", removeFn);
+        const tag = tagEle.querySelectorAll("input")[0].value;
+        cityssm.confirmModal("Remove Tag?", "Are you sure you want to remove the <span class=\"tag\">" + cityssm.escapeHTML(tag) + "</span> tag?", "Yes, Remove the Tag", "warning", removeFunction);
     };
-    var openAddTagModalFn = function () {
-        var addTagModalCloseFn;
-        var tagInputEle;
-        var suggestedTagLimit = 20;
-        var suggestedTagLastValue = "";
-        var suggestedTags = [];
-        var addTagFn = function (tag) {
-            var escapedTag = cityssm.escapeHTML(tag);
-            var tagEle = document.createElement("span");
+    const openAddTagModalFunction = () => {
+        let addTagModalCloseFunction;
+        let tagInputEle;
+        const suggestedTagLimit = 20;
+        let suggestedTagLastValue = "";
+        let suggestedTags = [];
+        const addTagFunction = (tag) => {
+            const escapedTag = cityssm.escapeHTML(tag);
+            const tagEle = document.createElement("span");
             tagEle.className = "tag is-medium";
             tagEle.innerHTML = "<input name=\"tags\" type=\"hidden\" value=\"" + escapedTag + "\" /> " +
                 escapedTag +
                 " <button class=\"delete\" type=\"button\" aria-label=\"Remove Tag\"></button>";
-            tagEle.getElementsByTagName("button")[0].addEventListener("click", removeTagFn);
-            document.getElementById("container--tags").insertAdjacentElement("afterbegin", tagEle);
-            setUnsavedChangesFn();
+            tagEle.querySelectorAll("button")[0].addEventListener("click", removeTagFunction);
+            document.querySelector("#container--tags").insertAdjacentElement("afterbegin", tagEle);
+            setUnsavedChangesFunction();
         };
-        var addTagBySubmitFn = function (submitEvent) {
+        const addTagBySubmitFunction = (submitEvent) => {
             submitEvent.preventDefault();
-            var inputEle = document.getElementById("addTag--tag");
+            const inputEle = document.querySelector("#addTag--tag");
             if (inputEle.value === "") {
-                addTagModalCloseFn();
+                addTagModalCloseFunction();
                 return;
             }
-            addTagFn(inputEle.value);
+            addTagFunction(inputEle.value);
             inputEle.value = "";
             inputEle.focus();
         };
-        var getSuggestedTagsFn = function (keyupEvent) {
-            if (keyupEvent) {
-                if (suggestedTagLastValue === tagInputEle.value ||
-                    (tagInputEle.value.includes(suggestedTagLastValue) && suggestedTags.length < suggestedTagLimit)) {
-                    return;
-                }
+        const getSuggestedTagsFunction = (keyupEvent) => {
+            if (keyupEvent && (suggestedTagLastValue === tagInputEle.value ||
+                (tagInputEle.value.includes(suggestedTagLastValue) && suggestedTags.length < suggestedTagLimit))) {
+                return;
             }
             suggestedTagLastValue = tagInputEle.value;
             cityssm.postJSON(urlPrefix + "/edit/doGetSuggestedTags", {
                 recordID: isNew ? "" : recordID,
                 searchString: tagInputEle.value
-            }, function (responseJSON) {
-                var dataListEle = document.getElementById("addTag--tag-datalist");
+            }, (responseJSON) => {
+                const dataListEle = document.querySelector("#addTag--tag-datalist");
                 dataListEle.innerHTML = "";
                 if (responseJSON.success) {
                     suggestedTags = responseJSON.tags;
-                    for (var _i = 0, suggestedTags_1 = suggestedTags; _i < suggestedTags_1.length; _i++) {
-                        var suggestedTag = suggestedTags_1[_i];
-                        var optionEle = document.createElement("option");
+                    for (const suggestedTag of suggestedTags) {
+                        const optionEle = document.createElement("option");
                         optionEle.value = suggestedTag;
-                        dataListEle.appendChild(optionEle);
+                        dataListEle.append(optionEle);
                     }
                 }
             });
         };
         cityssm.openHtmlModal("tag-add", {
-            onshown: function (_modalEle, closeModalFn) {
-                addTagModalCloseFn = closeModalFn;
-                document.getElementById("form--addTag").addEventListener("submit", addTagBySubmitFn);
-                tagInputEle = document.getElementById("addTag--tag");
+            onshown: (_modalEle, closeModalFunction) => {
+                addTagModalCloseFunction = closeModalFunction;
+                document.querySelector("#form--addTag").addEventListener("submit", addTagBySubmitFunction);
+                tagInputEle = document.querySelector("#addTag--tag");
                 tagInputEle.focus();
-                tagInputEle.addEventListener("keyup", getSuggestedTagsFn);
-                getSuggestedTagsFn();
+                tagInputEle.addEventListener("keyup", getSuggestedTagsFunction);
+                getSuggestedTagsFunction();
             }
         });
     };
-    document.getElementById("is-add-tag-button").addEventListener("click", openAddTagModalFn);
-    var removeTagButtonEles = document.getElementsByClassName("is-remove-tag-button");
-    for (var index = 0; index < removeTagButtonEles.length; index += 1) {
-        removeTagButtonEles[index].addEventListener("click", removeTagFn);
+    document.querySelector("#is-add-tag-button").addEventListener("click", openAddTagModalFunction);
+    const removeTagButtonEles = document.querySelectorAll(".is-remove-tag-button");
+    for (const removeTagButtonEle of removeTagButtonEles) {
+        removeTagButtonEle.addEventListener("click", removeTagFunction);
     }
 })();
-(function () {
-    var lockToggleFn = function (clickEvent) {
+(() => {
+    const lockToggleFunction = (clickEvent) => {
         clickEvent.preventDefault();
-        var fieldEle = clickEvent.currentTarget.closest(".field");
-        var inputEle = fieldEle.getElementsByTagName("input")[0];
-        var iconEles = inputEle.nextElementSibling.children;
+        const fieldEle = clickEvent.currentTarget.closest(".field");
+        const inputEle = fieldEle.querySelectorAll("input")[0];
+        const iconEles = inputEle.nextElementSibling.children;
         if (inputEle.hasAttribute("readonly")) {
             inputEle.removeAttribute("readonly");
         }
         else {
             inputEle.setAttribute("readonly", "readonly");
         }
-        for (var index = 0; index < iconEles.length; index += 1) {
-            iconEles[index].classList.toggle("is-hidden");
+        for (const iconEle of iconEles) {
+            iconEle.classList.toggle("is-hidden");
         }
     };
-    var lockToggleButtonEles = document.getElementsByClassName("is-lock-toggle-button");
-    for (var index = 0; index < lockToggleButtonEles.length; index += 1) {
-        lockToggleButtonEles[index].addEventListener("click", lockToggleFn);
+    const lockToggleButtonEles = document.querySelectorAll(".is-lock-toggle-button");
+    for (const lockToggleButtonEle of lockToggleButtonEles) {
+        lockToggleButtonEle.addEventListener("click", lockToggleFunction);
     }
 })();

@@ -1,24 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-(function () {
-    var urlPrefix = exports.urlPrefix;
-    var crmEdit = exports.crmEdit;
-    var statusPanelEle = document.getElementById("panel--statuses");
+(() => {
+    const urlPrefix = exports.urlPrefix;
+    const crmEdit = exports.crmEdit;
+    const statusPanelEle = document.querySelector("#panel--statuses");
     if (statusPanelEle) {
-        var statuses_1 = exports.recordStatuses;
+        let statuses = exports.recordStatuses;
         delete exports.recordStatuses;
-        var openEditStatusModalFn_1 = function (clickEvent) {
+        const openEditStatusModalFunction = (clickEvent) => {
             clickEvent.preventDefault();
-            var panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
-            var index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
-            var status = statuses_1[index];
-            var closeEditModalFn;
-            var editFn = function (formEvent) {
+            const panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
+            const index = Number.parseInt(panelBlockEle.getAttribute("data-index"), 10);
+            const status = statuses[index];
+            let closeEditModalFunction;
+            const editFunction = (formEvent) => {
                 formEvent.preventDefault();
-                cityssm.postJSON(urlPrefix + "/edit/doUpdateStatus", formEvent.currentTarget, function (responseJSON) {
+                cityssm.postJSON(urlPrefix + "/edit/doUpdateStatus", formEvent.currentTarget, (responseJSON) => {
                     if (responseJSON.success) {
-                        getStatuses_1();
-                        closeEditModalFn();
+                        getStatuses();
+                        closeEditModalFunction();
                     }
                     else {
                         cityssm.alertModal("Update Status Error", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
@@ -26,13 +26,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             };
             cityssm.openHtmlModal("status-edit", {
-                onshow: function () {
-                    document.getElementById("editStatus--statusLogID").value = status.statusLogID.toString();
-                    var statusTypeKeyEle = document.getElementById("editStatus--statusTypeKey");
-                    var statusTypes = exports.statusTypes;
-                    var statusTypeKeyFound = false;
-                    for (var _i = 0, statusTypes_1 = statusTypes; _i < statusTypes_1.length; _i++) {
-                        var statusType = statusTypes_1[_i];
+                onshow: () => {
+                    document.querySelector("#editStatus--statusLogID").value = status.statusLogID.toString();
+                    const statusTypeKeyEle = document.querySelector("#editStatus--statusTypeKey");
+                    const statusTypes = exports.statusTypes;
+                    let statusTypeKeyFound = false;
+                    for (const statusType of statusTypes) {
                         if (statusType.isActive || statusType.statusTypeKey === status.statusTypeKey) {
                             statusTypeKeyEle.insertAdjacentHTML("beforeend", "<option value=\"" + cityssm.escapeHTML(statusType.statusTypeKey) + "\">" +
                                 cityssm.escapeHTML(statusType.statusType) +
@@ -48,30 +47,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</option>");
                     }
                     statusTypeKeyEle.value = status.statusTypeKey;
-                    var statusTime = new Date(status.statusTime);
-                    document.getElementById("editStatus--statusDateString").value = cityssm.dateToString(statusTime);
-                    document.getElementById("editStatus--statusTimeString").value = cityssm.dateToTimeString(statusTime);
-                    document.getElementById("editStatus--statusLog").value = status.statusLog;
-                    document.getElementById("form--editStatus").addEventListener("submit", editFn);
+                    const statusTime = new Date(status.statusTime);
+                    document.querySelector("#editStatus--statusDateString").value = cityssm.dateToString(statusTime);
+                    document.querySelector("#editStatus--statusTimeString").value = cityssm.dateToTimeString(statusTime);
+                    document.querySelector("#editStatus--statusLog").value = status.statusLog;
+                    document.querySelector("#form--editStatus").addEventListener("submit", editFunction);
                 },
-                onshown: function (_modalEle, closeModalFn) {
-                    closeEditModalFn = closeModalFn;
+                onshown: (_modalEle, closeModalFunction) => {
+                    closeEditModalFunction = closeModalFunction;
                 }
             });
         };
-        var openRemoveStatusModalFn_1 = function (clickEvent) {
+        const openRemoveStatusModalFunction = (clickEvent) => {
             clickEvent.preventDefault();
-            var panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
-            var index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
-            var status = statuses_1[index];
-            var removeFn = function () {
+            const panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
+            const index = Number.parseInt(panelBlockEle.dataset.index, 10);
+            const status = statuses[index];
+            const removeFunction = () => {
                 cityssm.postJSON(urlPrefix + "/edit/doRemoveStatus", {
                     statusLogID: status.statusLogID
-                }, function (responseJSON) {
+                }, (responseJSON) => {
                     if (responseJSON.success) {
-                        statuses_1.splice(index, 1);
-                        crmEdit.clearPanelBlocksFn(statusPanelEle);
-                        renderStatusesFn_1();
+                        statuses.splice(index, 1);
+                        crmEdit.clearPanelBlocksFunction(statusPanelEle);
+                        renderStatusesFunction();
                     }
                     else {
                         cityssm.alertModal("Remove Status Error", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
@@ -79,17 +78,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             };
             cityssm.confirmModal("Remove Status", "Are you sure you want to remove this status?<br />" +
-                "If the status of this record has changed, it would be better to add a new status.", "Yes, Remove the Status", "warning", removeFn);
+                "If the status of this record has changed, it would be better to add a new status.", "Yes, Remove the Status", "warning", removeFunction);
         };
-        var renderStatusFn_1 = function (status, index) {
-            var panelBlockEle = document.createElement("div");
+        const renderStatusFunction = (status, index) => {
+            const panelBlockEle = document.createElement("div");
             panelBlockEle.className = "panel-block is-block";
-            panelBlockEle.setAttribute("data-status-log-id", status.statusLogID.toString());
-            panelBlockEle.setAttribute("data-index", index.toString());
-            var statusType = exports.statusTypes.find(function (possibleStatusType) {
+            panelBlockEle.dataset.statusLogId = status.statusLogID.toString();
+            panelBlockEle.dataset.index = index.toString();
+            const statusType = exports.statusTypes.find((possibleStatusType) => {
                 return possibleStatusType.statusTypeKey === status.statusTypeKey;
             });
-            var statusTime = new Date(status.statusTime);
+            const statusTime = new Date(status.statusTime);
             panelBlockEle.innerHTML = "<div class=\"columns\">" +
                 ("<div class=\"column\">" +
                     "<strong>" + cityssm.escapeHTML(statusType ? statusType.statusType : status.statusTypeKey) + "</strong><br />" +
@@ -106,14 +105,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</button>" +
                     "</div>") +
                 "</div>";
-            var buttonEles = panelBlockEle.getElementsByTagName("button");
-            buttonEles[0].addEventListener("click", openEditStatusModalFn_1);
-            buttonEles[1].addEventListener("click", openRemoveStatusModalFn_1);
-            statusPanelEle.appendChild(panelBlockEle);
+            const buttonEles = panelBlockEle.querySelectorAll("button");
+            buttonEles[0].addEventListener("click", openEditStatusModalFunction);
+            buttonEles[1].addEventListener("click", openRemoveStatusModalFunction);
+            statusPanelEle.append(panelBlockEle);
         };
-        var renderStatusesFn_1 = function () {
-            crmEdit.clearPanelBlocksFn(statusPanelEle);
-            if (statuses_1.length === 0) {
+        const renderStatusesFunction = () => {
+            crmEdit.clearPanelBlocksFunction(statusPanelEle);
+            if (statuses.length === 0) {
                 statusPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
                     "<div class=\"message is-warning\">" +
                     "<div class=\"message-body\">There are no statuses associated with this record.</div>" +
@@ -121,18 +120,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>");
                 return;
             }
-            statuses_1.forEach(renderStatusFn_1);
+            for (const [index, status] of statuses.entries()) {
+                renderStatusFunction(status, index);
+            }
         };
-        var getStatuses_1 = function () {
-            crmEdit.clearPanelBlocksFn(statusPanelEle);
-            statuses_1 = [];
+        const getStatuses = () => {
+            crmEdit.clearPanelBlocksFunction(statusPanelEle);
+            statuses = [];
             statusPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Statuses"));
             cityssm.postJSON(urlPrefix + "/view/doGetStatuses", {
                 recordID: crmEdit.recordID
-            }, function (responseJSON) {
+            }, (responseJSON) => {
                 if (responseJSON.success) {
-                    statuses_1 = responseJSON.statuses;
-                    renderStatusesFn_1();
+                    statuses = responseJSON.statuses;
+                    renderStatusesFunction();
                 }
                 else {
                     statusPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -143,17 +144,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         };
-        renderStatusesFn_1();
-        var addStatusButtonEle = document.getElementById("is-add-status-button");
+        renderStatusesFunction();
+        const addStatusButtonEle = document.querySelector("#is-add-status-button");
         if (addStatusButtonEle) {
-            addStatusButtonEle.addEventListener("click", function () {
-                var closeAddModalFn;
-                var addFn = function (formEvent) {
+            addStatusButtonEle.addEventListener("click", () => {
+                let closeAddModalFunction;
+                const addFunction = (formEvent) => {
                     formEvent.preventDefault();
-                    cityssm.postJSON(urlPrefix + "/edit/doAddStatus", formEvent.currentTarget, function (responseJSON) {
+                    cityssm.postJSON(urlPrefix + "/edit/doAddStatus", formEvent.currentTarget, (responseJSON) => {
                         if (responseJSON.success) {
-                            getStatuses_1();
-                            closeAddModalFn();
+                            getStatuses();
+                            closeAddModalFunction();
                         }
                         else {
                             cityssm.alertModal("Add Status Error", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
@@ -161,25 +162,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     });
                 };
                 cityssm.openHtmlModal("status-add", {
-                    onshow: function () {
-                        document.getElementById("addStatus--recordID").value = crmEdit.recordID;
-                        var statusTypeKeyEle = document.getElementById("addStatus--statusTypeKey");
-                        var statusTypes = exports.statusTypes;
-                        for (var _i = 0, statusTypes_2 = statusTypes; _i < statusTypes_2.length; _i++) {
-                            var statusType = statusTypes_2[_i];
+                    onshow: () => {
+                        document.querySelector("#addStatus--recordID").value = crmEdit.recordID;
+                        const statusTypeKeyEle = document.querySelector("#addStatus--statusTypeKey");
+                        const statusTypes = exports.statusTypes;
+                        for (const statusType of statusTypes) {
                             if (statusType.isActive) {
                                 statusTypeKeyEle.insertAdjacentHTML("beforeend", "<option value=\"" + cityssm.escapeHTML(statusType.statusTypeKey) + "\">" +
                                     cityssm.escapeHTML(statusType.statusType) +
                                     "</option>");
                             }
                         }
-                        var rightNow = new Date();
-                        document.getElementById("addStatus--statusDateString").value = cityssm.dateToString(rightNow);
-                        document.getElementById("addStatus--statusTimeString").value = cityssm.dateToTimeString(rightNow);
+                        const rightNow = new Date();
+                        document.querySelector("#addStatus--statusDateString").value = cityssm.dateToString(rightNow);
+                        document.querySelector("#addStatus--statusTimeString").value = cityssm.dateToTimeString(rightNow);
                     },
-                    onshown: function (_modalEle, closeModalFn) {
-                        closeAddModalFn = closeModalFn;
-                        document.getElementById("form--addStatus").addEventListener("submit", addFn);
+                    onshown: (_modalEle, closeModalFunction) => {
+                        closeAddModalFunction = closeModalFunction;
+                        document.querySelector("#form--addStatus").addEventListener("submit", addFunction);
                     }
                 });
             });

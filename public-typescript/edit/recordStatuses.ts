@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type * as recordTypes from "../../types/recordTypes";
 
 import type { CRMEdit } from "./main";
@@ -11,25 +13,25 @@ declare const cityssm: cityssmGlobal;
   const urlPrefix: string = exports.urlPrefix;
   const crmEdit: CRMEdit = exports.crmEdit;
 
-  const statusPanelEle = document.getElementById("panel--statuses");
+  const statusPanelEle = document.querySelector("#panel--statuses") as HTMLElement;
 
   if (statusPanelEle) {
 
     let statuses: recordTypes.RecordStatus[] = exports.recordStatuses;
     delete exports.recordStatuses;
 
-    const openEditStatusModalFn = (clickEvent: MouseEvent) => {
+    const openEditStatusModalFunction = (clickEvent: MouseEvent) => {
 
       clickEvent.preventDefault();
 
       const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
 
-      const index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+      const index = Number.parseInt(panelBlockEle.getAttribute("data-index"), 10);
       const status = statuses[index];
 
-      let closeEditModalFn: () => void;
+      let closeEditModalFunction: () => void;
 
-      const editFn = (formEvent: Event) => {
+      const editFunction = (formEvent: Event) => {
         formEvent.preventDefault();
 
         cityssm.postJSON(urlPrefix + "/edit/doUpdateStatus",
@@ -38,7 +40,7 @@ declare const cityssm: cityssmGlobal;
 
             if (responseJSON.success) {
               getStatuses();
-              closeEditModalFn();
+              closeEditModalFunction();
             } else {
               cityssm.alertModal("Update Status Error",
                 cityssm.escapeHTML(responseJSON.message),
@@ -51,9 +53,9 @@ declare const cityssm: cityssmGlobal;
       cityssm.openHtmlModal("status-edit", {
         onshow: () => {
 
-          (document.getElementById("editStatus--statusLogID") as HTMLInputElement).value = status.statusLogID.toString();
+          (document.querySelector("#editStatus--statusLogID") as HTMLInputElement).value = status.statusLogID.toString();
 
-          const statusTypeKeyEle = document.getElementById("editStatus--statusTypeKey") as HTMLSelectElement;
+          const statusTypeKeyEle = document.querySelector("#editStatus--statusTypeKey") as HTMLSelectElement;
           const statusTypes: recordTypes.StatusType[] = exports.statusTypes;
 
           let statusTypeKeyFound = false;
@@ -82,29 +84,29 @@ declare const cityssm: cityssmGlobal;
           statusTypeKeyEle.value = status.statusTypeKey;
 
           const statusTime = new Date(status.statusTime);
-          (document.getElementById("editStatus--statusDateString") as HTMLInputElement).value = cityssm.dateToString(statusTime);
-          (document.getElementById("editStatus--statusTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(statusTime);
+          (document.querySelector("#editStatus--statusDateString") as HTMLInputElement).value = cityssm.dateToString(statusTime);
+          (document.querySelector("#editStatus--statusTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(statusTime);
 
-          (document.getElementById("editStatus--statusLog") as HTMLTextAreaElement).value = status.statusLog;
+          (document.querySelector("#editStatus--statusLog") as HTMLTextAreaElement).value = status.statusLog;
 
-          document.getElementById("form--editStatus").addEventListener("submit", editFn);
+          document.querySelector("#form--editStatus").addEventListener("submit", editFunction);
         },
-        onshown: (_modalEle, closeModalFn) => {
-          closeEditModalFn = closeModalFn;
+        onshown: (_modalEle, closeModalFunction) => {
+          closeEditModalFunction = closeModalFunction;
         }
       });
     };
 
-    const openRemoveStatusModalFn = (clickEvent: MouseEvent) => {
+    const openRemoveStatusModalFunction = (clickEvent: MouseEvent) => {
 
       clickEvent.preventDefault();
 
-      const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
+      const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
 
-      const index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+      const index = Number.parseInt(panelBlockEle.dataset.index, 10);
       const status = statuses[index];
 
-      const removeFn = () => {
+      const removeFunction = () => {
 
         cityssm.postJSON(urlPrefix + "/edit/doRemoveStatus", {
           statusLogID: status.statusLogID
@@ -112,8 +114,8 @@ declare const cityssm: cityssmGlobal;
 
           if (responseJSON.success) {
             statuses.splice(index, 1);
-            crmEdit.clearPanelBlocksFn(statusPanelEle);
-            renderStatusesFn();
+            crmEdit.clearPanelBlocksFunction(statusPanelEle);
+            renderStatusesFunction();
 
           } else {
             cityssm.alertModal("Remove Status Error",
@@ -129,15 +131,15 @@ declare const cityssm: cityssmGlobal;
         "If the status of this record has changed, it would be better to add a new status.",
         "Yes, Remove the Status",
         "warning",
-        removeFn);
+        removeFunction);
     };
 
-    const renderStatusFn = (status: recordTypes.RecordStatus, index: number) => {
+    const renderStatusFunction = (status: recordTypes.RecordStatus, index: number) => {
 
       const panelBlockEle = document.createElement("div");
       panelBlockEle.className = "panel-block is-block";
-      panelBlockEle.setAttribute("data-status-log-id", status.statusLogID.toString());
-      panelBlockEle.setAttribute("data-index", index.toString());
+      panelBlockEle.dataset.statusLogId = status.statusLogID.toString();
+      panelBlockEle.dataset.index = index.toString();
 
       const statusType: recordTypes.StatusType = exports.statusTypes.find((possibleStatusType: recordTypes.StatusType) => {
         return possibleStatusType.statusTypeKey === status.statusTypeKey;
@@ -162,16 +164,16 @@ declare const cityssm: cityssmGlobal;
           "</div>") +
         "</div>";
 
-      const buttonEles = panelBlockEle.getElementsByTagName("button");
-      buttonEles[0].addEventListener("click", openEditStatusModalFn);
-      buttonEles[1].addEventListener("click", openRemoveStatusModalFn);
+      const buttonEles = panelBlockEle.querySelectorAll("button");
+      buttonEles[0].addEventListener("click", openEditStatusModalFunction);
+      buttonEles[1].addEventListener("click", openRemoveStatusModalFunction);
 
-      statusPanelEle.appendChild(panelBlockEle);
+      statusPanelEle.append(panelBlockEle);
     };
 
-    const renderStatusesFn = () => {
+    const renderStatusesFunction = () => {
 
-      crmEdit.clearPanelBlocksFn(statusPanelEle);
+      crmEdit.clearPanelBlocksFunction(statusPanelEle);
 
       if (statuses.length === 0) {
         statusPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -183,12 +185,14 @@ declare const cityssm: cityssmGlobal;
         return;
       }
 
-      statuses.forEach(renderStatusFn);
+      for (const [index, status] of statuses.entries()) {
+        renderStatusFunction(status,index);
+      }
     };
 
     const getStatuses = () => {
 
-      crmEdit.clearPanelBlocksFn(statusPanelEle);
+      crmEdit.clearPanelBlocksFunction(statusPanelEle);
       statuses = [];
 
       statusPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Statuses"));
@@ -200,7 +204,7 @@ declare const cityssm: cityssmGlobal;
 
           if (responseJSON.success) {
             statuses = responseJSON.statuses;
-            renderStatusesFn();
+            renderStatusesFunction();
           } else {
 
             statusPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -212,17 +216,17 @@ declare const cityssm: cityssmGlobal;
         });
     };
 
-    renderStatusesFn();
+    renderStatusesFunction();
 
-    const addStatusButtonEle = document.getElementById("is-add-status-button");
+    const addStatusButtonEle = document.querySelector("#is-add-status-button");
 
     if (addStatusButtonEle) {
 
       addStatusButtonEle.addEventListener("click", () => {
 
-        let closeAddModalFn: () => void;
+        let closeAddModalFunction: () => void;
 
-        const addFn = (formEvent: Event) => {
+        const addFunction = (formEvent: Event) => {
           formEvent.preventDefault();
 
           cityssm.postJSON(urlPrefix + "/edit/doAddStatus",
@@ -231,7 +235,7 @@ declare const cityssm: cityssmGlobal;
 
               if (responseJSON.success) {
                 getStatuses();
-                closeAddModalFn();
+                closeAddModalFunction();
               } else {
                 cityssm.alertModal("Add Status Error",
                   cityssm.escapeHTML(responseJSON.message),
@@ -243,9 +247,9 @@ declare const cityssm: cityssmGlobal;
 
         cityssm.openHtmlModal("status-add", {
           onshow: () => {
-            (document.getElementById("addStatus--recordID") as HTMLInputElement).value = crmEdit.recordID;
+            (document.querySelector("#addStatus--recordID") as HTMLInputElement).value = crmEdit.recordID;
 
-            const statusTypeKeyEle = document.getElementById("addStatus--statusTypeKey") as HTMLSelectElement;
+            const statusTypeKeyEle = document.querySelector("#addStatus--statusTypeKey") as HTMLSelectElement;
             const statusTypes: recordTypes.StatusType[] = exports.statusTypes;
 
             for (const statusType of statusTypes) {
@@ -259,13 +263,13 @@ declare const cityssm: cityssmGlobal;
             }
 
             const rightNow = new Date();
-            (document.getElementById("addStatus--statusDateString") as HTMLInputElement).value = cityssm.dateToString(rightNow);
-            (document.getElementById("addStatus--statusTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(rightNow);
+            (document.querySelector("#addStatus--statusDateString") as HTMLInputElement).value = cityssm.dateToString(rightNow);
+            (document.querySelector("#addStatus--statusTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(rightNow);
 
           },
-          onshown: (_modalEle, closeModalFn) => {
-            closeAddModalFn = closeModalFn;
-            document.getElementById("form--addStatus").addEventListener("submit", addFn);
+          onshown: (_modalEle, closeModalFunction) => {
+            closeAddModalFunction = closeModalFunction;
+            document.querySelector("#form--addStatus").addEventListener("submit", addFunction);
           }
         });
       });

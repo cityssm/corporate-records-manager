@@ -1,32 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-(function () {
-    var crmAdmin = exports.crmAdmin;
-    var urlPrefix = exports.urlPrefix;
-    var usersContainerEle = document.getElementById("container--users");
-    var users = [];
-    var getUserFromEventFn = function (clickEvent) {
-        var buttonEle = clickEvent.currentTarget;
-        var trEle = buttonEle.closest("tr");
-        var userIndex = parseInt(trEle.getAttribute("data-index"), 10);
-        var user = users[userIndex];
+(() => {
+    const crmAdmin = exports.crmAdmin;
+    const urlPrefix = exports.urlPrefix;
+    const usersContainerEle = document.querySelector("#container--users");
+    let users = [];
+    const getUserFromEventFunction = (clickEvent) => {
+        const buttonEle = clickEvent.currentTarget;
+        const trEle = buttonEle.closest("tr");
+        const userIndex = Number.parseInt(trEle.getAttribute("data-index"), 10);
+        const user = users[userIndex];
         return {
-            buttonEle: buttonEle,
-            trEle: trEle,
-            userIndex: userIndex,
-            user: user
+            buttonEle,
+            trEle,
+            userIndex,
+            user
         };
     };
-    var toggleUserSettingFn = function (clickEvent) {
-        var _a = getUserFromEventFn(clickEvent), buttonEle = _a.buttonEle, user = _a.user;
+    const toggleUserSettingFunction = (clickEvent) => {
+        const { buttonEle, user } = getUserFromEventFunction(clickEvent);
         buttonEle.disabled = true;
-        var fieldName = buttonEle.getAttribute("data-field");
-        var newFieldValue = !user[fieldName];
+        const fieldName = buttonEle.dataset.field;
+        const newFieldValue = !user[fieldName];
         cityssm.postJSON(urlPrefix + "/admin/doSetUserSetting", {
             userName: user.userName,
             fieldName: fieldName,
             fieldValue: newFieldValue
-        }, function (responseJSON) {
+        }, (responseJSON) => {
             buttonEle.disabled = false;
             if (responseJSON.success) {
                 user[fieldName] = newFieldValue;
@@ -52,17 +52,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     };
-    var removeUserFn = function (clickEvent) {
-        var _a = getUserFromEventFn(clickEvent), buttonEle = _a.buttonEle, user = _a.user, userIndex = _a.userIndex;
-        var userName = user.userName;
-        var removeFn = function () {
+    const removeUserFunction = (clickEvent) => {
+        const { buttonEle, user, userIndex } = getUserFromEventFunction(clickEvent);
+        const userName = user.userName;
+        const removeFunction = () => {
             buttonEle.disabled = true;
             cityssm.postJSON(urlPrefix + "/admin/doRemoveUser", {
                 userName: userName
-            }, function (responseJSON) {
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     users.splice(userIndex, 1);
-                    renderUsersFn();
+                    renderUsersFunction();
                 }
                 else {
                     cityssm.alertModal("Error Removing User", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
@@ -70,9 +70,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         };
-        cityssm.confirmModal("Remove User?", "Are you sure you want to remove all access for \"" + userName + "\"?", "Yes, Remove User", "warning", removeFn);
+        cityssm.confirmModal("Remove User?", "Are you sure you want to remove all access for \"" + userName + "\"?", "Yes, Remove User", "warning", removeFunction);
     };
-    var renderUsersFn = function () {
+    const renderUsersFunction = () => {
         if (users.length === 0) {
             usersContainerEle.innerHTML = "<div class=\"message is-warning\">" +
                 "<p class=\"message-body\">" +
@@ -82,7 +82,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "</div>";
             return;
         }
-        var tableEle = document.createElement("table");
+        const tableEle = document.createElement("table");
         tableEle.className = "table is-fullwidth is-bordered is-striped is-hoverable has-sticky-header";
         tableEle.innerHTML = "<thead>" +
             "<tr>" +
@@ -94,11 +94,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             "</tr>" +
             "</thead>" +
             "<tbody></tbody>";
-        var tbodyEle = tableEle.getElementsByTagName("tbody")[0];
-        for (var index = 0; index < users.length; index += 1) {
-            var user = users[index];
-            var trEle = document.createElement("tr");
-            trEle.setAttribute("data-index", index.toString());
+        const tbodyEle = tableEle.querySelectorAll("tbody")[0];
+        for (const [index, user] of users.entries()) {
+            const trEle = document.createElement("tr");
+            trEle.dataset.index = index.toString();
             trEle.innerHTML = "<th class=\"is-vcentered\">" + user.userName + "</th>" +
                 ("<td class=\"has-text-centered\">" +
                     "<button class=\"button is-inverted is-info\" data-field=\"isActive\" type=\"button\">" +
@@ -128,37 +127,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "<i class=\"fas fa-trash-alt\" aria-label=\"Remove User\"></i>" +
                             "</button>") +
                     "</td>");
-            var buttonEles = trEle.getElementsByTagName("button");
-            for (var buttonIndex = 0; buttonIndex < buttonEles.length; buttonIndex += 1) {
-                if (buttonEles[buttonIndex].classList.contains("is-remove-user-button")) {
-                    buttonEles[buttonIndex].addEventListener("click", removeUserFn);
+            const buttonEles = trEle.querySelectorAll("button");
+            for (const buttonEle of buttonEles) {
+                if (buttonEle.classList.contains("is-remove-user-button")) {
+                    buttonEle.addEventListener("click", removeUserFunction);
                 }
                 else {
-                    buttonEles[buttonIndex].addEventListener("click", toggleUserSettingFn);
+                    buttonEle.addEventListener("click", toggleUserSettingFunction);
                 }
             }
-            tbodyEle.appendChild(trEle);
+            tbodyEle.append(trEle);
         }
         cityssm.clearElement(usersContainerEle);
-        usersContainerEle.appendChild(tableEle);
+        usersContainerEle.append(tableEle);
     };
-    crmAdmin.getUsersFn = function () {
+    crmAdmin.getUsersFunction = () => {
         users = [];
         cityssm.clearElement(usersContainerEle);
         usersContainerEle.innerHTML = crmAdmin.getLoadingHTML("Users");
-        cityssm.postJSON(urlPrefix + "/admin/doGetUsers", {}, function (responseJSON) {
+        cityssm.postJSON(urlPrefix + "/admin/doGetUsers", {}, (responseJSON) => {
             users = responseJSON.users;
-            renderUsersFn();
+            renderUsersFunction();
         });
     };
-    document.getElementById("form--addUser").addEventListener("submit", function (formEvent) {
+    document.querySelector("#form--addUser").addEventListener("submit", (formEvent) => {
         formEvent.preventDefault();
-        var addFormEle = formEvent.currentTarget;
-        cityssm.postJSON(urlPrefix + "/admin/doAddUser", addFormEle, function (responseJSON) {
+        const addFormEle = formEvent.currentTarget;
+        cityssm.postJSON(urlPrefix + "/admin/doAddUser", addFormEle, (responseJSON) => {
             if (responseJSON.success) {
                 addFormEle.reset();
                 users.unshift(responseJSON.user);
-                renderUsersFn();
+                renderUsersFunction();
             }
             else {
                 cityssm.alertModal("Error Creating New User", cityssm.escapeHTML(responseJSON.message), "OK", "danger");

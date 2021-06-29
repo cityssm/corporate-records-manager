@@ -1,15 +1,15 @@
-(function () {
-    var showAllFn = function (clickEvent) {
+(() => {
+    const showAllFunction = (clickEvent) => {
         clickEvent.preventDefault();
-        var buttonPanelBlockEle = clickEvent.currentTarget.closest(".panel-block");
-        var hiddenPanelBlockEles = buttonPanelBlockEle.closest(".panel").querySelectorAll(".panel-block.is-hidden");
-        hiddenPanelBlockEles.forEach(function (panelBlockEle) {
+        const buttonPanelBlockEle = clickEvent.currentTarget.closest(".panel-block");
+        const hiddenPanelBlockEles = buttonPanelBlockEle.closest(".panel").querySelectorAll(".panel-block.is-hidden");
+        for (const panelBlockEle of hiddenPanelBlockEles) {
             panelBlockEle.classList.remove("is-hidden");
-        });
+        }
         buttonPanelBlockEle.remove();
     };
-    var showAllButtonEles = document.getElementsByClassName("is-show-all-button");
-    for (var index = 0; index < showAllButtonEles.length; index += 1) {
-        showAllButtonEles[index].addEventListener("click", showAllFn);
+    const showAllButtonEles = document.querySelectorAll(".is-show-all-button");
+    for (const showAllButtonEle of showAllButtonEles) {
+        showAllButtonEle.addEventListener("click", showAllFunction);
     }
 })();

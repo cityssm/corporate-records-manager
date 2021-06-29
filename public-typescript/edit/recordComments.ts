@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type * as recordTypes from "../../types/recordTypes";
 
 import type { CRMEdit } from "./main";
@@ -14,20 +16,20 @@ declare const cityssm: cityssmGlobal;
   let comments: recordTypes.RecordComment[] = exports.recordComments;
   delete exports.recordComments;
 
-  const commentPanelEle = document.getElementById("panel--comments");
+  const commentPanelEle = document.querySelector("#panel--comments") as HTMLElement;
 
-  const openEditCommentModalFn = (clickEvent: MouseEvent) => {
+  const openEditCommentModalFunction = (clickEvent: MouseEvent) => {
 
     clickEvent.preventDefault();
 
-    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
+    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
 
-    const index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+    const index = Number.parseInt(panelBlockEle.getAttribute("data-index"), 10);
     const comment = comments[index];
 
-    let closeEditModalFn: () => void;
+    let closeEditModalFunction: () => void;
 
-    const editFn = (formEvent: Event) => {
+    const editFunction = (formEvent: Event) => {
       formEvent.preventDefault();
 
       cityssm.postJSON(urlPrefix + "/edit/doUpdateComment",
@@ -36,7 +38,7 @@ declare const cityssm: cityssmGlobal;
 
           if (responseJSON.success) {
             getComments();
-            closeEditModalFn();
+            closeEditModalFunction();
           } else {
             cityssm.alertModal("Update Comment Error",
               cityssm.escapeHTML(responseJSON.message),
@@ -49,32 +51,32 @@ declare const cityssm: cityssmGlobal;
     cityssm.openHtmlModal("comment-edit", {
       onshow: () => {
 
-        (document.getElementById("editComment--commentLogID") as HTMLInputElement).value = comment.commentLogID.toString();
+        (document.querySelector("#editComment--commentLogID") as HTMLInputElement).value = comment.commentLogID.toString();
 
         const commentTime = new Date(comment.commentTime);
-        (document.getElementById("editComment--commentDateString") as HTMLInputElement).value = cityssm.dateToString(commentTime);
-        (document.getElementById("editComment--commentTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(commentTime);
+        (document.querySelector("#editComment--commentDateString") as HTMLInputElement).value = cityssm.dateToString(commentTime);
+        (document.querySelector("#editComment--commentTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(commentTime);
 
-        (document.getElementById("editComment--comment") as HTMLTextAreaElement).value = comment.comment;
+        (document.querySelector("#editComment--comment") as HTMLTextAreaElement).value = comment.comment;
 
-        document.getElementById("form--editComment").addEventListener("submit", editFn);
+        document.querySelector("#form--editComment").addEventListener("submit", editFunction);
       },
-      onshown: (_modalEle, closeModalFn) => {
-        closeEditModalFn = closeModalFn;
+      onshown: (_modalEle, closeModalFunction) => {
+        closeEditModalFunction = closeModalFunction;
       }
     });
   };
 
-  const openRemoveCommentModalFn = (clickEvent: MouseEvent) => {
+  const openRemoveCommentModalFunction = (clickEvent: MouseEvent) => {
 
     clickEvent.preventDefault();
 
-    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
+    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
 
-    const index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+    const index = Number.parseInt(panelBlockEle.dataset.index, 10);
     const comment = comments[index];
 
-    const removeFn = () => {
+    const removeFunction = () => {
 
       cityssm.postJSON(urlPrefix + "/edit/doRemoveComment", {
         commentLogID: comment.commentLogID
@@ -82,8 +84,8 @@ declare const cityssm: cityssmGlobal;
 
         if (responseJSON.success) {
           comments.splice(index, 1);
-          crmEdit.clearPanelBlocksFn(commentPanelEle);
-          renderCommentsFn();
+          crmEdit.clearPanelBlocksFunction(commentPanelEle);
+          renderCommentsFunction();
 
         } else {
           cityssm.alertModal("Remove Comment Error",
@@ -98,15 +100,15 @@ declare const cityssm: cityssmGlobal;
       "Are you sure you want to remove this comment?",
       "Yes, Remove the Comment",
       "warning",
-      removeFn);
+      removeFunction);
   };
 
-  const renderCommentFn = (comment: recordTypes.RecordComment, index: number) => {
+  const renderCommentFunction = (comment: recordTypes.RecordComment, index: number) => {
 
     const panelBlockEle = document.createElement("div");
     panelBlockEle.className = "panel-block is-block";
-    panelBlockEle.setAttribute("data-comment-log-id", comment.commentLogID.toString());
-    panelBlockEle.setAttribute("data-index", index.toString());
+    panelBlockEle.dataset.commentLogId = comment.commentLogID.toString();
+    panelBlockEle.dataset.index = index.toString();
 
     const commentTime = new Date(comment.commentTime);
 
@@ -126,16 +128,16 @@ declare const cityssm: cityssmGlobal;
         "</div>") +
       "</div>";
 
-    const buttonEles = panelBlockEle.getElementsByTagName("button");
-    buttonEles[0].addEventListener("click", openEditCommentModalFn);
-    buttonEles[1].addEventListener("click", openRemoveCommentModalFn);
+    const buttonEles = panelBlockEle.querySelectorAll("button");
+    buttonEles[0].addEventListener("click", openEditCommentModalFunction);
+    buttonEles[1].addEventListener("click", openRemoveCommentModalFunction);
 
-    commentPanelEle.appendChild(panelBlockEle);
+    commentPanelEle.append(panelBlockEle);
   };
 
-  const renderCommentsFn = () => {
+  const renderCommentsFunction = () => {
 
-    crmEdit.clearPanelBlocksFn(commentPanelEle);
+    crmEdit.clearPanelBlocksFunction(commentPanelEle);
 
     if (comments.length === 0) {
       commentPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -147,12 +149,14 @@ declare const cityssm: cityssmGlobal;
       return;
     }
 
-    comments.forEach(renderCommentFn);
+    for (const [index, comment] of comments.entries()) {
+      renderCommentFunction(comment, index);
+    }
   };
 
   const getComments = () => {
 
-    crmEdit.clearPanelBlocksFn(commentPanelEle);
+    crmEdit.clearPanelBlocksFunction(commentPanelEle);
     comments = [];
 
     commentPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Comments"));
@@ -164,7 +168,7 @@ declare const cityssm: cityssmGlobal;
 
         if (responseJSON.success) {
           comments = responseJSON.comments;
-          renderCommentsFn();
+          renderCommentsFunction();
         } else {
 
           commentPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -176,13 +180,13 @@ declare const cityssm: cityssmGlobal;
       });
   };
 
-  renderCommentsFn();
+  renderCommentsFunction();
 
-  document.getElementById("is-add-comment-button").addEventListener("click", () => {
+  document.querySelector("#is-add-comment-button").addEventListener("click", () => {
 
-    let closeAddModalFn: () => void;
+    let closeAddModalFunction: () => void;
 
-    const addFn = (formEvent: Event) => {
+    const addFunction = (formEvent: Event) => {
       formEvent.preventDefault();
 
       cityssm.postJSON(urlPrefix + "/edit/doAddComment",
@@ -191,7 +195,7 @@ declare const cityssm: cityssmGlobal;
 
           if (responseJSON.success) {
             getComments();
-            closeAddModalFn();
+            closeAddModalFunction();
           } else {
             cityssm.alertModal("Add Comment Error",
               cityssm.escapeHTML(responseJSON.message),
@@ -203,15 +207,15 @@ declare const cityssm: cityssmGlobal;
 
     cityssm.openHtmlModal("comment-add", {
       onshow: () => {
-        (document.getElementById("addComment--recordID") as HTMLInputElement).value = crmEdit.recordID;
+        (document.querySelector("#addComment--recordID") as HTMLInputElement).value = crmEdit.recordID;
 
         const rightNow = new Date();
-        (document.getElementById("addComment--commentDateString") as HTMLInputElement).value = cityssm.dateToString(rightNow);
-        (document.getElementById("addComment--commentTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(rightNow);
+        (document.querySelector("#addComment--commentDateString") as HTMLInputElement).value = cityssm.dateToString(rightNow);
+        (document.querySelector("#addComment--commentTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(rightNow);
       },
-      onshown: (_modalEle, closeModalFn) => {
-        closeAddModalFn = closeModalFn;
-        document.getElementById("form--addComment").addEventListener("submit", addFn);
+      onshown: (_modalEle, closeModalFunction) => {
+        closeAddModalFunction = closeModalFunction;
+        document.querySelector("#form--addComment").addEventListener("submit", addFunction);
       }
     });
   });

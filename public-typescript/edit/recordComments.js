@@ -1,23 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-(function () {
-    var urlPrefix = exports.urlPrefix;
-    var crmEdit = exports.crmEdit;
-    var comments = exports.recordComments;
+(() => {
+    const urlPrefix = exports.urlPrefix;
+    const crmEdit = exports.crmEdit;
+    let comments = exports.recordComments;
     delete exports.recordComments;
-    var commentPanelEle = document.getElementById("panel--comments");
-    var openEditCommentModalFn = function (clickEvent) {
+    const commentPanelEle = document.querySelector("#panel--comments");
+    const openEditCommentModalFunction = (clickEvent) => {
         clickEvent.preventDefault();
-        var panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
-        var index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
-        var comment = comments[index];
-        var closeEditModalFn;
-        var editFn = function (formEvent) {
+        const panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
+        const index = Number.parseInt(panelBlockEle.getAttribute("data-index"), 10);
+        const comment = comments[index];
+        let closeEditModalFunction;
+        const editFunction = (formEvent) => {
             formEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + "/edit/doUpdateComment", formEvent.currentTarget, function (responseJSON) {
+            cityssm.postJSON(urlPrefix + "/edit/doUpdateComment", formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     getComments();
-                    closeEditModalFn();
+                    closeEditModalFunction();
                 }
                 else {
                     cityssm.alertModal("Update Comment Error", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
@@ -25,46 +25,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         };
         cityssm.openHtmlModal("comment-edit", {
-            onshow: function () {
-                document.getElementById("editComment--commentLogID").value = comment.commentLogID.toString();
-                var commentTime = new Date(comment.commentTime);
-                document.getElementById("editComment--commentDateString").value = cityssm.dateToString(commentTime);
-                document.getElementById("editComment--commentTimeString").value = cityssm.dateToTimeString(commentTime);
-                document.getElementById("editComment--comment").value = comment.comment;
-                document.getElementById("form--editComment").addEventListener("submit", editFn);
+            onshow: () => {
+                document.querySelector("#editComment--commentLogID").value = comment.commentLogID.toString();
+                const commentTime = new Date(comment.commentTime);
+                document.querySelector("#editComment--commentDateString").value = cityssm.dateToString(commentTime);
+                document.querySelector("#editComment--commentTimeString").value = cityssm.dateToTimeString(commentTime);
+                document.querySelector("#editComment--comment").value = comment.comment;
+                document.querySelector("#form--editComment").addEventListener("submit", editFunction);
             },
-            onshown: function (_modalEle, closeModalFn) {
-                closeEditModalFn = closeModalFn;
+            onshown: (_modalEle, closeModalFunction) => {
+                closeEditModalFunction = closeModalFunction;
             }
         });
     };
-    var openRemoveCommentModalFn = function (clickEvent) {
+    const openRemoveCommentModalFunction = (clickEvent) => {
         clickEvent.preventDefault();
-        var panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
-        var index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
-        var comment = comments[index];
-        var removeFn = function () {
+        const panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
+        const index = Number.parseInt(panelBlockEle.dataset.index, 10);
+        const comment = comments[index];
+        const removeFunction = () => {
             cityssm.postJSON(urlPrefix + "/edit/doRemoveComment", {
                 commentLogID: comment.commentLogID
-            }, function (responseJSON) {
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     comments.splice(index, 1);
-                    crmEdit.clearPanelBlocksFn(commentPanelEle);
-                    renderCommentsFn();
+                    crmEdit.clearPanelBlocksFunction(commentPanelEle);
+                    renderCommentsFunction();
                 }
                 else {
                     cityssm.alertModal("Remove Comment Error", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
                 }
             });
         };
-        cityssm.confirmModal("Remove Comment", "Are you sure you want to remove this comment?", "Yes, Remove the Comment", "warning", removeFn);
+        cityssm.confirmModal("Remove Comment", "Are you sure you want to remove this comment?", "Yes, Remove the Comment", "warning", removeFunction);
     };
-    var renderCommentFn = function (comment, index) {
-        var panelBlockEle = document.createElement("div");
+    const renderCommentFunction = (comment, index) => {
+        const panelBlockEle = document.createElement("div");
         panelBlockEle.className = "panel-block is-block";
-        panelBlockEle.setAttribute("data-comment-log-id", comment.commentLogID.toString());
-        panelBlockEle.setAttribute("data-index", index.toString());
-        var commentTime = new Date(comment.commentTime);
+        panelBlockEle.dataset.commentLogId = comment.commentLogID.toString();
+        panelBlockEle.dataset.index = index.toString();
+        const commentTime = new Date(comment.commentTime);
         panelBlockEle.innerHTML = "<div class=\"columns\">" +
             ("<div class=\"column\">" +
                 "<span class=\"has-tooltip-arrow has-tooltip-right\" data-tooltip=\"" + cityssm.dateToTimeString(commentTime) + "\">" + cityssm.dateToString(commentTime) + "</span><br />" +
@@ -80,13 +80,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "</button>" +
                 "</div>") +
             "</div>";
-        var buttonEles = panelBlockEle.getElementsByTagName("button");
-        buttonEles[0].addEventListener("click", openEditCommentModalFn);
-        buttonEles[1].addEventListener("click", openRemoveCommentModalFn);
-        commentPanelEle.appendChild(panelBlockEle);
+        const buttonEles = panelBlockEle.querySelectorAll("button");
+        buttonEles[0].addEventListener("click", openEditCommentModalFunction);
+        buttonEles[1].addEventListener("click", openRemoveCommentModalFunction);
+        commentPanelEle.append(panelBlockEle);
     };
-    var renderCommentsFn = function () {
-        crmEdit.clearPanelBlocksFn(commentPanelEle);
+    const renderCommentsFunction = () => {
+        crmEdit.clearPanelBlocksFunction(commentPanelEle);
         if (comments.length === 0) {
             commentPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
                 "<div class=\"message is-info\">" +
@@ -95,18 +95,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "</div>");
             return;
         }
-        comments.forEach(renderCommentFn);
+        for (const [index, comment] of comments.entries()) {
+            renderCommentFunction(comment, index);
+        }
     };
-    var getComments = function () {
-        crmEdit.clearPanelBlocksFn(commentPanelEle);
+    const getComments = () => {
+        crmEdit.clearPanelBlocksFunction(commentPanelEle);
         comments = [];
         commentPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Comments"));
         cityssm.postJSON(urlPrefix + "/view/doGetComments", {
             recordID: crmEdit.recordID
-        }, function (responseJSON) {
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 comments = responseJSON.comments;
-                renderCommentsFn();
+                renderCommentsFunction();
             }
             else {
                 commentPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -117,15 +119,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     };
-    renderCommentsFn();
-    document.getElementById("is-add-comment-button").addEventListener("click", function () {
-        var closeAddModalFn;
-        var addFn = function (formEvent) {
+    renderCommentsFunction();
+    document.querySelector("#is-add-comment-button").addEventListener("click", () => {
+        let closeAddModalFunction;
+        const addFunction = (formEvent) => {
             formEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + "/edit/doAddComment", formEvent.currentTarget, function (responseJSON) {
+            cityssm.postJSON(urlPrefix + "/edit/doAddComment", formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     getComments();
-                    closeAddModalFn();
+                    closeAddModalFunction();
                 }
                 else {
                     cityssm.alertModal("Add Comment Error", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
@@ -133,15 +135,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         };
         cityssm.openHtmlModal("comment-add", {
-            onshow: function () {
-                document.getElementById("addComment--recordID").value = crmEdit.recordID;
-                var rightNow = new Date();
-                document.getElementById("addComment--commentDateString").value = cityssm.dateToString(rightNow);
-                document.getElementById("addComment--commentTimeString").value = cityssm.dateToTimeString(rightNow);
+            onshow: () => {
+                document.querySelector("#addComment--recordID").value = crmEdit.recordID;
+                const rightNow = new Date();
+                document.querySelector("#addComment--commentDateString").value = cityssm.dateToString(rightNow);
+                document.querySelector("#addComment--commentTimeString").value = cityssm.dateToTimeString(rightNow);
             },
-            onshown: function (_modalEle, closeModalFn) {
-                closeAddModalFn = closeModalFn;
-                document.getElementById("form--addComment").addEventListener("submit", addFn);
+            onshown: (_modalEle, closeModalFunction) => {
+                closeAddModalFunction = closeModalFunction;
+                document.querySelector("#form--addComment").addEventListener("submit", addFunction);
             }
         });
     });

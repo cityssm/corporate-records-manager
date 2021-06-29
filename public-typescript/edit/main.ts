@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 declare const cityssm: cityssmGlobal;
 
@@ -5,18 +7,18 @@ declare const cityssm: cityssmGlobal;
 export interface CRMEdit {
   recordID: string;
   getLoadingPanelBlockHTML: (sectionName: string) => string;
-  clearPanelBlocksFn: (panelEle: HTMLElement) => void;
-};
+  clearPanelBlocksFunction: (panelEle: HTMLElement) => void;
+}
 
 
 (() => {
   const urlPrefix: string = exports.urlPrefix;
-  const recordID = (document.getElementById("record--recordID") as HTMLInputElement).value;
+  const recordID = (document.querySelector("#record--recordID") as HTMLInputElement).value;
 
-  document.getElementById("is-remove-record-button").addEventListener("click", (clickEvent) => {
+  document.querySelector("#is-remove-record-button").addEventListener("click", (clickEvent) => {
     clickEvent.preventDefault();
 
-    const removeFn = () => {
+    const removeFunction = () => {
 
       cityssm.postJSON(urlPrefix + "/edit/doRemove", {
         recordID: recordID
@@ -37,7 +39,7 @@ export interface CRMEdit {
       "Are you sure you want to remove this record?",
       "Yes, Remove the Record",
       "warning",
-      removeFn
+      removeFunction
     );
   });
 
@@ -50,9 +52,9 @@ export interface CRMEdit {
         "Loading " + sectionName + "..." +
         "</div>";
     },
-    clearPanelBlocksFn: (panelEle) => {
+    clearPanelBlocksFunction: (panelEle) => {
 
-      const panelBlockEles = panelEle.getElementsByClassName("panel-block");
+      const panelBlockEles = panelEle.querySelectorAll(".panel-block");
 
       for (let index = 0; index < panelBlockEles.length; index += 1) {
         panelBlockEles[index].remove();

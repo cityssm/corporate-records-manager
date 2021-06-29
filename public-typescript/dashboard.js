@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-(function () {
-    var urlPrefix = exports.urlPrefix;
-    var crm = exports.crm;
-    var limit = parseInt(document.getElementById("search--limit").value, 10);
-    var offsetEle = document.getElementById("search--offset");
-    var searchFormEle = document.getElementById("form--search");
-    var searchResultsContainerEle = document.getElementById("container--search");
-    var searchRecordsFn = function (formEvent) {
+(() => {
+    const urlPrefix = exports.urlPrefix;
+    const crm = exports.crm;
+    const limit = Number.parseInt(document.querySelector("#search--limit").value, 10);
+    const offsetEle = document.querySelector("#search--offset");
+    const searchFormEle = document.querySelector("#form--search");
+    const searchResultsContainerEle = document.querySelector("#container--search");
+    const searchRecordsFunction = (formEvent) => {
         if (formEvent) {
             formEvent.preventDefault();
         }
@@ -16,102 +16,96 @@ Object.defineProperty(exports, "__esModule", { value: true });
             "<i class=\"fas fa-4x fa-pulse fa-spinner\" aria-hidden=\"true\"></i><br />" +
             "Searching Records..." +
             "</div>";
-        var offset = parseInt(offsetEle.value, 10);
-        cityssm.postJSON(urlPrefix + "/dashboard/doGetRecords", searchFormEle, function (responseJSON) {
+        const offset = Number.parseInt(offsetEle.value, 10);
+        cityssm.postJSON(urlPrefix + "/dashboard/doGetRecords", searchFormEle, (responseJSON) => {
             if (responseJSON.records.length === 0) {
                 searchResultsContainerEle.innerHTML = "<div class=\"message is-info\">" +
                     "<div class=\"message-body\">There are no records that match the search criteria.</div>" +
                     "</div>";
                 return;
             }
-            var pagerEle = document.createElement("div");
+            const pagerEle = document.createElement("div");
             pagerEle.className = "box p-3 is-flex is-justify-content-space-between is-align-items-center";
             pagerEle.innerHTML = "<div class=\"span has-text-weight-bold\">" +
                 (offset + 1).toString() + " to " + Math.min(offset + limit, responseJSON.count).toString() + " of " + responseJSON.count.toString() +
                 "</div>" +
                 "<div class=\"span has-text-right\"></div>";
             if (offset !== 0) {
-                var prevButtonEle = document.createElement("button");
-                prevButtonEle.className = "button is-light is-info has-tooltip-left has-tooltip-arrow";
-                prevButtonEle.setAttribute("data-tooltip", "Previous Results");
-                prevButtonEle.type = "button";
-                prevButtonEle.setAttribute("aria-label", "Previous Results");
-                prevButtonEle.innerHTML = "<i class=\"fas fa-arrow-left\" aria-hidden=\"true\"></i>";
-                prevButtonEle.addEventListener("click", previousFn);
-                pagerEle.getElementsByClassName("span")[1].appendChild(prevButtonEle);
+                const previousButtonEle = document.createElement("button");
+                previousButtonEle.className = "button is-light is-info has-tooltip-left has-tooltip-arrow";
+                previousButtonEle.dataset.tooltip = "Previous Results";
+                previousButtonEle.type = "button";
+                previousButtonEle.setAttribute("aria-label", "Previous Results");
+                previousButtonEle.innerHTML = "<i class=\"fas fa-arrow-left\" aria-hidden=\"true\"></i>";
+                previousButtonEle.addEventListener("click", previousFunction);
+                pagerEle.querySelectorAll(".span")[1].append(previousButtonEle);
             }
             if (limit + offset < responseJSON.count) {
-                var prevButtonEle = document.createElement("button");
-                prevButtonEle.className = "button is-outlined is-info ml-1";
-                prevButtonEle.type = "button";
-                prevButtonEle.setAttribute("aria-label", "Next Results");
-                prevButtonEle.innerHTML = "<span>Next</span>" +
+                const previousButtonEle = document.createElement("button");
+                previousButtonEle.className = "button is-outlined is-info ml-1";
+                previousButtonEle.type = "button";
+                previousButtonEle.setAttribute("aria-label", "Next Results");
+                previousButtonEle.innerHTML = "<span>Next</span>" +
                     "<span class=\"icon\"><i class=\"fas fa-arrow-right\" aria-hidden=\"true\"></i></span>";
-                prevButtonEle.addEventListener("click", nextFn);
-                pagerEle.getElementsByClassName("span")[1].appendChild(prevButtonEle);
+                previousButtonEle.addEventListener("click", nextFunction);
+                pagerEle.querySelectorAll(".span")[1].append(previousButtonEle);
             }
-            var panelEle = document.createElement("div");
+            const panelEle = document.createElement("div");
             panelEle.className = "panel";
-            for (var _i = 0, _a = responseJSON.records; _i < _a.length; _i++) {
-                var record = _a[_i];
-                var panelBlockEle = crm.renderRecordPanelLinkEle(record, {
+            for (const record of responseJSON.records) {
+                const panelBlockEle = crm.renderRecordPanelLinkEle(record, {
                     panelTag: "a"
                 });
-                panelEle.appendChild(panelBlockEle);
+                panelEle.append(panelBlockEle);
             }
             searchResultsContainerEle.innerHTML = "";
-            searchResultsContainerEle.appendChild(pagerEle);
-            searchResultsContainerEle.appendChild(panelEle);
+            searchResultsContainerEle.append(pagerEle);
+            searchResultsContainerEle.append(panelEle);
         });
     };
-    var previousFn = function (clickEvent) {
+    const previousFunction = (clickEvent) => {
         if (clickEvent) {
             clickEvent.preventDefault();
         }
-        offsetEle.value = Math.max(parseInt(offsetEle.value, 10) - limit, 0).toString();
-        searchRecordsFn();
+        offsetEle.value = Math.max(Number.parseInt(offsetEle.value, 10) - limit, 0).toString();
+        searchRecordsFunction();
     };
-    var nextFn = function (clickEvent) {
+    const nextFunction = (clickEvent) => {
         if (clickEvent) {
             clickEvent.preventDefault();
         }
-        offsetEle.value = (parseInt(offsetEle.value, 10) + limit).toString();
-        searchRecordsFn();
+        offsetEle.value = (Number.parseInt(offsetEle.value, 10) + limit).toString();
+        searchRecordsFunction();
     };
-    var resetOffsetAndSearchFn = function (formEvent) {
+    const resetOffsetAndSearchFunction = (formEvent) => {
         if (formEvent) {
             formEvent.preventDefault();
         }
         offsetEle.value = "0";
-        searchRecordsFn();
+        searchRecordsFunction();
     };
-    searchFormEle.addEventListener("submit", resetOffsetAndSearchFn);
-    var filterEles = searchFormEle.querySelectorAll("input, select");
-    filterEles.forEach(function (filterEle) {
-        filterEle.addEventListener("change", resetOffsetAndSearchFn);
-    });
-    searchRecordsFn();
-    document.getElementById("button--searchMoreFiltersToggle").addEventListener("click", function () {
-        var moreFiltersEle = document.getElementById("fieldset--searchMoreFilters");
+    searchFormEle.addEventListener("submit", resetOffsetAndSearchFunction);
+    const filterEles = searchFormEle.querySelectorAll("input, select");
+    for (const filterEle of filterEles) {
+        filterEle.addEventListener("change", resetOffsetAndSearchFunction);
+    }
+    searchRecordsFunction();
+    document.querySelector("#button--searchMoreFiltersToggle").addEventListener("click", () => {
+        const moreFiltersEle = document.querySelector("#fieldset--searchMoreFilters");
         moreFiltersEle.classList.toggle("is-hidden");
-        if (moreFiltersEle.classList.contains("is-hidden")) {
-            moreFiltersEle.disabled = true;
-        }
-        else {
-            moreFiltersEle.disabled = false;
-        }
-        resetOffsetAndSearchFn();
+        moreFiltersEle.disabled = moreFiltersEle.classList.contains("is-hidden") ? true : false;
+        resetOffsetAndSearchFunction();
     });
 })();
-(function () {
-    var maxDateValue = cityssm.dateToString(new Date());
-    var gteEle = document.getElementById("search--recordDateString-gte");
-    var lteEle = document.getElementById("search--recordDateString-lte");
-    gteEle.addEventListener("change", function () {
+(() => {
+    const maxDateValue = cityssm.dateToString(new Date());
+    const gteEle = document.querySelector("#search--recordDateString-gte");
+    const lteEle = document.querySelector("#search--recordDateString-lte");
+    gteEle.addEventListener("change", () => {
         lteEle.min = gteEle.value;
     });
-    lteEle.addEventListener("change", function () {
-        var lteValue = lteEle.value;
+    lteEle.addEventListener("change", () => {
+        let lteValue = lteEle.value;
         if (lteValue === "") {
             lteValue = maxDateValue;
         }

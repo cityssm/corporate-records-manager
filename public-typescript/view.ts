@@ -1,5 +1,5 @@
 (() => {
-  const showAllFn = (clickEvent: MouseEvent) => {
+  const showAllFunction = (clickEvent: MouseEvent) => {
 
     clickEvent.preventDefault();
 
@@ -7,16 +7,16 @@
 
     const hiddenPanelBlockEles = buttonPanelBlockEle.closest(".panel").querySelectorAll(".panel-block.is-hidden");
 
-    hiddenPanelBlockEles.forEach((panelBlockEle) => {
+    for (const panelBlockEle of hiddenPanelBlockEles) {
       panelBlockEle.classList.remove("is-hidden");
-    });
+    }
 
     buttonPanelBlockEle.remove();
   };
 
-  const showAllButtonEles = document.getElementsByClassName("is-show-all-button");
+  const showAllButtonEles = document.querySelectorAll(".is-show-all-button");
 
-  for (let index = 0; index < showAllButtonEles.length; index += 1) {
-    showAllButtonEles[index].addEventListener("click", showAllFn);
+  for (const showAllButtonEle of showAllButtonEles) {
+    showAllButtonEle.addEventListener("click", showAllFunction);
   }
 })();

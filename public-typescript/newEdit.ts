@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 declare const cityssm: cityssmGlobal;
 
@@ -6,15 +8,14 @@ declare const cityssm: cityssmGlobal;
  */
 
 (() => {
-
   const urlPrefix: string = exports.urlPrefix;
 
-  const recordID = (document.getElementById("record--recordID") as HTMLInputElement).value;
+  const recordID = (document.querySelector("#record--recordID") as HTMLInputElement).value;
   const isNew = (recordID === "");
 
-  const formEle = document.getElementById("form--record");
+  const formEle = document.querySelector("#form--record");
 
-  const setUnsavedChangesFn = () => {
+  const setUnsavedChangesFunction = () => {
     cityssm.enableNavBlocker();
   };
 
@@ -44,36 +45,36 @@ declare const cityssm: cityssmGlobal;
 
   const inputEles = formEle.querySelectorAll("input, textarea");
 
-  inputEles.forEach((inputEle) => {
-    inputEle.addEventListener("change", setUnsavedChangesFn);
-  });
+  for (const inputEle of inputEles) {
+    inputEle.addEventListener("change", setUnsavedChangesFunction);
+  }
 
   /*
    * Tags
    */
 
-  const removeTagFn = (clickEvent: MouseEvent) => {
+  const removeTagFunction = (clickEvent: MouseEvent) => {
     clickEvent.preventDefault();
 
     const tagEle = (clickEvent.currentTarget as HTMLElement).closest(".tag");
 
-    const removeFn = () => {
+    const removeFunction = () => {
       tagEle.remove();
-      setUnsavedChangesFn();
+      setUnsavedChangesFunction();
     };
 
-    const tag = tagEle.getElementsByTagName("input")[0].value;
+    const tag = tagEle.querySelectorAll("input")[0].value;
 
     cityssm.confirmModal("Remove Tag?",
       "Are you sure you want to remove the <span class=\"tag\">" + cityssm.escapeHTML(tag) + "</span> tag?",
       "Yes, Remove the Tag",
       "warning",
-      removeFn);
+      removeFunction);
   };
 
-  const openAddTagModalFn = () => {
+  const openAddTagModalFunction = () => {
 
-    let addTagModalCloseFn: () => void;
+    let addTagModalCloseFunction: () => void;
 
     let tagInputEle: HTMLInputElement;
 
@@ -81,7 +82,7 @@ declare const cityssm: cityssmGlobal;
     let suggestedTagLastValue = "";
     let suggestedTags = [];
 
-    const addTagFn = (tag: string) => {
+    const addTagFunction = (tag: string) => {
 
       const escapedTag = cityssm.escapeHTML(tag);
 
@@ -92,35 +93,33 @@ declare const cityssm: cityssmGlobal;
         escapedTag +
         " <button class=\"delete\" type=\"button\" aria-label=\"Remove Tag\"></button>";
 
-      tagEle.getElementsByTagName("button")[0].addEventListener("click", removeTagFn);
+      tagEle.querySelectorAll("button")[0].addEventListener("click", removeTagFunction);
 
-      document.getElementById("container--tags").insertAdjacentElement("afterbegin", tagEle);
+      document.querySelector("#container--tags").insertAdjacentElement("afterbegin", tagEle);
 
-      setUnsavedChangesFn();
+      setUnsavedChangesFunction();
     };
 
-    const addTagBySubmitFn = (submitEvent: Event) => {
+    const addTagBySubmitFunction = (submitEvent: Event) => {
       submitEvent.preventDefault();
-      const inputEle = document.getElementById("addTag--tag") as HTMLInputElement;
+      const inputEle = document.querySelector("#addTag--tag") as HTMLInputElement;
 
       if (inputEle.value === "") {
-        addTagModalCloseFn();
+        addTagModalCloseFunction();
         return;
       }
 
-      addTagFn(inputEle.value);
+      addTagFunction(inputEle.value);
       inputEle.value = "";
       inputEle.focus();
     };
 
-    const getSuggestedTagsFn = (keyupEvent?: Event) => {
+    const getSuggestedTagsFunction = (keyupEvent?: Event) => {
 
-      if (keyupEvent) {
-        if (suggestedTagLastValue === tagInputEle.value ||
-          (tagInputEle.value.includes(suggestedTagLastValue) && suggestedTags.length < suggestedTagLimit)) {
+      if (keyupEvent && (suggestedTagLastValue === tagInputEle.value ||
+          (tagInputEle.value.includes(suggestedTagLastValue) && suggestedTags.length < suggestedTagLimit))) {
           return;
         }
-      }
 
       suggestedTagLastValue = tagInputEle.value;
 
@@ -130,7 +129,7 @@ declare const cityssm: cityssmGlobal;
       },
         (responseJSON: { success: boolean; tags?: string[] }) => {
 
-          const dataListEle = document.getElementById("addTag--tag-datalist") as HTMLDataListElement;
+          const dataListEle = document.querySelector("#addTag--tag-datalist") as HTMLDataListElement;
           dataListEle.innerHTML = "";
 
           if (responseJSON.success) {
@@ -141,31 +140,31 @@ declare const cityssm: cityssmGlobal;
 
               const optionEle = document.createElement("option");
               optionEle.value = suggestedTag;
-              dataListEle.appendChild(optionEle);
+              dataListEle.append(optionEle);
             }
           }
         });
     };
 
     cityssm.openHtmlModal("tag-add", {
-      onshown: (_modalEle, closeModalFn) => {
-        addTagModalCloseFn = closeModalFn;
-        document.getElementById("form--addTag").addEventListener("submit", addTagBySubmitFn);
+      onshown: (_modalEle, closeModalFunction) => {
+        addTagModalCloseFunction = closeModalFunction;
+        document.querySelector("#form--addTag").addEventListener("submit", addTagBySubmitFunction);
 
-        tagInputEle = document.getElementById("addTag--tag") as HTMLInputElement;
+        tagInputEle = document.querySelector("#addTag--tag") as HTMLInputElement;
         tagInputEle.focus();
-        tagInputEle.addEventListener("keyup", getSuggestedTagsFn);
-        getSuggestedTagsFn();
+        tagInputEle.addEventListener("keyup", getSuggestedTagsFunction);
+        getSuggestedTagsFunction();
       }
     });
   };
 
-  document.getElementById("is-add-tag-button").addEventListener("click", openAddTagModalFn);
+  document.querySelector("#is-add-tag-button").addEventListener("click", openAddTagModalFunction);
 
-  const removeTagButtonEles = document.getElementsByClassName("is-remove-tag-button");
+  const removeTagButtonEles = document.querySelectorAll(".is-remove-tag-button");
 
-  for (let index = 0; index < removeTagButtonEles.length; index += 1) {
-    removeTagButtonEles[index].addEventListener("click", removeTagFn);
+  for (const removeTagButtonEle of removeTagButtonEles) {
+    removeTagButtonEle.addEventListener("click", removeTagFunction);
   }
 
 })();
@@ -175,12 +174,12 @@ declare const cityssm: cityssmGlobal;
  */
 
 (() => {
-  const lockToggleFn = (clickEvent: MouseEvent) => {
+  const lockToggleFunction = (clickEvent: MouseEvent) => {
 
     clickEvent.preventDefault();
 
     const fieldEle = (clickEvent.currentTarget as HTMLElement).closest(".field");
-    const inputEle = fieldEle.getElementsByTagName("input")[0];
+    const inputEle = fieldEle.querySelectorAll("input")[0];
 
     const iconEles = inputEle.nextElementSibling.children;
 
@@ -190,14 +189,14 @@ declare const cityssm: cityssmGlobal;
       inputEle.setAttribute("readonly", "readonly");
     }
 
-    for (let index = 0; index < iconEles.length; index += 1) {
-      iconEles[index].classList.toggle("is-hidden");
+    for (const iconEle of iconEles) {
+      iconEle.classList.toggle("is-hidden");
     }
   };
 
-  const lockToggleButtonEles = document.getElementsByClassName("is-lock-toggle-button");
+  const lockToggleButtonEles = document.querySelectorAll(".is-lock-toggle-button");
 
-  for (let index = 0; index < lockToggleButtonEles.length; index += 1) {
-    lockToggleButtonEles[index].addEventListener("click", lockToggleFn);
+  for (const lockToggleButtonEle of lockToggleButtonEles) {
+    lockToggleButtonEle.addEventListener("click", lockToggleFunction);
   }
 })();

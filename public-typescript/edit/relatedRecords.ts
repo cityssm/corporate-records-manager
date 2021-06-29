@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type * as recordTypes from "../../types/recordTypes";
 
 import type { CRM } from "../../types/clientTypes";
@@ -17,18 +19,18 @@ declare const cityssm: cityssmGlobal;
   let relatedRecords: recordTypes.Record[] = exports.relatedRecords;
   delete exports.relatedRecords;
 
-  const relatedRecordPanelEle = document.getElementById("panel--relatedRecords");
+  const relatedRecordPanelEle = document.querySelector("#panel--relatedRecords") as HTMLElement;
 
-  const openRemoveRelatedRecordModalFn = (clickEvent: MouseEvent) => {
+  const openRemoveRelatedRecordModalFunction = (clickEvent: MouseEvent) => {
 
     clickEvent.preventDefault();
 
     const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
 
-    const index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
-    const relatedRecordID = parseInt(panelBlockEle.getAttribute("data-record-id"), 10);
+    const index = Number.parseInt(panelBlockEle.getAttribute("data-index"), 10);
+    const relatedRecordID = Number.parseInt(panelBlockEle.getAttribute("data-record-id"), 10);
 
-    const removeFn = () => {
+    const removeFunction = () => {
 
       cityssm.postJSON(urlPrefix + "/edit/doRemoveRelatedRecord", {
         recordID: crmEdit.recordID,
@@ -37,8 +39,8 @@ declare const cityssm: cityssmGlobal;
 
         if (responseJSON.success) {
           relatedRecords.splice(index, 1);
-          crmEdit.clearPanelBlocksFn(relatedRecordPanelEle);
-          renderRelatedRecordsFn();
+          crmEdit.clearPanelBlocksFunction(relatedRecordPanelEle);
+          renderRelatedRecordsFunction();
 
         } else {
           cityssm.alertModal("Remove Related Record Error",
@@ -53,27 +55,27 @@ declare const cityssm: cityssmGlobal;
       "Are you sure you want to remove this related record?",
       "Yes, Remove the Related Record",
       "warning",
-      removeFn);
+      removeFunction);
   };
 
-  const renderRelatedRecordFn = (relatedRecord: recordTypes.Record, index: number) => {
+  const renderRelatedRecordFunction = (relatedRecord: recordTypes.Record, index: number) => {
 
     const panelBlockEle = crm.renderRecordPanelLinkEle(relatedRecord, {
       panelTag: "div",
       includeRemoveButton: true
     });
 
-    panelBlockEle.setAttribute("data-index", index.toString());
-    panelBlockEle.setAttribute("data-record-id", relatedRecord.recordID.toString());
+    panelBlockEle.dataset.index = index.toString();
+    panelBlockEle.dataset.recordId = relatedRecord.recordID.toString();
 
-    panelBlockEle.getElementsByTagName("button")[0].addEventListener("click", openRemoveRelatedRecordModalFn);
+    panelBlockEle.querySelectorAll("button")[0].addEventListener("click", openRemoveRelatedRecordModalFunction);
 
-    relatedRecordPanelEle.appendChild(panelBlockEle);
+    relatedRecordPanelEle.append(panelBlockEle);
   };
 
-  const renderRelatedRecordsFn = () => {
+  const renderRelatedRecordsFunction = () => {
 
-    crmEdit.clearPanelBlocksFn(relatedRecordPanelEle);
+    crmEdit.clearPanelBlocksFunction(relatedRecordPanelEle);
 
     if (relatedRecords.length === 0) {
       relatedRecordPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -85,12 +87,15 @@ declare const cityssm: cityssmGlobal;
       return;
     }
 
-    relatedRecords.forEach(renderRelatedRecordFn);
+    for (const [index, relatedRecord] of relatedRecords.entries()) {
+      renderRelatedRecordFunction(relatedRecord, index);
+    }
+
   };
 
   const getRelatedRecords = () => {
 
-    crmEdit.clearPanelBlocksFn(relatedRecordPanelEle);
+    crmEdit.clearPanelBlocksFunction(relatedRecordPanelEle);
     relatedRecords = [];
 
     relatedRecordPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Related Records"));
@@ -102,7 +107,7 @@ declare const cityssm: cityssmGlobal;
 
         if (responseJSON.success) {
           relatedRecords = responseJSON.relatedRecords;
-          renderRelatedRecordsFn();
+          renderRelatedRecordsFunction();
         } else {
 
           relatedRecordPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -114,16 +119,16 @@ declare const cityssm: cityssmGlobal;
       });
   };
 
-  renderRelatedRecordsFn();
+  renderRelatedRecordsFunction();
 
-  document.getElementById("is-add-related-button").addEventListener("click", () => {
+  document.querySelector("#is-add-related-button").addEventListener("click", () => {
 
     let doRefreshOnClose = false;
 
     let searchFormEle: HTMLFormElement;
     let searchResultsContainerEle: HTMLElement;
 
-    const addFn = (event: MouseEvent) => {
+    const addFunction = (event: MouseEvent) => {
 
       event.preventDefault();
 
@@ -156,7 +161,7 @@ declare const cityssm: cityssmGlobal;
         });
     };
 
-    const searchRecordsFn = (event?: Event) => {
+    const searchRecordsFunction = (event?: Event) => {
 
       if (event) {
         event.preventDefault();
@@ -191,11 +196,11 @@ declare const cityssm: cityssmGlobal;
               includeAddButton: true
             });
 
-            panelBlockEle.setAttribute("data-record-id", relatedRecord.recordID.toString());
+            panelBlockEle.dataset.recordId = relatedRecord.recordID.toString();
 
-            panelBlockEle.getElementsByTagName("button")[0].addEventListener("click", addFn);
+            panelBlockEle.querySelectorAll("button")[0].addEventListener("click", addFunction);
 
-            panelEle.appendChild(panelBlockEle);
+            panelEle.append(panelBlockEle);
           }
 
           searchResultsContainerEle.innerHTML = "";
@@ -209,7 +214,7 @@ declare const cityssm: cityssmGlobal;
 
           } else {
 
-            searchResultsContainerEle.appendChild(panelEle);
+            searchResultsContainerEle.append(panelEle);
           }
         });
     };
@@ -217,32 +222,32 @@ declare const cityssm: cityssmGlobal;
     cityssm.openHtmlModal("relatedRecord-add", {
       onshow: () => {
 
-        searchResultsContainerEle = document.getElementById("container--addRelatedRecord");
+        searchResultsContainerEle = document.querySelector("#container--addRelatedRecord");
 
-        searchFormEle = document.getElementById("form--addRelatedRecord-search") as HTMLFormElement;
-        searchFormEle.addEventListener("submit", searchRecordsFn);
+        searchFormEle = document.querySelector("#form--addRelatedRecord-search") as HTMLFormElement;
+        searchFormEle.addEventListener("submit", searchRecordsFunction);
 
-        (document.getElementById("addRelatedRecord--recordID") as HTMLInputElement).value = crmEdit.recordID;
+        (document.querySelector("#addRelatedRecord--recordID") as HTMLInputElement).value = crmEdit.recordID;
 
-        const recordTypeKeyEle = document.getElementById("addRelatedRecord--recordTypeKey") as HTMLSelectElement;
+        const recordTypeKeyEle = document.querySelector("#addRelatedRecord--recordTypeKey") as HTMLSelectElement;
 
         for (let index = 0; index < exports.recordTypes.length; index += 1) {
           const optionEle = document.createElement("option");
           optionEle.value = exports.recordTypes[index].recordTypeKey;
-          optionEle.innerText = exports.recordTypes[index].recordType;
-          recordTypeKeyEle.appendChild(optionEle);
+          optionEle.textContent = exports.recordTypes[index].recordType;
+          recordTypeKeyEle.append(optionEle);
 
           if (index === 0) {
             recordTypeKeyEle.value = index.toString();
           }
         }
 
-        recordTypeKeyEle.addEventListener("change", searchRecordsFn);
+        recordTypeKeyEle.addEventListener("change", searchRecordsFunction);
 
-        const searchStringEle = document.getElementById("addRelatedRecord--searchString") as HTMLInputElement;
-        searchStringEle.value = (document.getElementById("record--recordNumber") as HTMLInputElement).value;
+        const searchStringEle = document.querySelector("#addRelatedRecord--searchString") as HTMLInputElement;
+        searchStringEle.value = (document.querySelector("#record--recordNumber") as HTMLInputElement).value;
 
-        searchRecordsFn();
+        searchRecordsFunction();
       },
       onhidden: () => {
         if (doRefreshOnClose) {

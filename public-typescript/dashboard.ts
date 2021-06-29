@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type * as recordTypes from "../types/recordTypes";
 
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
@@ -10,13 +12,13 @@ declare const cityssm: cityssmGlobal;
   const urlPrefix: string = exports.urlPrefix;
   const crm: CRM = exports.crm;
 
-  const limit = parseInt((document.getElementById("search--limit") as HTMLInputElement).value, 10);
-  const offsetEle = document.getElementById("search--offset") as HTMLInputElement;
+  const limit = Number.parseInt((document.querySelector("#search--limit") as HTMLInputElement).value, 10);
+  const offsetEle = document.querySelector("#search--offset") as HTMLInputElement;
 
-  const searchFormEle = document.getElementById("form--search") as HTMLFormElement;
-  const searchResultsContainerEle = document.getElementById("container--search");
+  const searchFormEle = document.querySelector("#form--search") as HTMLFormElement;
+  const searchResultsContainerEle = document.querySelector("#container--search") as HTMLElement;
 
-  const searchRecordsFn = (formEvent?: Event) => {
+  const searchRecordsFunction = (formEvent?: Event) => {
 
     if (formEvent) {
       formEvent.preventDefault();
@@ -29,7 +31,7 @@ declare const cityssm: cityssmGlobal;
       "Searching Records..." +
       "</div>";
 
-    const offset = parseInt(offsetEle.value, 10);
+    const offset = Number.parseInt(offsetEle.value, 10);
 
     cityssm.postJSON(urlPrefix + "/dashboard/doGetRecords", searchFormEle,
       (responseJSON: { count: number; records: recordTypes.Record[] }) => {
@@ -51,32 +53,32 @@ declare const cityssm: cityssmGlobal;
 
         if (offset !== 0) {
 
-          const prevButtonEle = document.createElement("button");
+          const previousButtonEle = document.createElement("button");
 
-          prevButtonEle.className = "button is-light is-info has-tooltip-left has-tooltip-arrow";
-          prevButtonEle.setAttribute("data-tooltip", "Previous Results");
-          prevButtonEle.type = "button";
-          prevButtonEle.setAttribute("aria-label", "Previous Results");
-          prevButtonEle.innerHTML = "<i class=\"fas fa-arrow-left\" aria-hidden=\"true\"></i>";
+          previousButtonEle.className = "button is-light is-info has-tooltip-left has-tooltip-arrow";
+          previousButtonEle.dataset.tooltip = "Previous Results";
+          previousButtonEle.type = "button";
+          previousButtonEle.setAttribute("aria-label", "Previous Results");
+          previousButtonEle.innerHTML = "<i class=\"fas fa-arrow-left\" aria-hidden=\"true\"></i>";
 
-          prevButtonEle.addEventListener("click", previousFn);
+          previousButtonEle.addEventListener("click", previousFunction);
 
-          pagerEle.getElementsByClassName("span")[1].appendChild(prevButtonEle);
+          pagerEle.querySelectorAll(".span")[1].append(previousButtonEle);
         }
 
         if (limit + offset < responseJSON.count) {
 
-          const prevButtonEle = document.createElement("button");
+          const previousButtonEle = document.createElement("button");
 
-          prevButtonEle.className = "button is-outlined is-info ml-1";
-          prevButtonEle.type = "button";
-          prevButtonEle.setAttribute("aria-label", "Next Results");
-          prevButtonEle.innerHTML = "<span>Next</span>" +
+          previousButtonEle.className = "button is-outlined is-info ml-1";
+          previousButtonEle.type = "button";
+          previousButtonEle.setAttribute("aria-label", "Next Results");
+          previousButtonEle.innerHTML = "<span>Next</span>" +
             "<span class=\"icon\"><i class=\"fas fa-arrow-right\" aria-hidden=\"true\"></i></span>";
 
-          prevButtonEle.addEventListener("click", nextFn);
+          previousButtonEle.addEventListener("click", nextFunction);
 
-          pagerEle.getElementsByClassName("span")[1].appendChild(prevButtonEle);
+          pagerEle.querySelectorAll(".span")[1].append(previousButtonEle);
         }
 
         const panelEle = document.createElement("div");
@@ -87,78 +89,74 @@ declare const cityssm: cityssmGlobal;
           const panelBlockEle = crm.renderRecordPanelLinkEle(record, {
             panelTag: "a"
           });
-          panelEle.appendChild(panelBlockEle);
+          panelEle.append(panelBlockEle);
         }
 
         searchResultsContainerEle.innerHTML = "";
-        searchResultsContainerEle.appendChild(pagerEle);
-        searchResultsContainerEle.appendChild(panelEle);
+        searchResultsContainerEle.append(pagerEle);
+        searchResultsContainerEle.append(panelEle);
       });
   };
 
-  const previousFn = (clickEvent?: Event) => {
+  const previousFunction = (clickEvent?: Event) => {
 
     if (clickEvent) {
       clickEvent.preventDefault();
     }
 
-    offsetEle.value = Math.max(parseInt(offsetEle.value, 10) - limit, 0).toString();
+    offsetEle.value = Math.max(Number.parseInt(offsetEle.value, 10) - limit, 0).toString();
 
-    searchRecordsFn();
+    searchRecordsFunction();
   };
 
-  const nextFn = (clickEvent?: Event) => {
+  const nextFunction = (clickEvent?: Event) => {
 
     if (clickEvent) {
       clickEvent.preventDefault();
     }
 
-    offsetEle.value = (parseInt(offsetEle.value, 10) + limit).toString();
+    offsetEle.value = (Number.parseInt(offsetEle.value, 10) + limit).toString();
 
-    searchRecordsFn();
+    searchRecordsFunction();
   };
 
-  const resetOffsetAndSearchFn = (formEvent?: Event) => {
+  const resetOffsetAndSearchFunction = (formEvent?: Event) => {
     if (formEvent) {
       formEvent.preventDefault();
     }
 
     offsetEle.value = "0";
 
-    searchRecordsFn();
+    searchRecordsFunction();
   };
 
-  searchFormEle.addEventListener("submit", resetOffsetAndSearchFn);
+  searchFormEle.addEventListener("submit", resetOffsetAndSearchFunction);
 
   const filterEles = searchFormEle.querySelectorAll("input, select");
 
-  filterEles.forEach((filterEle) => {
-    filterEle.addEventListener("change", resetOffsetAndSearchFn);
-  });
+  for (const filterEle of filterEles) {
+    filterEle.addEventListener("change", resetOffsetAndSearchFunction);
+  }
 
-  searchRecordsFn();
+  searchRecordsFunction();
 
-  document.getElementById("button--searchMoreFiltersToggle").addEventListener("click", () => {
+  document.querySelector("#button--searchMoreFiltersToggle").addEventListener("click", () => {
 
-    const moreFiltersEle = document.getElementById("fieldset--searchMoreFilters") as HTMLFieldSetElement;
+    const moreFiltersEle = document.querySelector("#fieldset--searchMoreFilters") as HTMLFieldSetElement;
 
     moreFiltersEle.classList.toggle("is-hidden");
 
-    if (moreFiltersEle.classList.contains("is-hidden")) {
-      moreFiltersEle.disabled = true;
-    } else {
-      moreFiltersEle.disabled = false;
-    }
+    moreFiltersEle.disabled = moreFiltersEle.classList.contains("is-hidden") ? true : false;
 
-    resetOffsetAndSearchFn();
+    resetOffsetAndSearchFunction();
   });
 })();
 
 (() => {
   const maxDateValue = cityssm.dateToString(new Date());
 
-  const gteEle = document.getElementById("search--recordDateString-gte") as HTMLInputElement;
-  const lteEle = document.getElementById("search--recordDateString-lte") as HTMLInputElement;
+  const gteEle = document.querySelector("#search--recordDateString-gte") as HTMLInputElement;
+  const lteEle = document.querySelector("#search--recordDateString-lte") as HTMLInputElement;
 
   gteEle.addEventListener("change", () => {
     lteEle.min = gteEle.value;

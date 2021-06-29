@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type * as recordTypes from "../../types/recordTypes";
 import type * as dsTypes from "@cityssm/docushare/types";
 
@@ -15,20 +17,20 @@ declare const cityssm: cityssmGlobal;
   let urls: recordTypes.RecordURL[] = exports.recordURLs;
   delete exports.recordURLs;
 
-  const urlPanelEle = document.getElementById("panel--urls");
+  const urlPanelEle = document.querySelector("#panel--urls") as HTMLElement;
 
-  const openEditURLModalFn = (clickEvent: MouseEvent) => {
+  const openEditURLModalFunction = (clickEvent: MouseEvent) => {
 
     clickEvent.preventDefault();
 
-    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
+    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
 
-    const index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+    const index = Number.parseInt(panelBlockEle.dataset.index, 10);
     const url = urls[index];
 
-    let closeEditModalFn: () => void;
+    let closeEditModalFunction: () => void;
 
-    const editFn = (formEvent: Event) => {
+    const editFunction = (formEvent: Event) => {
       formEvent.preventDefault();
 
       cityssm.postJSON(urlPrefix + "/edit/doUpdateURL",
@@ -37,7 +39,7 @@ declare const cityssm: cityssmGlobal;
 
           if (responseJSON.success) {
             getURLs();
-            closeEditModalFn();
+            closeEditModalFunction();
           } else {
             cityssm.alertModal("Update Link Error",
               cityssm.escapeHTML(responseJSON.message),
@@ -49,29 +51,29 @@ declare const cityssm: cityssmGlobal;
 
     cityssm.openHtmlModal("url-edit", {
       onshow: () => {
-        (document.getElementById("editURL--urlID") as HTMLInputElement).value = url.urlID.toString();
-        (document.getElementById("editURL--url") as HTMLInputElement).value = url.url;
-        (document.getElementById("editURL--urlTitle") as HTMLInputElement).value = url.urlTitle;
-        (document.getElementById("editURL--urlDescription") as HTMLInputElement).value = url.urlDescription;
+        (document.querySelector("#editURL--urlID") as HTMLInputElement).value = url.urlID.toString();
+        (document.querySelector("#editURL--url") as HTMLInputElement).value = url.url;
+        (document.querySelector("#editURL--urlTitle") as HTMLInputElement).value = url.urlTitle;
+        (document.querySelector("#editURL--urlDescription") as HTMLInputElement).value = url.urlDescription;
 
-        document.getElementById("form--editURL").addEventListener("submit", editFn);
+        document.querySelector("#form--editURL").addEventListener("submit", editFunction);
       },
-      onshown: (_modalEle, closeModalFn) => {
-        closeEditModalFn = closeModalFn;
+      onshown: (_modalEle, closeModalFunction) => {
+        closeEditModalFunction = closeModalFunction;
       }
     });
   };
 
-  const openRemoveURLModalFn = (clickEvent: MouseEvent) => {
+  const openRemoveURLModalFunction = (clickEvent: MouseEvent) => {
 
     clickEvent.preventDefault();
 
-    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
+    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
 
-    const index = parseInt(panelBlockEle.getAttribute("data-index"), 10);
+    const index = Number.parseInt(panelBlockEle.dataset.index, 10);
     const url = urls[index];
 
-    const removeFn = () => {
+    const removeFunction = () => {
 
       cityssm.postJSON(urlPrefix + "/edit/doRemoveURL", {
         urlID: url.urlID
@@ -79,8 +81,8 @@ declare const cityssm: cityssmGlobal;
 
         if (responseJSON.success) {
           urls.splice(index, 1);
-          crmEdit.clearPanelBlocksFn(urlPanelEle);
-          renderURLsFn();
+          crmEdit.clearPanelBlocksFunction(urlPanelEle);
+          renderURLsFunction();
 
         } else {
           cityssm.alertModal("Remove Link Error",
@@ -95,15 +97,15 @@ declare const cityssm: cityssmGlobal;
       "Are you sure you want to remove the link to \"" + cityssm.escapeHTML(url.urlTitle) + "\"?",
       "Yes, Remove the Link",
       "warning",
-      removeFn);
+      removeFunction);
   };
 
-  const renderURLFn = (url: recordTypes.RecordURL, index: number) => {
+  const renderURLFunction = (url: recordTypes.RecordURL, index: number) => {
 
     const panelBlockEle = document.createElement("div");
     panelBlockEle.className = "panel-block is-block";
-    panelBlockEle.setAttribute("data-url-id", url.urlID.toString());
-    panelBlockEle.setAttribute("data-index", index.toString());
+    panelBlockEle.dataset.urlId = url.urlID.toString();
+    panelBlockEle.dataset.index = index.toString();
 
     panelBlockEle.innerHTML = "<div class=\"columns\">" +
       ("<div class=\"column\">" +
@@ -124,16 +126,16 @@ declare const cityssm: cityssmGlobal;
         "</div>") +
       "</div>";
 
-    const buttonEles = panelBlockEle.getElementsByTagName("button");
-    buttonEles[0].addEventListener("click", openEditURLModalFn);
-    buttonEles[1].addEventListener("click", openRemoveURLModalFn);
+    const buttonEles = panelBlockEle.querySelectorAll("button");
+    buttonEles[0].addEventListener("click", openEditURLModalFunction);
+    buttonEles[1].addEventListener("click", openRemoveURLModalFunction);
 
-    urlPanelEle.appendChild(panelBlockEle);
+    urlPanelEle.append(panelBlockEle);
   };
 
-  const renderURLsFn = () => {
+  const renderURLsFunction = () => {
 
-    crmEdit.clearPanelBlocksFn(urlPanelEle);
+    crmEdit.clearPanelBlocksFunction(urlPanelEle);
 
     if (urls.length === 0) {
       urlPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -145,12 +147,15 @@ declare const cityssm: cityssmGlobal;
       return;
     }
 
-    urls.forEach(renderURLFn);
+  for (const [index, url] of urls.entries()) {
+    renderURLFunction(url, index);
+  }
+
   };
 
   const getURLs = () => {
 
-    crmEdit.clearPanelBlocksFn(urlPanelEle);
+    crmEdit.clearPanelBlocksFunction(urlPanelEle);
     urls = [];
 
     urlPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Links"));
@@ -162,7 +167,7 @@ declare const cityssm: cityssmGlobal;
 
         if (responseJSON.success) {
           urls = responseJSON.urls;
-          renderURLsFn();
+          renderURLsFunction();
         } else {
 
           urlPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
@@ -174,13 +179,13 @@ declare const cityssm: cityssmGlobal;
       });
   };
 
-  renderURLsFn();
+  renderURLsFunction();
 
-  document.getElementById("is-add-url-button").addEventListener("click", () => {
+  document.querySelector("#is-add-url-button").addEventListener("click", () => {
 
-    let closeAddModalFn: () => void;
+    let closeAddModalFunction: () => void;
 
-    const addFn = (formEvent: Event) => {
+    const addFunction = (formEvent: Event) => {
       formEvent.preventDefault();
 
       cityssm.postJSON(urlPrefix + "/edit/doAddURL",
@@ -189,7 +194,7 @@ declare const cityssm: cityssmGlobal;
 
           if (responseJSON.success) {
             getURLs();
-            closeAddModalFn();
+            closeAddModalFunction();
           } else {
             cityssm.alertModal("Add Link Error",
               cityssm.escapeHTML(responseJSON.message),
@@ -201,17 +206,17 @@ declare const cityssm: cityssmGlobal;
 
     cityssm.openHtmlModal("url-add", {
       onshow: () => {
-        (document.getElementById("addURL--recordID") as HTMLInputElement).value = crmEdit.recordID;
+        (document.querySelector("#addURL--recordID") as HTMLInputElement).value = crmEdit.recordID;
 
-        document.getElementById("form--addURL").addEventListener("submit", addFn);
+        document.querySelector("#form--addURL").addEventListener("submit", addFunction);
       },
-      onshown: (_modalEle, closeModalFn) => {
-        closeAddModalFn = closeModalFn;
+      onshown: (_modalEle, closeModalFunction) => {
+        closeAddModalFunction = closeModalFunction;
       }
     });
   });
 
-  const addDocuShareButtonEle = document.getElementById("is-add-docushare-url-button");
+  const addDocuShareButtonEle = document.querySelector("#is-add-docushare-url-button");
 
   if (addDocuShareButtonEle) {
 
@@ -222,7 +227,7 @@ declare const cityssm: cityssmGlobal;
       let searchFormEle: HTMLFormElement;
       let searchResultsContainerEle: HTMLElement;
 
-      const addFn = (event: MouseEvent) => {
+      const addFunction = (event: MouseEvent) => {
 
         event.preventDefault();
 
@@ -230,9 +235,9 @@ declare const cityssm: cityssmGlobal;
 
         buttonEle.disabled = true;
 
-        const panelBlockEle = buttonEle.closest(".panel-block");
+        const panelBlockEle = buttonEle.closest(".panel-block") as HTMLElement;
 
-        const handle = panelBlockEle.getAttribute("data-handle");
+        const handle = panelBlockEle.dataset.handle;
 
         cityssm.postJSON(urlPrefix + "/edit/doAddDocuShareURL", {
           recordID: crmEdit.recordID,
@@ -255,7 +260,7 @@ declare const cityssm: cityssmGlobal;
           });
       };
 
-      const searchDocuShareFn = (event?: Event) => {
+      const searchDocuShareFunction = (event?: Event) => {
 
         if (event) {
           event.preventDefault();
@@ -292,7 +297,7 @@ declare const cityssm: cityssmGlobal;
 
               const panelBlockEle = document.createElement("div");
               panelBlockEle.className = "panel-block is-block";
-              panelBlockEle.setAttribute("data-handle", dsObject.handle);
+              panelBlockEle.dataset.handle = dsObject.handle;
 
               panelBlockEle.innerHTML = "<div class=\"level\">" +
                 ("<div class=\"level-left\">" +
@@ -310,9 +315,9 @@ declare const cityssm: cityssmGlobal;
                   "</div>") +
                 "</div>";
 
-              panelBlockEle.getElementsByTagName("button")[0].addEventListener("click", addFn);
+              panelBlockEle.querySelectorAll("button")[0].addEventListener("click", addFunction);
 
-              panelEle.appendChild(panelBlockEle);
+              panelEle.append(panelBlockEle);
             }
 
             searchResultsContainerEle.innerHTML = "";
@@ -326,7 +331,7 @@ declare const cityssm: cityssmGlobal;
 
             } else {
 
-              searchResultsContainerEle.appendChild(panelEle);
+              searchResultsContainerEle.append(panelEle);
             }
           });
       };
@@ -334,30 +339,30 @@ declare const cityssm: cityssmGlobal;
       cityssm.openHtmlModal("docushare-url-add", {
         onshow: () => {
 
-          searchResultsContainerEle = document.getElementById("container--addDocuShareURL");
+          searchResultsContainerEle = document.querySelector("#container--addDocuShareURL");
 
-          searchFormEle = document.getElementById("form--addDocuShareURL-search") as HTMLFormElement;
-          searchFormEle.addEventListener("submit", searchDocuShareFn);
+          searchFormEle = document.querySelector("#form--addDocuShareURL-search") as HTMLFormElement;
+          searchFormEle.addEventListener("submit", searchDocuShareFunction);
 
-          const collectionSelectEle = document.getElementById("addDocuShareURL--collectionHandleIndex") as HTMLSelectElement;
+          const collectionSelectEle = document.querySelector("#addDocuShareURL--collectionHandleIndex") as HTMLSelectElement;
 
           for (let index = 0; index < exports.docuShareCollectionHandles.length; index += 1) {
             const optionEle = document.createElement("option");
             optionEle.value = index.toString();
-            optionEle.innerText = exports.docuShareCollectionHandles[index].title;
-            collectionSelectEle.appendChild(optionEle);
+            optionEle.textContent = exports.docuShareCollectionHandles[index].title;
+            collectionSelectEle.append(optionEle);
 
             if (index === 0) {
               collectionSelectEle.value = index.toString();
             }
           }
 
-          collectionSelectEle.addEventListener("change", searchDocuShareFn);
+          collectionSelectEle.addEventListener("change", searchDocuShareFunction);
 
-          const searchStringEle = document.getElementById("addDocuShareURL--searchString") as HTMLInputElement;
-          searchStringEle.value = (document.getElementById("record--recordNumber") as HTMLInputElement).value;
+          const searchStringEle = document.querySelector("#addDocuShareURL--searchString") as HTMLInputElement;
+          searchStringEle.value = (document.querySelector("#record--recordNumber") as HTMLInputElement).value;
 
-          searchDocuShareFn();
+          searchDocuShareFunction();
         },
         onhidden: () => {
           if (doRefreshOnClose) {

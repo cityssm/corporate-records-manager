@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import type * as recordTypes from "../types/recordTypes";
 import type { CRM } from "../types/clientTypes";
 
@@ -8,12 +10,12 @@ declare const cityssm: cityssmGlobal;
 declare const dateDiff: DateDiff;
 
 
-document.getElementById("navbar-burger").addEventListener("click", (clickEvent) => {
+document.querySelector("#navbar-burger").addEventListener("click", (clickEvent) => {
 
   clickEvent.preventDefault();
 
   const toggleButtonEle = clickEvent.currentTarget as HTMLElement;
-  const menuEle = document.getElementById("navbar-menu");
+  const menuEle = document.querySelector("#navbar-menu");
 
   menuEle.classList.toggle("is-active");
 
@@ -123,7 +125,7 @@ document.getElementById("navbar-burger").addEventListener("click", (clickEvent) 
           "</span><br />"
           : "") +
         cityssm.escapeHTML(record.recordDescription.length > 500
-          ? record.recordDescription.substring(0, 497) + " ..."
+          ? record.recordDescription.slice(0, 497) + " ..."
           : record.recordDescription
         ) +
         "</div>";
