@@ -3,9 +3,9 @@ import { setIntervalAsync, clearIntervalAsync } from "set-interval-async/fixed/i
 import * as configFns from "../helpers/configFns.js";
 import * as docuShareFns from "../helpers/docuShareFns.js";
 
-import getRecordNumbersByRecordTypeKey from "../helpers/recordsDB/getRecordNumbersByRecordTypeKey.js";
-import getActiveDocuShareURLs from "../helpers/recordsDB/getActiveDocuShareURLs.js";
-import addURL from "../helpers/recordsDB/addURL.js";
+import { getRecordNumbersByRecordTypeKey } from "../helpers/recordsDB/getRecordNumbersByRecordTypeKey.js";
+import { getActiveDocuShareURLs } from "../helpers/recordsDB/getActiveDocuShareURLs.js";
+import { addURL } from "../helpers/recordsDB/addURL.js";
 
 import * as ds from "@cityssm/docushare";
 
@@ -121,7 +121,9 @@ const doTask = async () => {
 };
 
 
-doTask().catch(() => { });
+doTask().catch(() => {
+  // ignore
+});
 
 
 const timer = setIntervalAsync(doTask, 2 * 3600 * 1000);
@@ -134,7 +136,9 @@ if (process) {
       .then(() => {
         debugTask("Task stopped");
       })
-      .catch(() => { });
+      .catch(() => {
+        // ignore
+      });
   };
 
   for (const shutdownEvent of ["beforeExit", "exit", "SIGINT", "SIGTERM"]) {

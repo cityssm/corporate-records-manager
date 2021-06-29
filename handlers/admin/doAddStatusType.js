@@ -15,7 +15,6 @@ const generateStatusTypeKey = (recordTypeKey, statusTypeKey, statusType) => {
     cache.clearCache();
     let statusTypeKeyIsAvailable = false;
     if (statusTypeKey !== "") {
-        console.log("Check statusTypeKey = " + statusTypeKey);
         statusTypeKeyIsAvailable = isStatusTypeKeyAvailable(statusTypeKey);
         if (statusTypeKeyIsAvailable) {
             return statusTypeKey;
@@ -40,7 +39,7 @@ const generateStatusTypeKey = (recordTypeKey, statusTypeKey, statusType) => {
             return statusTypeKey;
         }
     }
-    return;
+    return false;
 };
 export const handler = async (request, response) => {
     statusTypes = await getAllStatusTypes();

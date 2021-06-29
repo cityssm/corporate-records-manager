@@ -34,7 +34,6 @@ const generateStatusTypeKey = (recordTypeKey: string, statusTypeKey: string, sta
   // check if provided statusTypeKey is available
   if (statusTypeKey !== "") {
 
-    console.log("Check statusTypeKey = " + statusTypeKey);
     statusTypeKeyIsAvailable = isStatusTypeKeyAvailable(statusTypeKey);
 
     if (statusTypeKeyIsAvailable) {
@@ -71,7 +70,7 @@ const generateStatusTypeKey = (recordTypeKey: string, statusTypeKey: string, sta
   }
 
   // give up
-  return;
+  return false;
 };
 
 

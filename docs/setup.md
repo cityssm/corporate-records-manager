@@ -13,7 +13,7 @@ Settings are located in two main places.
 ## config.js
 
 The config.js file contains server details, authentication details, database details, and some application customizations.
-It is recommended to use `data/config-sample.js` as a starting point,
+It is recommended to use `data/configSample.js` as a starting point,
 or better yet, `data/config-sample.ts` for TypeScript assistance.
 
 ### config.application = {};

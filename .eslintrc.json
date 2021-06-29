@@ -28,6 +28,7 @@
       "error", {
         "case": "camelCase",
         "ignore": [
+          "DB",
           "URL"
         ]
       }

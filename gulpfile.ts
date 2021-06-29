@@ -6,7 +6,7 @@ import concat from "gulp-concat";
  * Minify public/javascripts
  */
 
-const adminJavascriptFn = () => {
+const adminJavascriptFunction = () => {
 
   return gulp.src([
     "public-typescript/admin/main.js",
@@ -20,7 +20,7 @@ const adminJavascriptFn = () => {
     .pipe(gulp.dest("public/javascripts"));
 };
 
-const editJavascriptFn = () => {
+const editJavascriptFunction = () => {
 
   return gulp.src([
     "public-typescript/edit/main.js",
@@ -35,7 +35,7 @@ const editJavascriptFn = () => {
     .pipe(gulp.dest("public/javascripts"));
 };
 
-const mainJavascriptFn = () => {
+const mainJavascriptFunction = () => {
 
   return gulp.src("public-typescript/*.js", { allowEmpty: true })
     .pipe(minify({ noSource: true, ext: { min: ".min.js" } }))
@@ -46,21 +46,21 @@ const mainJavascriptFn = () => {
  * Watch
  */
 
-const watchFn = () => {
-  gulp.watch("public-typescript/*.js", mainJavascriptFn);
-  gulp.watch("public-typescript/admin/*.js", adminJavascriptFn);
-  gulp.watch("public-typescript/edit/*.js", editJavascriptFn);
+const watchFunction = () => {
+  gulp.watch("public-typescript/*.js", mainJavascriptFunction);
+  gulp.watch("public-typescript/admin/*.js", adminJavascriptFunction);
+  gulp.watch("public-typescript/edit/*.js", editJavascriptFunction);
 };
 
-gulp.task("watch", watchFn);
+gulp.task("watch", watchFunction);
 
 /*
  * Initialize default
  */
 
 gulp.task("default", () => {
-  mainJavascriptFn();
-  adminJavascriptFn();
-  editJavascriptFn();
-  watchFn();
+  mainJavascriptFunction();
+  adminJavascriptFunction();
+  editJavascriptFunction();
+  watchFunction();
 });
