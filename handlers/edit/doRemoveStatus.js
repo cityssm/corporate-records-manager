@@ -1,16 +1,13 @@
-import removeStatus from "../../helpers/recordsDB/removeStatus.js";
-export const handler = async (req, res) => {
-    const success = await removeStatus(req.body.statusLogID, req.session);
-    if (success) {
-        return res.json({
+import { removeStatus } from "../../helpers/recordsDB/removeStatus.js";
+export const handler = async (request, response) => {
+    const success = await removeStatus(request.body.statusLogID, request.session);
+    return success
+        ? response.json({
             success: true
-        });
-    }
-    else {
-        return res.json({
+        })
+        : response.json({
             success: false,
             message: "An unknown error occurred.  Please try again."
         });
-    }
 };
 export default handler;

@@ -1,22 +1,20 @@
 import type { RequestHandler } from "express";
 
-import addURL from "../../helpers/recordsDB/addURL.js";
+import { addURL } from "../../helpers/recordsDB/addURL.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const success = await addURL(req.body, req.session);
+  const success = await addURL(request.body, request.session);
 
-  if (success) {
-    return res.json({
+  return success
+    ? response.json({
       success: true
-    });
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred.  Please try again."
     });
-  }
 };
 
 

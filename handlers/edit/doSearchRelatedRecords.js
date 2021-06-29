@@ -1,17 +1,14 @@
-import searchRelatedRecords from "../../helpers/recordsDB/searchRelatedRecords.js";
-export const handler = async (req, res) => {
-    const records = await searchRelatedRecords(req.body.recordID, req.body.recordTypeKey, req.body.searchString);
-    if (records) {
-        return res.json({
+import { searchRelatedRecords } from "../../helpers/recordsDB/searchRelatedRecords.js";
+export const handler = async (request, response) => {
+    const records = await searchRelatedRecords(request.body.recordID, request.body.recordTypeKey, request.body.searchString);
+    return records
+        ? response.json({
             success: true,
             records: records
-        });
-    }
-    else {
-        return res.json({
+        })
+        : response.json({
             success: false,
             message: "An unknown error occurred.  Please try again."
         });
-    }
 };
 export default handler;

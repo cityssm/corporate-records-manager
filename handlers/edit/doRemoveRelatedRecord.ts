@@ -1,16 +1,16 @@
 import type { RequestHandler } from "express";
 
-import removeRelatedRecord from "../../helpers/recordsDB/removeRelatedRecord.js";
+import { removeRelatedRecord } from "../../helpers/recordsDB/removeRelatedRecord.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const recordID = req.body.recordID;
-  const relatedRecordID = req.body.relatedRecordID;
+  const recordID = request.body.recordID;
+  const relatedRecordID = request.body.relatedRecordID;
 
   await removeRelatedRecord(recordID, relatedRecordID);
 
-  return res.json({
+  return response.json({
     success: true
   });
 };

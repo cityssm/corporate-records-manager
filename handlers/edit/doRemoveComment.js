@@ -1,16 +1,13 @@
-import removeComment from "../../helpers/recordsDB/removeComment.js";
-export const handler = async (req, res) => {
-    const success = await removeComment(req.body.commentLogID, req.session);
-    if (success) {
-        return res.json({
+import { removeComment } from "../../helpers/recordsDB/removeComment.js";
+export const handler = async (request, response) => {
+    const success = await removeComment(request.body.commentLogID, request.session);
+    return success
+        ? response.json({
             success: true
-        });
-    }
-    else {
-        return res.json({
+        })
+        : response.json({
             success: false,
             message: "An unknown error occurred.  Please try again."
         });
-    }
 };
 export default handler;

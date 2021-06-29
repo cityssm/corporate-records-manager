@@ -1,23 +1,21 @@
 import type { RequestHandler } from "express";
 
-import addComment from "../../helpers/recordsDB/addComment.js";
+import { addComment } from "../../helpers/recordsDB/addComment.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const commentLogID = await addComment(req.body, req.session);
+  const commentLogID = await addComment(request.body, request.session);
 
-  if (commentLogID) {
-    return res.json({
+  return commentLogID
+    ? response.json({
       success: true,
       commentLogID
-    });
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred.  Please try again."
     });
-  }
 };
 
 

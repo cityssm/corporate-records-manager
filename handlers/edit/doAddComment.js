@@ -1,17 +1,14 @@
-import addComment from "../../helpers/recordsDB/addComment.js";
-export const handler = async (req, res) => {
-    const commentLogID = await addComment(req.body, req.session);
-    if (commentLogID) {
-        return res.json({
+import { addComment } from "../../helpers/recordsDB/addComment.js";
+export const handler = async (request, response) => {
+    const commentLogID = await addComment(request.body, request.session);
+    return commentLogID
+        ? response.json({
             success: true,
             commentLogID
-        });
-    }
-    else {
-        return res.json({
+        })
+        : response.json({
             success: false,
             message: "An unknown error occurred.  Please try again."
         });
-    }
 };
 export default handler;

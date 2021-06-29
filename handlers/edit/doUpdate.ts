@@ -1,22 +1,20 @@
 import type { RequestHandler } from "express";
 
-import updateRecord from "../../helpers/recordsDB/updateRecord.js";
+import { updateRecord } from "../../helpers/recordsDB/updateRecord.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const success = await updateRecord(req.body, req.session);
+  const success = await updateRecord(request.body, request.session);
 
-  if (success) {
-    return res.json({
+  return success
+    ? response.json({
       success: true
-    });
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred.  Please try again."
     });
-  }
 };
 
 

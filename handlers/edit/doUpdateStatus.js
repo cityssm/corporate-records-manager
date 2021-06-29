@@ -1,16 +1,13 @@
-import updateStatus from "../../helpers/recordsDB/updateStatus.js";
-export const handler = async (req, res) => {
-    const success = await updateStatus(req.body, req.session);
-    if (success) {
-        return res.json({
+import { updateStatus } from "../../helpers/recordsDB/updateStatus.js";
+export const handler = async (request, response) => {
+    const success = await updateStatus(request.body, request.session);
+    return success
+        ? response.json({
             success: true
-        });
-    }
-    else {
-        return res.json({
+        })
+        : response.json({
             success: false,
             message: "An unknown error occurred.  Please try again."
         });
-    }
 };
 export default handler;

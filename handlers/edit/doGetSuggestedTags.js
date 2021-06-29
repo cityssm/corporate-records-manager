@@ -1,18 +1,15 @@
-import getSuggestedRecordTags from "../../helpers/recordsDB/getSuggestedRecordTags.js";
-export const handler = async (req, res) => {
-    const recordID = req.body.recordID;
-    const tags = await getSuggestedRecordTags(recordID, req.body.searchString);
-    if (tags) {
-        return res.json({
+import { getSuggestedRecordTags } from "../../helpers/recordsDB/getSuggestedRecordTags.js";
+export const handler = async (request, response) => {
+    const recordID = request.body.recordID;
+    const tags = await getSuggestedRecordTags(recordID, request.body.searchString);
+    return tags
+        ? response.json({
             success: true,
             tags
-        });
-    }
-    else {
-        return res.json({
+        })
+        : response.json({
             success: false,
             message: "An unknown error occurred.  Please try again."
         });
-    }
 };
 export default handler;

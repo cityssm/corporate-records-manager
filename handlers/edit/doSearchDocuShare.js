@@ -1,20 +1,17 @@
 import * as configFns from "../../helpers/configFns.js";
-import searchDocuShare from "../../helpers/docuShare/searchDocuShare.js";
-export const handler = async (req, res) => {
-    const collectionHandleIndex = parseInt(req.body.collectionHandleIndex, 10);
+import { searchDocuShare } from "../../helpers/docuShare/searchDocuShare.js";
+export const handler = async (request, response) => {
+    const collectionHandleIndex = Number.parseInt(request.body.collectionHandleIndex, 10);
     const collectionHandle = configFns.getProperty("integrations.docuShare.collectionHandles")[collectionHandleIndex].handle;
-    const dsObjects = await searchDocuShare(collectionHandle, req.body.searchString);
-    if (dsObjects) {
-        return res.json({
+    const dsObjects = await searchDocuShare(collectionHandle, request.body.searchString);
+    return dsObjects
+        ? response.json({
             success: true,
             dsObjects: dsObjects
-        });
-    }
-    else {
-        return res.json({
+        })
+        : response.json({
             success: false,
             message: "An unknown error occurred.  Please try again."
         });
-    }
 };
 export default handler;

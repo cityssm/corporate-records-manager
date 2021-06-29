@@ -1,22 +1,20 @@
 import type { RequestHandler } from "express";
 
-import removeStatus from "../../helpers/recordsDB/removeStatus.js";
+import { removeStatus } from "../../helpers/recordsDB/removeStatus.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const success = await removeStatus(req.body.statusLogID, req.session);
+  const success = await removeStatus(request.body.statusLogID, request.session);
 
-  if (success) {
-    return res.json({
+  return success
+    ? response.json({
       success: true
-    });
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred.  Please try again."
     });
-  }
 };
 
 

@@ -1,27 +1,24 @@
-import getRecords from "../../helpers/recordsDB/getRecords.js";
-export const handler = async (req, res) => {
+import { getRecords } from "../../helpers/recordsDB/getRecords.js";
+export const handler = async (request, response) => {
     const results = await getRecords({
-        recordTypeKey: req.body.recordTypeKey,
-        searchString: req.body.searchString,
-        recordNumber: req.body.recordNumber,
-        recordDateStringGTE: req.body["recordDateString-gte"],
-        recordDateStringLTE: req.body["recordDateString-lte"]
+        recordTypeKey: request.body.recordTypeKey,
+        searchString: request.body.searchString,
+        recordNumber: request.body.recordNumber,
+        recordDateStringGTE: request.body["recordDateString-gte"],
+        recordDateStringLTE: request.body["recordDateString-lte"]
     }, {
-        limit: parseInt(req.body.limit, 10),
-        offset: parseInt(req.body.offset, 10)
+        limit: Number.parseInt(request.body.limit, 10),
+        offset: Number.parseInt(request.body.offset, 10)
     });
-    if (results) {
-        return res.json({
+    return results
+        ? response.json({
             success: true,
             count: results.count,
             records: results.records
-        });
-    }
-    else {
-        return res.json({
+        })
+        : response.json({
             success: false,
             message: "An unknown error occurred.  Please try again."
         });
-    }
 };
 export default handler;

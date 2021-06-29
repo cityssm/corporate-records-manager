@@ -1,22 +1,20 @@
 import type { RequestHandler } from "express";
 
-import updateURL from "../../helpers/recordsDB/updateURL.js";
+import { updateURL } from "../../helpers/recordsDB/updateURL.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const success = await updateURL(req.body, req.session);
+  const success = await updateURL(request.body, request.session);
 
-  if (success) {
-    return res.json({
+  return success
+    ? response.json({
       success: true
-    });
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred.  Please try again."
     });
-  }
 };
 
 

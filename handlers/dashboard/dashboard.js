@@ -1,5 +1,5 @@
-export const handler = async (_req, res) => {
-    res.render("dashboard", {
+export const handler = async (_request, response) => {
+    response.render("dashboard", {
         headTitle: "Dashboard"
     });
 };

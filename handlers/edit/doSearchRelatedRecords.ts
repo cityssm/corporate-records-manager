@@ -1,23 +1,21 @@
 import type { RequestHandler } from "express";
 
-import searchRelatedRecords from "../../helpers/recordsDB/searchRelatedRecords.js";
+import { searchRelatedRecords } from "../../helpers/recordsDB/searchRelatedRecords.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const records = await searchRelatedRecords(req.body.recordID, req.body.recordTypeKey, req.body.searchString);
+  const records = await searchRelatedRecords(request.body.recordID, request.body.recordTypeKey, request.body.searchString);
 
-  if (records) {
-    return res.json({
+  return records
+    ? response.json({
       success: true,
       records: records
-    });
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred.  Please try again."
     });
-  }
 };
 
 

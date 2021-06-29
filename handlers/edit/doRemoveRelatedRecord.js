@@ -1,9 +1,9 @@
-import removeRelatedRecord from "../../helpers/recordsDB/removeRelatedRecord.js";
-export const handler = async (req, res) => {
-    const recordID = req.body.recordID;
-    const relatedRecordID = req.body.relatedRecordID;
+import { removeRelatedRecord } from "../../helpers/recordsDB/removeRelatedRecord.js";
+export const handler = async (request, response) => {
+    const recordID = request.body.recordID;
+    const relatedRecordID = request.body.relatedRecordID;
     await removeRelatedRecord(recordID, relatedRecordID);
-    return res.json({
+    return response.json({
         success: true
     });
 };

@@ -1,9 +1,9 @@
-import addRelatedRecord from "../../helpers/recordsDB/addRelatedRecord.js";
-export const handler = async (req, res) => {
-    const recordID = req.body.recordID;
-    const relatedRecordID = req.body.relatedRecordID;
+import { addRelatedRecord } from "../../helpers/recordsDB/addRelatedRecord.js";
+export const handler = async (request, response) => {
+    const recordID = request.body.recordID;
+    const relatedRecordID = request.body.relatedRecordID;
     await addRelatedRecord(recordID, relatedRecordID);
-    return res.json({
+    return response.json({
         success: true
     });
 };
