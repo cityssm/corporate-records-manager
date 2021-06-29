@@ -9,8 +9,8 @@ import handler_doCreate from "../handlers/new/doCreate.js";
 export const router = Router();
 
 
-router.get("/", (_req, res) => {
-  return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
+router.get("/", (_request, response) => {
+  return response.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
 });
 
 router.post("/doCreate", handler_doCreate);

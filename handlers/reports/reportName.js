@@ -1,11 +1,11 @@
-import getReportData from "../../helpers/recordsDB/getReportData.js";
+import { getReportData } from "../../helpers/recordsDB/getReportData.js";
 import Papa from "papaparse";
-export const handler = async (req, res) => {
-    const reportName = req.params.reportName;
-    const reportData = await getReportData(reportName, req.query);
+export const handler = async (request, response) => {
+    const reportName = request.params.reportName;
+    const reportData = await getReportData(reportName, request.query);
     const csv = Papa.unparse(reportData);
-    res.setHeader("Content-Disposition", "attachment; filename=" + (reportName.replace(/:/g, "-")) + "-" + Date.now().toString() + ".csv");
-    res.setHeader("Content-Type", "text/csv");
-    res.send(csv);
+    response.setHeader("Content-Disposition", "attachment; filename=" + (reportName.replace(/:/g, "-")) + "-" + Date.now().toString() + ".csv");
+    response.setHeader("Content-Type", "text/csv");
+    response.send(csv);
 };
 export default handler;

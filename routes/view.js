@@ -6,8 +6,8 @@ import handler_doGetURLs from "../handlers/view/doGetURLs.js";
 import handler_doGetRelatedRecords from "../handlers/view/doGetRelatedRecords.js";
 import handler_doGetComments from "../handlers/view/doGetComments.js";
 export const router = Router();
-router.get("/", (_req, res) => {
-    return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
+router.get("/", (_request, response) => {
+    return response.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
 });
 router.post("/doGetStatuses", handler_doGetStatuses);
 router.post("/doGetURLs", handler_doGetURLs);

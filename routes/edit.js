@@ -19,8 +19,8 @@ import handler_doSearchRelatedRecords from "../handlers/edit/doSearchRelatedReco
 import handler_doAddRelatedRecord from "../handlers/edit/doAddRelatedRecord.js";
 import handler_doRemoveRelatedRecord from "../handlers/edit/doRemoveRelatedRecord.js";
 export const router = Router();
-router.get("/", (_req, res) => {
-    return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
+router.get("/", (_request, response) => {
+    return response.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
 });
 router.post("/doUpdate", handler_doUpdate);
 router.post("/doRemove", handler_doRemove);

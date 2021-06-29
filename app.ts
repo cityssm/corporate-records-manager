@@ -73,8 +73,8 @@ if (!configFns.getProperty("reverseProxy.disableCompression")) {
   app.use(compression());
 }
 
-app.use((req, _res, next) => {
-  debugApp(req.method + " " + req.url);
+app.use((request, _response, next) => {
+  debugApp(request.method + " " + request.url);
   next();
 });
 
@@ -152,23 +152,23 @@ app.use(session({
 }));
 
 // Clear cookie if no corresponding session
-app.use((req, res, next) => {
+app.use((request, response, next) => {
 
-  if (req.cookies[sessionCookieName] && !req.session.user) {
-    res.clearCookie(sessionCookieName);
+  if (request.cookies[sessionCookieName] && !request.session.user) {
+    response.clearCookie(sessionCookieName);
   }
 
   next();
 });
 
 // Redirect logged in users
-const sessionChecker = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+const sessionChecker = (request: express.Request, response: express.Response, next: express.NextFunction) => {
 
-  if (req.session.user && req.cookies[sessionCookieName]) {
+  if (request.session.user && request.cookies[sessionCookieName]) {
     return next();
   }
 
-  return res.redirect(urlPrefix + "/login");
+  return response.redirect(urlPrefix + "/login");
 };
 
 
@@ -178,21 +178,21 @@ const sessionChecker = (req: express.Request, res: express.Response, next: expre
 
 
 // Make config objects available to the templates
-app.use(async function(req, res, next) {
-  res.locals.configFns = configFns;
-  res.locals.dateTimeFns = dateTimeFns;
-  res.locals.stringFns = stringFns;
-  res.locals.user = req.session.user;
-  res.locals.csrfToken = req.csrfToken();
-  res.locals.urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
-  res.locals.recordTypes = await getRecordTypes();
-  res.locals.headTitle = "";
+app.use(async function(request, response, next) {
+  response.locals.configFns = configFns;
+  response.locals.dateTimeFns = dateTimeFns;
+  response.locals.stringFns = stringFns;
+  response.locals.user = request.session.user;
+  response.locals.csrfToken = request.csrfToken();
+  response.locals.urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
+  response.locals.recordTypes = await getRecordTypes();
+  response.locals.headTitle = "";
   next();
 });
 
 
-app.get(urlPrefix + "/", sessionChecker, (_req, res) => {
-  res.redirect(urlPrefix + "/dashboard");
+app.get(urlPrefix + "/", sessionChecker, (_request, response) => {
+  response.redirect(urlPrefix + "/dashboard");
 });
 
 app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
@@ -209,36 +209,38 @@ app.use(urlPrefix + "/admin", sessionChecker, permissionHandlers.isAdmin, router
 
 app.use(urlPrefix + "/login", routerLogin);
 
-app.get(urlPrefix + "/logout", (req, res) => {
+app.get(urlPrefix + "/logout", (request, response) => {
 
-  if (req.session.user && req.cookies[sessionCookieName]) {
+  if (request.session.user && request.cookies[sessionCookieName]) {
 
-    req.session.destroy(null);
-    req.session = null;
-    res.clearCookie(sessionCookieName);
+    // eslint-disable-next-line unicorn/no-null
+    request.session.destroy(null);
+
+    request.session = undefined;
+    response.clearCookie(sessionCookieName);
 
   }
 
-  res.redirect(urlPrefix + "/login");
+  response.redirect(urlPrefix + "/login");
 });
 
 
 // Catch 404 and forward to error handler
-app.use(function(_req, _res, next) {
+app.use((_request, _response, next) => {
   next(createError(404));
 });
 
 
 // Error handler
-app.use(function(err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) {
+app.use((error: Error, request: express.Request, response: express.Response) => {
 
   // Set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  response.locals.message = error.message;
+  response.locals.error = request.app.get("env") === "development" ? error : {};
 
   // Render the error page
-  res.status(err.status || 500);
-  res.render("error");
+  response.status(error.status || 500);
+  response.render("error");
 });
 
 

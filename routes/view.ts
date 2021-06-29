@@ -12,8 +12,8 @@ import handler_doGetComments from "../handlers/view/doGetComments.js";
 export const router = Router();
 
 
-router.get("/", (_req, res) => {
-  return res.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
+router.get("/", (_request, response) => {
+  return response.redirect(configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard");
 });
 
 router.post("/doGetStatuses", handler_doGetStatuses);

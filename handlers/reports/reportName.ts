@@ -1,24 +1,25 @@
 import type { RequestHandler } from "express";
 
-import getReportData from "../../helpers/recordsDB/getReportData.js";
+import { getReportData } from "../../helpers/recordsDB/getReportData.js";
 
 import Papa from "papaparse";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const reportName = req.params.reportName;
+  const reportName = request.params.reportName;
 
-  const reportData = await getReportData(reportName, req.query);
+  const reportData = await getReportData(reportName, request.query);
 
-  const csv = Papa.unparse(reportData);
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  const csv = Papa.unparse(reportData as object[]);
 
-  res.setHeader("Content-Disposition",
+  response.setHeader("Content-Disposition",
     "attachment; filename=" + (reportName.replace(/:/g, "-")) + "-" + Date.now().toString() + ".csv");
 
-  res.setHeader("Content-Type", "text/csv");
+  response.setHeader("Content-Type", "text/csv");
 
-  res.send(csv);
+  response.send(csv);
 };
 
 

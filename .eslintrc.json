@@ -31,6 +31,13 @@
         ]
       }
     ],
-    "unicorn/prefer-node-protocol": "off"
+    "unicorn/prefer-node-protocol": "off",
+    "unicorn/prevent-abbreviations": [
+      "error", {
+        "allowList": {
+          "tempAdmin": true
+        }
+      }
+    ]
   }
 }

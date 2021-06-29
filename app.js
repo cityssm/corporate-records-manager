@@ -49,8 +49,8 @@ app.use(abuseCheck({
 if (!configFns.getProperty("reverseProxy.disableCompression")) {
     app.use(compression());
 }
-app.use((req, _res, next) => {
-    debugApp(req.method + " " + req.url);
+app.use((request, _response, next) => {
+    debugApp(request.method + " " + request.url);
     next();
 });
 app.use(express.json());
@@ -87,31 +87,31 @@ app.use(session({
         sameSite: "strict"
     }
 }));
-app.use((req, res, next) => {
-    if (req.cookies[sessionCookieName] && !req.session.user) {
-        res.clearCookie(sessionCookieName);
+app.use((request, response, next) => {
+    if (request.cookies[sessionCookieName] && !request.session.user) {
+        response.clearCookie(sessionCookieName);
     }
     next();
 });
-const sessionChecker = (req, res, next) => {
-    if (req.session.user && req.cookies[sessionCookieName]) {
+const sessionChecker = (request, response, next) => {
+    if (request.session.user && request.cookies[sessionCookieName]) {
         return next();
     }
-    return res.redirect(urlPrefix + "/login");
+    return response.redirect(urlPrefix + "/login");
 };
-app.use(async function (req, res, next) {
-    res.locals.configFns = configFns;
-    res.locals.dateTimeFns = dateTimeFns;
-    res.locals.stringFns = stringFns;
-    res.locals.user = req.session.user;
-    res.locals.csrfToken = req.csrfToken();
-    res.locals.urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
-    res.locals.recordTypes = await getRecordTypes();
-    res.locals.headTitle = "";
+app.use(async function (request, response, next) {
+    response.locals.configFns = configFns;
+    response.locals.dateTimeFns = dateTimeFns;
+    response.locals.stringFns = stringFns;
+    response.locals.user = request.session.user;
+    response.locals.csrfToken = request.csrfToken();
+    response.locals.urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
+    response.locals.recordTypes = await getRecordTypes();
+    response.locals.headTitle = "";
     next();
 });
-app.get(urlPrefix + "/", sessionChecker, (_req, res) => {
-    res.redirect(urlPrefix + "/dashboard");
+app.get(urlPrefix + "/", sessionChecker, (_request, response) => {
+    response.redirect(urlPrefix + "/dashboard");
 });
 app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
 app.use(urlPrefix + "/view", sessionChecker, routerView);
@@ -120,22 +120,22 @@ app.use(urlPrefix + "/edit", sessionChecker, permissionHandlers.canUpdate, route
 app.use(urlPrefix + "/reports", sessionChecker, routerReports);
 app.use(urlPrefix + "/admin", sessionChecker, permissionHandlers.isAdmin, routerAdmin);
 app.use(urlPrefix + "/login", routerLogin);
-app.get(urlPrefix + "/logout", (req, res) => {
-    if (req.session.user && req.cookies[sessionCookieName]) {
-        req.session.destroy(null);
-        req.session = null;
-        res.clearCookie(sessionCookieName);
+app.get(urlPrefix + "/logout", (request, response) => {
+    if (request.session.user && request.cookies[sessionCookieName]) {
+        request.session.destroy(null);
+        request.session = undefined;
+        response.clearCookie(sessionCookieName);
     }
-    res.redirect(urlPrefix + "/login");
+    response.redirect(urlPrefix + "/login");
 });
-app.use(function (_req, _res, next) {
+app.use((_request, _response, next) => {
     next(createError(404));
 });
-app.use(function (err, req, res, _next) {
-    res.locals.message = err.message;
-    res.locals.error = req.app.get("env") === "development" ? err : {};
-    res.status(err.status || 500);
-    res.render("error");
+app.use((error, request, response) => {
+    response.locals.message = error.message;
+    response.locals.error = request.app.get("env") === "development" ? error : {};
+    response.status(error.status || 500);
+    response.render("error");
 });
 if (configFns.getProperty("integrations.docuShare.isEnabled")) {
     docuShareFns.doSetup();

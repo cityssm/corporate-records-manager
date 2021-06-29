@@ -18,40 +18,40 @@ export const router = Router();
 
 
 router.route("/")
-  .get((req, res) => {
+  .get((request, response) => {
 
     const sessionCookieName = configFns.getProperty("session.cookieName");
 
-    if (req.session.user && req.cookies[sessionCookieName]) {
-      res.redirect(redirectURL);
+    if (request.session.user && request.cookies[sessionCookieName]) {
+      response.redirect(redirectURL);
 
     } else {
-      res.render("login", {
+      response.render("login", {
         userName: "",
         message: ""
       });
     }
   })
-  .post(async (req, res) => {
+  .post(async (request, response) => {
 
-    let userName: string = req.body.userName;
-    const passwordPlain: string = req.body.password;
+    let userName: string = request.body.userName;
+    const passwordPlain: string = request.body.password;
 
     if (configFns.getProperty("application.enableTempAdminUser") && userName === tempAdmin.userName) {
 
       if (passwordPlain === tempAdmin.password) {
 
-        req.session.user = {
+        request.session.user = {
           userName: tempAdmin.userName,
           canUpdate: tempAdmin.canUpdate,
           isAdmin: tempAdmin.isAdmin
         };
 
-        res.redirect(redirectURL);
+        response.redirect(redirectURL);
 
       } else {
 
-        res.render("login", {
+        response.render("login", {
           userName,
           message: "Access Denied"
         });
@@ -71,27 +71,27 @@ router.route("/")
         const user = await getUser(userName);
 
         if (!user) {
-          res.render("login", {
+          response.render("login", {
             userName,
             message: "Access Denied"
           });
         } else {
-          req.session.user = user;
-          res.redirect(redirectURL);
+          request.session.user = user;
+          response.redirect(redirectURL);
         }
 
       } else {
-        res.render("login", {
+        response.render("login", {
           userName,
           message: "Login Failed"
         });
       }
 
-    } catch (e) {
+    } catch (error) {
 
-      debugLogin(e);
+      debugLogin(error);
 
-      res.render("login", {
+      response.render("login", {
         userName,
         message: "Login Failed"
       });

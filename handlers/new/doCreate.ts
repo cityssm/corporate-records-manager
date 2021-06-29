@@ -1,23 +1,21 @@
 import type { RequestHandler } from "express";
 
-import createRecord from "../../helpers/recordsDB/createRecord.js";
+import { createRecord } from "../../helpers/recordsDB/createRecord.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const recordID = await createRecord(req.body, req.session);
+  const recordID = await createRecord(request.body, request.session);
 
-  if (recordID) {
-    return res.json({
+  return recordID
+    ? response.json({
       success: true,
       recordID
-    });
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred.  Please try again."
     });
-  }
 };
 
 

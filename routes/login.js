@@ -8,32 +8,32 @@ const debugLogin = debug("corporate-records-manager:routes:login");
 const redirectURL = configFns.getProperty("reverseProxy.urlPrefix") + "/dashboard";
 export const router = Router();
 router.route("/")
-    .get((req, res) => {
+    .get((request, response) => {
     const sessionCookieName = configFns.getProperty("session.cookieName");
-    if (req.session.user && req.cookies[sessionCookieName]) {
-        res.redirect(redirectURL);
+    if (request.session.user && request.cookies[sessionCookieName]) {
+        response.redirect(redirectURL);
     }
     else {
-        res.render("login", {
+        response.render("login", {
             userName: "",
             message: ""
         });
     }
 })
-    .post(async (req, res) => {
-    let userName = req.body.userName;
-    const passwordPlain = req.body.password;
+    .post(async (request, response) => {
+    let userName = request.body.userName;
+    const passwordPlain = request.body.password;
     if (configFns.getProperty("application.enableTempAdminUser") && userName === tempAdmin.userName) {
         if (passwordPlain === tempAdmin.password) {
-            req.session.user = {
+            request.session.user = {
                 userName: tempAdmin.userName,
                 canUpdate: tempAdmin.canUpdate,
                 isAdmin: tempAdmin.isAdmin
             };
-            res.redirect(redirectURL);
+            response.redirect(redirectURL);
         }
         else {
-            res.render("login", {
+            response.render("login", {
                 userName,
                 message: "Access Denied"
             });
@@ -46,26 +46,26 @@ router.route("/")
         if (isAuthenticated) {
             const user = await getUser(userName);
             if (!user) {
-                res.render("login", {
+                response.render("login", {
                     userName,
                     message: "Access Denied"
                 });
             }
             else {
-                req.session.user = user;
-                res.redirect(redirectURL);
+                request.session.user = user;
+                response.redirect(redirectURL);
             }
         }
         else {
-            res.render("login", {
+            response.render("login", {
                 userName,
                 message: "Login Failed"
             });
         }
     }
-    catch (e) {
-        debugLogin(e);
-        res.render("login", {
+    catch (error) {
+        debugLogin(error);
+        response.render("login", {
             userName,
             message: "Login Failed"
         });
