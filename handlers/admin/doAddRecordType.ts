@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 
 import * as cache from "../../helpers/recordsDB/configCache.js";
 
-import addRecordType from "../../helpers/recordsDB/addRecordType.js";
+import { addRecordType } from "../../helpers/recordsDB/addRecordType.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -39,9 +39,9 @@ const generateRecordTypeKey = async (recordTypeKey: string, recordType: string) 
       ? (recordType
         .toLowerCase()
         .trim()
-        .replace(/[^a-z\-_]/g, "-"))
+        .replace(/[^_a-z-]/g, "-"))
       : recordTypeKey)
-      .substring(0, 14);
+      .slice(0, 14);
 
   recordTypeKeyIsAvailable = await isRecordTypeKeyAvailable(recordTypeKeyRoot);
 
@@ -50,7 +50,7 @@ const generateRecordTypeKey = async (recordTypeKey: string, recordType: string) 
   }
 
   // loop through a counter, searching for a unique recordTypeKey
-  for (let counter = 0; counter <= 99999; counter += 1) {
+  for (let counter = 0; counter <= 99_999; counter += 1) {
 
     const recordTypeKey = recordTypeKeyRoot + "-" + ("0000" + counter.toString()).slice(-5);
     recordTypeKeyIsAvailable = await isRecordTypeKeyAvailable(recordTypeKey);
@@ -61,17 +61,17 @@ const generateRecordTypeKey = async (recordTypeKey: string, recordType: string) 
   }
 
   // give up
-  return null;
+  return;
 };
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const recordTypeKey = await generateRecordTypeKey(req.body.recordTypeKey, req.body.recordType);
+  const recordTypeKey = await generateRecordTypeKey(request.body.recordTypeKey, request.body.recordType);
 
   if (!recordTypeKey) {
 
-    return res.json({
+    return response.json({
       success: false,
       message: "Unable to generate a unique record type key."
     });
@@ -79,11 +79,11 @@ export const handler: RequestHandler = async (req, res) => {
 
   const recordType: recordTypes.RecordType = {
     recordTypeKey,
-    recordType: req.body.recordType,
-    minlength: parseInt(req.body.minlength),
-    maxlength: parseInt(req.body.maxlength),
-    pattern: req.body.pattern,
-    patternHelp: req.body.patternHelp,
+    recordType: request.body.recordType,
+    minlength: Number.parseInt(request.body.minlength),
+    maxlength: Number.parseInt(request.body.maxlength),
+    pattern: request.body.pattern,
+    patternHelp: request.body.patternHelp,
     isActive: true,
     recordCount: 0
   };
@@ -94,13 +94,13 @@ export const handler: RequestHandler = async (req, res) => {
 
     cache.clearCache();
 
-    return res.json({
+    return response.json({
       success: true,
       recordType
     });
 
   } else {
-    return res.json({
+    return response.json({
       success: false,
       message: "An unknown error occurred."
     });

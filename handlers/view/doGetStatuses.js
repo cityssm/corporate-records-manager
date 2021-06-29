@@ -1,18 +1,15 @@
-import getRecordStatuses from "../../helpers/recordsDB/getRecordStatuses.js";
-export const handler = async (req, res) => {
-    const recordID = req.body.recordID;
+import { getRecordStatuses } from "../../helpers/recordsDB/getRecordStatuses.js";
+export const handler = async (request, response) => {
+    const recordID = request.body.recordID;
     const statuses = await getRecordStatuses(recordID);
-    if (statuses) {
-        return res.json({
+    return statuses
+        ? response.json({
             success: true,
             statuses
-        });
-    }
-    else {
-        return res.json({
+        })
+        : response.json({
             success: false,
             message: "An unknown error occurred.  Please try again."
         });
-    }
 };
 export default handler;

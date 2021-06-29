@@ -1,9 +1,9 @@
-import cleanupRecordsTable from "../../helpers/recordsDB/cleanupRecordsTable.js";
-import cleanupRecordTagsTable from "../../helpers/recordsDB/cleanupRecordTagsTable.js";
-import cleanupRelatedRecordsTable from "../../helpers/recordsDB/cleanupRelatedRecordsTable.js";
+import { cleanupRecordsTable } from "../../helpers/recordsDB/cleanupRecordsTable.js";
+import { cleanupRecordTagsTable } from "../../helpers/recordsDB/cleanupRecordTagsTable.js";
+import { cleanupRelatedRecordsTable } from "../../helpers/recordsDB/cleanupRelatedRecordsTable.js";
 import { cleanupRecordStatusLogTable, cleanupRecordURLsTable, cleanupRecordCommentLogTable } from "../../helpers/recordsDB/cleanupTable.js";
-export const handler = async (req, res) => {
-    const tableName = req.body.tableName;
+export const handler = async (request, response) => {
+    const tableName = request.body.tableName;
     let recordCount = 0;
     switch (tableName) {
         case "Records":
@@ -25,12 +25,12 @@ export const handler = async (req, res) => {
             recordCount = await cleanupRecordCommentLogTable();
             break;
         default:
-            return res.json({
+            return response.json({
                 success: false,
                 message: "Invalid tableName = " + tableName
             });
     }
-    return res.json({
+    return response.json({
         success: true,
         recordCount
     });

@@ -1,13 +1,13 @@
 import type { RequestHandler } from "express";
 
-import getRecordTypes from "../../helpers/recordsDB/getRecordTypes.js";
+import { getRecordTypes } from "../../helpers/recordsDB/getRecordTypes.js";
 
 
-export const handler: RequestHandler = async (_req, res) => {
+export const handler: RequestHandler = async (_request, response) => {
 
   const recordTypes = await getRecordTypes(true);
 
-  return res.json({
+  return response.json({
     success: true,
     recordTypes
   });

@@ -1,14 +1,14 @@
 import type { RequestHandler } from "express";
 
-import removeUser from "../../helpers/recordsDB/removeUser.js";
+import { removeUser } from "../../helpers/recordsDB/removeUser.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const userName: string = req.body.userName;
+  const userName: string = request.body.userName;
 
-  if (userName === req.session.user.userName) {
-    return res.json({
+  if (userName === request.session.user.userName) {
+    return response.json({
       success: false,
       message: "You cannot remove your own user."
     });
@@ -16,18 +16,14 @@ export const handler: RequestHandler = async (req, res) => {
 
   const success = await removeUser(userName);
 
-  if (success) {
-
-    return res.json({
+  return success
+    ? response.json({
       success: true
-    });
-
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred."
     });
-  }
 };
 
 

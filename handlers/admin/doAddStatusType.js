@@ -1,6 +1,6 @@
 import * as cache from "../../helpers/recordsDB/configCache.js";
-import getAllStatusTypes from "../../helpers/recordsDB/getAllStatusTypes.js";
-import addStatusType from "../../helpers/recordsDB/addStatusType.js";
+import { getAllStatusTypes } from "../../helpers/recordsDB/getAllStatusTypes.js";
+import { addStatusType } from "../../helpers/recordsDB/addStatusType.js";
 let statusTypes;
 const isStatusTypeKeyAvailable = (statusTypeKey) => {
     const statusType = statusTypes.find((currentStatusType) => {
@@ -26,9 +26,8 @@ const generateStatusTypeKey = (recordTypeKey, statusTypeKey, statusType) => {
             statusType
                 .toLowerCase()
                 .trim()
-                .replace(/[^a-z\-_]/g, "-"))
-        : statusTypeKey)
-        .substring(0, 24);
+                .replace(/[^_a-z-]/g, "-"))
+        : statusTypeKey).slice(0, 24);
     console.log("Check statusTypeKeyRoot = " + statusTypeKeyRoot);
     statusTypeKeyIsAvailable = isStatusTypeKeyAvailable(statusTypeKeyRoot);
     if (statusTypeKeyIsAvailable) {
@@ -41,21 +40,21 @@ const generateStatusTypeKey = (recordTypeKey, statusTypeKey, statusType) => {
             return statusTypeKey;
         }
     }
-    return null;
+    return;
 };
-export const handler = async (req, res) => {
+export const handler = async (request, response) => {
     statusTypes = await getAllStatusTypes();
-    const statusTypeKey = generateStatusTypeKey(req.body.recordTypeKey, req.body.statusTypeKey, req.body.statusType);
+    const statusTypeKey = generateStatusTypeKey(request.body.recordTypeKey, request.body.statusTypeKey, request.body.statusType);
     if (!statusTypeKey) {
-        return res.json({
+        return response.json({
             success: false,
             message: "Unable to generate a unique status type key."
         });
     }
     const statusType = {
         statusTypeKey,
-        recordTypeKey: req.body.recordTypeKey,
-        statusType: req.body.statusType,
+        recordTypeKey: request.body.recordTypeKey,
+        statusType: request.body.statusType,
         isActive: true,
         orderNumber: 0
     };
@@ -63,13 +62,13 @@ export const handler = async (req, res) => {
     if (success) {
         cache.clearCache();
         const statusTypesReturn = await getAllStatusTypes();
-        return res.json({
+        return response.json({
             success: true,
             statusTypes: statusTypesReturn
         });
     }
     else {
-        return res.json({
+        return response.json({
             success: false,
             message: "An unknown error occurred."
         });

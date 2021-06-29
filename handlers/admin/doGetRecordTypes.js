@@ -1,7 +1,7 @@
-import getRecordTypes from "../../helpers/recordsDB/getRecordTypes.js";
-export const handler = async (_req, res) => {
+import { getRecordTypes } from "../../helpers/recordsDB/getRecordTypes.js";
+export const handler = async (_request, response) => {
     const recordTypes = await getRecordTypes(true);
-    return res.json({
+    return response.json({
         success: true,
         recordTypes
     });

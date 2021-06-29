@@ -1,18 +1,18 @@
 import type { RequestHandler } from "express";
 
-import getUser from "../../helpers/recordsDB/getUser.js";
-import addUser from "../../helpers/recordsDB/addUser.js";
+import { getUser } from "../../helpers/recordsDB/getUser.js";
+import { addUser } from "../../helpers/recordsDB/addUser.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const userName: string = req.body.userName;
+  const userName: string = request.body.userName;
 
   const existingUser = await getUser(userName, false);
 
   if (existingUser) {
 
-    return res.json({
+    return response.json({
       success: false,
       message: "A user already exists with the same user name."
     });
@@ -20,19 +20,15 @@ export const handler: RequestHandler = async (req, res) => {
 
   const newUser = await addUser(userName);
 
-  if (newUser) {
-
-    return res.json({
+  return newUser
+    ? response.json({
       success: true,
       user: newUser
-    });
-
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred."
     });
-  }
 };
 
 

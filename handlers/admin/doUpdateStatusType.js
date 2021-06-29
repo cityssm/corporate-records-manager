@@ -1,22 +1,22 @@
 import * as cache from "../../helpers/recordsDB/configCache.js";
-import getAllStatusTypes from "../../helpers/recordsDB/getAllStatusTypes.js";
-import updateStatusType from "../../helpers/recordsDB/updateStatusType.js";
-export const handler = async (req, res) => {
+import { getAllStatusTypes } from "../../helpers/recordsDB/getAllStatusTypes.js";
+import { updateStatusType } from "../../helpers/recordsDB/updateStatusType.js";
+export const handler = async (request, response) => {
     const statusType = {
-        statusTypeKey: req.body.statusTypeKey,
-        statusType: req.body.statusType
+        statusTypeKey: request.body.statusTypeKey,
+        statusType: request.body.statusType
     };
     const success = await updateStatusType(statusType);
+    cache.clearCache();
     if (success) {
-        cache.clearCache();
         const statusTypesReturn = await getAllStatusTypes();
-        return res.json({
+        return response.json({
             success: true,
             statusTypes: statusTypesReturn
         });
     }
     else {
-        return res.json({
+        return response.json({
             success: false,
             message: "An unknown error occurred."
         });

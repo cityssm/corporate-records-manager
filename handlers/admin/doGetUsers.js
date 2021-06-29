@@ -1,7 +1,7 @@
-import getUsers from "../../helpers/recordsDB/getUsers.js";
-export const handler = async (_req, res) => {
+import { getUsers } from "../../helpers/recordsDB/getUsers.js";
+export const handler = async (_request, response) => {
     const users = await getUsers();
-    return res.json({
+    return response.json({
         success: true,
         users
     });

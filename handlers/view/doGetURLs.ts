@@ -1,25 +1,23 @@
 import type { RequestHandler } from "express";
 
-import getRecordURLs from "../../helpers/recordsDB/getRecordURLs.js";
+import { getRecordURLs } from "../../helpers/recordsDB/getRecordURLs.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const recordID = req.body.recordID;
+  const recordID = request.body.recordID;
 
   const urls = await getRecordURLs(recordID);
 
-  if (urls) {
-    return res.json({
+  return urls
+    ? response.json({
       success: true,
       urls
-    });
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred.  Please try again."
     });
-  }
 };
 
 

@@ -4,23 +4,26 @@ import { updateUserSetting } from "../../helpers/recordsDB/updateUserSetting.js"
 import type { FieldName } from "../../helpers/recordsDB/updateUserSetting.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+const userSettingFields = new Set(["isActive", "canUpdate", "isAdmin"]);
 
-  const userName: string = req.body.userName;
-  const fieldName: FieldName = req.body.fieldName;
 
-  if (!["isActive", "canUpdate", "isAdmin"].includes(fieldName)) {
-    return res.json({
+export const handler: RequestHandler = async (request, response) => {
+
+  const userName: string = request.body.userName;
+  const fieldName: FieldName = request.body.fieldName;
+
+  if (!userSettingFields.has(fieldName)) {
+    return response.json({
       success: false,
       message: "Unrecognized fieldName = " + fieldName
     });
   }
 
-  const fieldValue: boolean = req.body.fieldValue;
+  const fieldValue: boolean = request.body.fieldValue;
 
   await updateUserSetting(userName, fieldName, fieldValue);
 
-  return res.json({
+  return response.json({
     success: true,
     fieldValue: typeof (fieldValue)
   });

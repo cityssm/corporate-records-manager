@@ -1,7 +1,7 @@
-import getAllStatusTypes from "../../helpers/recordsDB/getAllStatusTypes.js";
-export const handler = async (_req, res) => {
+import { getAllStatusTypes } from "../../helpers/recordsDB/getAllStatusTypes.js";
+export const handler = async (_request, response) => {
     const statusTypes = await getAllStatusTypes();
-    return res.json({
+    return response.json({
         success: true,
         statusTypes
     });

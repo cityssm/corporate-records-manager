@@ -1,18 +1,15 @@
-import getRecordURLs from "../../helpers/recordsDB/getRecordURLs.js";
-export const handler = async (req, res) => {
-    const recordID = req.body.recordID;
+import { getRecordURLs } from "../../helpers/recordsDB/getRecordURLs.js";
+export const handler = async (request, response) => {
+    const recordID = request.body.recordID;
     const urls = await getRecordURLs(recordID);
-    if (urls) {
-        return res.json({
+    return urls
+        ? response.json({
             success: true,
             urls
-        });
-    }
-    else {
-        return res.json({
+        })
+        : response.json({
             success: false,
             message: "An unknown error occurred.  Please try again."
         });
-    }
 };
 export default handler;

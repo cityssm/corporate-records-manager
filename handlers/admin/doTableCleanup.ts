@@ -1,14 +1,14 @@
 import type { RequestHandler } from "express";
 
-import cleanupRecordsTable from "../../helpers/recordsDB/cleanupRecordsTable.js";
-import cleanupRecordTagsTable from "../../helpers/recordsDB/cleanupRecordTagsTable.js";
-import cleanupRelatedRecordsTable from "../../helpers/recordsDB/cleanupRelatedRecordsTable.js";
+import { cleanupRecordsTable } from "../../helpers/recordsDB/cleanupRecordsTable.js";
+import { cleanupRecordTagsTable } from "../../helpers/recordsDB/cleanupRecordTagsTable.js";
+import { cleanupRelatedRecordsTable } from "../../helpers/recordsDB/cleanupRelatedRecordsTable.js";
 import { cleanupRecordStatusLogTable, cleanupRecordURLsTable, cleanupRecordCommentLogTable } from "../../helpers/recordsDB/cleanupTable.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const tableName = req.body.tableName as string;
+  const tableName = request.body.tableName as string;
   let recordCount = 0;
 
   switch (tableName) {
@@ -38,13 +38,13 @@ export const handler: RequestHandler = async (req, res) => {
       break;
 
     default:
-      return res.json({
+      return response.json({
         success: false,
         message: "Invalid tableName = " + tableName
       });
   }
 
-  return res.json({
+  return response.json({
     success: true,
     recordCount
   });

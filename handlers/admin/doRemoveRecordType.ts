@@ -2,26 +2,23 @@ import type { RequestHandler } from "express";
 
 import * as cache from "../../helpers/recordsDB/configCache.js";
 
-import removeRecordType from "../../helpers/recordsDB/removeRecordType.js";
+import { removeRecordType } from "../../helpers/recordsDB/removeRecordType.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const success = await removeRecordType(req.body.recordTypeKey);
+  const success = await removeRecordType(request.body.recordTypeKey);
 
-  if (success) {
-    cache.clearCache();
+  cache.clearCache();
 
-    return res.json({
+  return success
+    ? response.json({
       success: true
-    });
-
-  } else {
-    return res.json({
+    })
+    : response.json({
       success: false,
       message: "An unknown error occurred."
     });
-  }
 };
 
 

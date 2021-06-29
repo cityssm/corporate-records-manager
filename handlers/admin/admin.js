@@ -1,5 +1,5 @@
-export const handler = async (_req, res) => {
-    res.render("admin", {
+export const handler = async (_request, response) => {
+    response.render("admin", {
         headTitle: "Administration"
     });
 };

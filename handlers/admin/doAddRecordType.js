@@ -1,5 +1,5 @@
 import * as cache from "../../helpers/recordsDB/configCache.js";
-import addRecordType from "../../helpers/recordsDB/addRecordType.js";
+import { addRecordType } from "../../helpers/recordsDB/addRecordType.js";
 const isRecordTypeKeyAvailable = async (recordTypeKey) => {
     const recordType = await cache.getRecordType(recordTypeKey);
     if (recordType) {
@@ -20,9 +20,9 @@ const generateRecordTypeKey = async (recordTypeKey, recordType) => {
         ? (recordType
             .toLowerCase()
             .trim()
-            .replace(/[^a-z\-_]/g, "-"))
+            .replace(/[^_a-z-]/g, "-"))
         : recordTypeKey)
-        .substring(0, 14);
+        .slice(0, 14);
     recordTypeKeyIsAvailable = await isRecordTypeKeyAvailable(recordTypeKeyRoot);
     if (recordTypeKeyIsAvailable) {
         return recordTypeKeyRoot;
@@ -34,36 +34,36 @@ const generateRecordTypeKey = async (recordTypeKey, recordType) => {
             return recordTypeKey;
         }
     }
-    return null;
+    return;
 };
-export const handler = async (req, res) => {
-    const recordTypeKey = await generateRecordTypeKey(req.body.recordTypeKey, req.body.recordType);
+export const handler = async (request, response) => {
+    const recordTypeKey = await generateRecordTypeKey(request.body.recordTypeKey, request.body.recordType);
     if (!recordTypeKey) {
-        return res.json({
+        return response.json({
             success: false,
             message: "Unable to generate a unique record type key."
         });
     }
     const recordType = {
         recordTypeKey,
-        recordType: req.body.recordType,
-        minlength: parseInt(req.body.minlength),
-        maxlength: parseInt(req.body.maxlength),
-        pattern: req.body.pattern,
-        patternHelp: req.body.patternHelp,
+        recordType: request.body.recordType,
+        minlength: Number.parseInt(request.body.minlength),
+        maxlength: Number.parseInt(request.body.maxlength),
+        pattern: request.body.pattern,
+        patternHelp: request.body.patternHelp,
         isActive: true,
         recordCount: 0
     };
     const success = await addRecordType(recordType);
     if (success) {
         cache.clearCache();
-        return res.json({
+        return response.json({
             success: true,
             recordType
         });
     }
     else {
-        return res.json({
+        return response.json({
             success: false,
             message: "An unknown error occurred."
         });

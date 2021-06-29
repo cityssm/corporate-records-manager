@@ -5,16 +5,16 @@ import { updateRecordTypeIsActive } from "../../helpers/recordsDB/updateRecordTy
 import { clearCache } from "../../helpers/recordsDB/configCache.js";
 
 
-export const handler: RequestHandler = async (req, res) => {
+export const handler: RequestHandler = async (request, response) => {
 
-  const recordTypeKey: string = req.body.recordTypeKey;
-  const isActive: boolean = req.body.isActive;
+  const recordTypeKey: string = request.body.recordTypeKey;
+  const isActive: boolean = request.body.isActive;
 
   await updateRecordTypeIsActive(recordTypeKey, isActive);
 
   clearCache();
 
-  return res.json({
+  return response.json({
     success: true
   });
 
