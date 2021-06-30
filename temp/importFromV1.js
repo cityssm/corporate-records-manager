@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../helpers/configFns.js";
 import addRelatedRecord from "../helpers/recordsDB/addRelatedRecord.js";

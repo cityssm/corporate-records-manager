@@ -31,7 +31,7 @@
     "@cityssm/bulma-webapp-js": "^1.1.3",
     "@cityssm/date-diff": "^2.2.1",
     "@cityssm/docushare": "^1.0.1",
-    "@cityssm/express-abuse-points": "^0.3.3",
+    "@cityssm/express-abuse-points": "^1.0.0",
     "@cityssm/expressjs-server-js": "^2.0.1",
     "@cityssm/mssql-multi-pool": "^1.5.0",
     "@cityssm/simple-password-generator": "^2.0.2",

@@ -99,7 +99,7 @@ const sessionChecker = (request, response, next) => {
     }
     return response.redirect(urlPrefix + "/login");
 };
-app.use(async function (request, response, next) {
+app.use(async (request, response, next) => {
     response.locals.configFns = configFns;
     response.locals.dateTimeFns = dateTimeFns;
     response.locals.stringFns = stringFns;

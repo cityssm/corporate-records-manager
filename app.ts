@@ -178,7 +178,7 @@ const sessionChecker = (request: express.Request, response: express.Response, ne
 
 
 // Make config objects available to the templates
-app.use(async function(request, response, next) {
+app.use(async (request, response, next) => {
   response.locals.configFns = configFns;
   response.locals.dateTimeFns = dateTimeFns;
   response.locals.stringFns = stringFns;
