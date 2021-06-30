@@ -69,7 +69,7 @@
     "@types/gulp-minify": "^3.1.0",
     "@types/http-errors": "^1.8.0",
     "@types/mocha": "^8.2.2",
-    "@types/mssql": "^6.0.8",
+    "@types/mssql": "^7.1.0",
     "@types/papaparse": "^5.2.5",
     "@types/set-interval-async": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
