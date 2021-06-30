@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const getRecordTypeFromEventFunction = (clickEvent) => {
         const buttonEle = clickEvent.currentTarget;
         const trEle = buttonEle.closest("tr");
-        const recordTypeIndex = Number.parseInt(trEle.getAttribute("data-index"), 10);
+        const recordTypeIndex = Number.parseInt(trEle.dataset.index, 10);
         const recordType = crmAdmin.recordTypes[recordTypeIndex];
         return {
             buttonEle,

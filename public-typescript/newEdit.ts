@@ -63,7 +63,7 @@ declare const cityssm: cityssmGlobal;
       setUnsavedChangesFunction();
     };
 
-    const tag = tagEle.querySelectorAll("input")[0].value;
+    const tag = tagEle.querySelector("input").value;
 
     cityssm.confirmModal("Remove Tag?",
       "Are you sure you want to remove the <span class=\"tag\">" + cityssm.escapeHTML(tag) + "</span> tag?",
@@ -179,7 +179,7 @@ declare const cityssm: cityssmGlobal;
     clickEvent.preventDefault();
 
     const fieldEle = (clickEvent.currentTarget as HTMLElement).closest(".field");
-    const inputEle = fieldEle.querySelectorAll("input")[0];
+    const inputEle = fieldEle.querySelector("input");
 
     const iconEles = inputEle.nextElementSibling.children;
 

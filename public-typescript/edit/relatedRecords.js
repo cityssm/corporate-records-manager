@@ -10,8 +10,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const openRemoveRelatedRecordModalFunction = (clickEvent) => {
         clickEvent.preventDefault();
         const panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
-        const index = Number.parseInt(panelBlockEle.getAttribute("data-index"), 10);
-        const relatedRecordID = Number.parseInt(panelBlockEle.getAttribute("data-record-id"), 10);
+        const index = Number.parseInt(panelBlockEle.dataset.index, 10);
+        const relatedRecordID = Number.parseInt(panelBlockEle.dataset.recordId, 10);
         const removeFunction = () => {
             cityssm.postJSON(urlPrefix + "/edit/doRemoveRelatedRecord", {
                 recordID: crmEdit.recordID,
@@ -83,7 +83,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const buttonEle = event.currentTarget;
             buttonEle.disabled = true;
             const panelBlockEle = buttonEle.closest(".panel-block");
-            const relatedRecordID = panelBlockEle.getAttribute("data-record-id");
+            const relatedRecordID = panelBlockEle.dataset.recordId;
             cityssm.postJSON(urlPrefix + "/edit/doAddRelatedRecord", {
                 recordID: crmEdit.recordID,
                 relatedRecordID: relatedRecordID

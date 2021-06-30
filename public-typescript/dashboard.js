@@ -41,14 +41,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 pagerEle.querySelectorAll(".span")[1].append(previousButtonEle);
             }
             if (limit + offset < responseJSON.count) {
-                const previousButtonEle = document.createElement("button");
-                previousButtonEle.className = "button is-outlined is-info ml-1";
-                previousButtonEle.type = "button";
-                previousButtonEle.setAttribute("aria-label", "Next Results");
-                previousButtonEle.innerHTML = "<span>Next</span>" +
+                const nextButtonEle = document.createElement("button");
+                nextButtonEle.className = "button is-outlined is-info ml-1";
+                nextButtonEle.type = "button";
+                nextButtonEle.setAttribute("aria-label", "Next Results");
+                nextButtonEle.innerHTML = "<span>Next</span>" +
                     "<span class=\"icon\"><i class=\"fas fa-arrow-right\" aria-hidden=\"true\"></i></span>";
-                previousButtonEle.addEventListener("click", nextFunction);
-                pagerEle.querySelectorAll(".span")[1].append(previousButtonEle);
+                nextButtonEle.addEventListener("click", nextFunction);
+                pagerEle.querySelectorAll(".span")[1].append(nextButtonEle);
             }
             const panelEle = document.createElement("div");
             panelEle.className = "panel";

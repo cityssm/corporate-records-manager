@@ -25,10 +25,10 @@ declare const cityssm: cityssmGlobal;
 
     clickEvent.preventDefault();
 
-    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
+    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
 
-    const index = Number.parseInt(panelBlockEle.getAttribute("data-index"), 10);
-    const relatedRecordID = Number.parseInt(panelBlockEle.getAttribute("data-record-id"), 10);
+    const index = Number.parseInt(panelBlockEle.dataset.index, 10);
+    const relatedRecordID = Number.parseInt(panelBlockEle.dataset.recordId, 10);
 
     const removeFunction = () => {
 
@@ -136,9 +136,9 @@ declare const cityssm: cityssmGlobal;
 
       buttonEle.disabled = true;
 
-      const panelBlockEle = buttonEle.closest(".panel-block");
+      const panelBlockEle = buttonEle.closest(".panel-block") as HTMLElement;
 
-      const relatedRecordID = panelBlockEle.getAttribute("data-record-id");
+      const relatedRecordID = panelBlockEle.dataset.recordId;
 
       cityssm.postJSON(urlPrefix + "/edit/doAddRelatedRecord", {
         recordID: crmEdit.recordID,

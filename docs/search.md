@@ -14,4 +14,4 @@ Select any record to open the record for viewing, printing, or editing.
 
 ## Related Documentation
 
-- [Creating and Updating Records](createUpdate.md)
+-   [Creating and Updating Records](createUpdate.md)

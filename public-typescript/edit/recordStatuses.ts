@@ -24,9 +24,9 @@ declare const cityssm: cityssmGlobal;
 
       clickEvent.preventDefault();
 
-      const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block");
+      const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
 
-      const index = Number.parseInt(panelBlockEle.getAttribute("data-index"), 10);
+      const index = Number.parseInt(panelBlockEle.dataset.index, 10);
       const status = statuses[index];
 
       let closeEditModalFunction: () => void;

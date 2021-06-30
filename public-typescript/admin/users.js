@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const getUserFromEventFunction = (clickEvent) => {
         const buttonEle = clickEvent.currentTarget;
         const trEle = buttonEle.closest("tr");
-        const userIndex = Number.parseInt(trEle.getAttribute("data-index"), 10);
+        const userIndex = Number.parseInt(trEle.dataset.index, 10);
         const user = users[userIndex];
         return {
             buttonEle,

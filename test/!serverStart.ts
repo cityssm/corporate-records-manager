@@ -1,3 +1,5 @@
+/* eslint-disable node/no-unpublished-import */
+
 import * as assert from "assert";
 
 import * as pool from "@cityssm/mssql-multi-pool";
@@ -15,7 +17,7 @@ import * as configFns from "../helpers/configFns.js";
 describe("corporate-records-manager", () => {
 
   let httpServer: http.Server;
-  const portNumber = 54333;
+  const portNumber = 54_333;
 
   let serverStarted = false;
 

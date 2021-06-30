@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const getStatusTypeFromEventFunction = (clickEvent) => {
         const buttonEle = clickEvent.currentTarget;
         const trEle = buttonEle.closest("tr");
-        const statusTypeIndex = Number.parseInt(trEle.getAttribute("data-index"), 10);
+        const statusTypeIndex = Number.parseInt(trEle.dataset.index, 10);
         const statusType = statusTypes[statusTypeIndex];
         return {
             buttonEle,

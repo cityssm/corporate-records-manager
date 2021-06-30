@@ -28,4 +28,4 @@ When creating a new record, not all of the options will be available until the r
 
 ## Related Documentation
 
-- [Finding Records](search.md)
+-   [Finding Records](search.md)

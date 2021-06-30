@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const openEditCommentModalFunction = (clickEvent) => {
         clickEvent.preventDefault();
         const panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
-        const index = Number.parseInt(panelBlockEle.getAttribute("data-index"), 10);
+        const index = Number.parseInt(panelBlockEle.dataset.index, 10);
         const comment = comments[index];
         let closeEditModalFunction;
         const editFunction = (formEvent) => {

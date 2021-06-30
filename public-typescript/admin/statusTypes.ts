@@ -22,7 +22,7 @@ declare const cityssm: cityssmGlobal;
 
     const trEle = buttonEle.closest("tr");
 
-    const statusTypeIndex = Number.parseInt(trEle.getAttribute("data-index"), 10);
+    const statusTypeIndex = Number.parseInt(trEle.dataset.index, 10);
     const statusType = statusTypes[statusTypeIndex];
 
     return {

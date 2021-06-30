@@ -38,7 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tagEle.remove();
             setUnsavedChangesFunction();
         };
-        const tag = tagEle.querySelectorAll("input")[0].value;
+        const tag = tagEle.querySelector("input").value;
         cityssm.confirmModal("Remove Tag?", "Are you sure you want to remove the <span class=\"tag\">" + cityssm.escapeHTML(tag) + "</span> tag?", "Yes, Remove the Tag", "warning", removeFunction);
     };
     const openAddTagModalFunction = () => {
@@ -112,7 +112,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const lockToggleFunction = (clickEvent) => {
         clickEvent.preventDefault();
         const fieldEle = clickEvent.currentTarget.closest(".field");
-        const inputEle = fieldEle.querySelectorAll("input")[0];
+        const inputEle = fieldEle.querySelector("input");
         const iconEles = inputEle.nextElementSibling.children;
         if (inputEle.hasAttribute("readonly")) {
             inputEle.removeAttribute("readonly");
