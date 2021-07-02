@@ -5,6 +5,7 @@ $modal-content-width: 900px;
 
 @import '@cityssm/bulma-a11y/bulma-a11y';
 @import '@creativebulma/bulma-tooltip/src/sass/index';
+@import '@cityssm/bulma-sticky-table/sticky-table';
 @import '../lib/fontsource-barlow/latin.css';
 
 .has-height-auto {
@@ -88,33 +89,4 @@ main {
 .icon[data-tooltip],
 .panel-icon[data-tooltip] {
   border-bottom: 0;
-}
-
-.table.has-sticky-header {
-  thead th {
-    @if $table-head-background-color == 'transparent' or $table-head-background-color == rgba(0, 0, 0, 0) {
-      background-color: $table-background-color;
-    }
-
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
-
-  &.is-bordered {
-    border-collapse: separate;
-
-    th,
-    td {
-      border-bottom-width: 0;
-
-      &:not(:last-child) {
-        border-right-width: 0;
-      }
-
-      tbody tr:first-child & {
-        border-top-width: 0;
-      }
-    }
-  }
 }
