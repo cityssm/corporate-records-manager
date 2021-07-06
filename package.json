@@ -32,7 +32,7 @@
     "@cityssm/date-diff": "^2.2.1",
     "@cityssm/docushare": "^1.0.1",
     "@cityssm/express-abuse-points": "^1.0.0",
-    "@cityssm/expressjs-server-js": "^2.0.1",
+    "@cityssm/expressjs-server-js": "^2.1.0",
     "@cityssm/mssql-multi-pool": "^1.5.0",
     "@cityssm/simple-password-generator": "^2.0.2",
     "@fontsource/barlow": "^4.4.5",
