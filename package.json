@@ -34,7 +34,7 @@
     "@cityssm/express-abuse-points": "^1.0.0",
     "@cityssm/expressjs-server-js": "^2.0.1",
     "@cityssm/mssql-multi-pool": "^1.5.0",
-    "@cityssm/simple-password-generator": "^2.0.2",
+    "@cityssm/simple-password-generator": "^2.1.0",
     "@fontsource/barlow": "^4.4.5",
     "@fortawesome/fontawesome-free": "^5.15.3",
     "compression": "^1.7.4",
