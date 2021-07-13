@@ -35,7 +35,7 @@ but will likely run in environments that support the following.
 -   Download the [latest release](https://github.com/cityssm/corporate-records-manager/releases), or clone the repository to a folder of your choice.
 -   Use the [`sql/createTables.sql`](sql/createTables.sql) script to create the SQL Server database.
 -   Run `npm install` to grab the dependencies.
--   Create a `data/config.js` file.  The properties are described in the [Setup and Configuration documentation](docs/setup.md).  Use [`data/config-sample.js`](data/config-sample.js) as a guide.
+-   Create a `data/config.js` file.  The properties are described in the [Setup and Configuration documentation](docs/setup.md).  Use [`data/configSample.js`](data/configSample.js) as a guide.
 -   Run `npm start`.
 
 Windows service install scripts are available as well.
