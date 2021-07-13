@@ -1,6 +1,6 @@
 {
   "name": "corporate-records-manager",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "private": true,
   "description": "A system for tracking various corporate records administered by the Clerks Department.",
   "homepage": "https://github.com/cityssm/corporate-records-manager#readme",
