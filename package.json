@@ -73,7 +73,7 @@
     "@types/mssql": "^7.1.1",
     "@types/papaparse": "^5.2.6",
     "@types/set-interval-async": "^1.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
     "@typescript-eslint/parser": "^4.28.3",
     "bulma": "^0.9.3",
     "eslint": "^7.30.0",
