@@ -55,13 +55,12 @@ declare const cityssm: cityssmGlobal;
 
           const previousButtonEle = document.createElement("button");
 
-          previousButtonEle.className = "button is-light is-info has-tooltip-left has-tooltip-arrow";
+          previousButtonEle.className = "button is-light is-info has-tooltip-left has-tooltip-arrow is-previous-button";
           previousButtonEle.dataset.tooltip = "Previous Results";
           previousButtonEle.type = "button";
           previousButtonEle.setAttribute("aria-label", "Previous Results");
           previousButtonEle.innerHTML = "<i class=\"fas fa-arrow-left\" aria-hidden=\"true\"></i>";
 
-          previousButtonEle.addEventListener("click", previousFunction);
 
           pagerEle.querySelectorAll(".span")[1].append(previousButtonEle);
         }
@@ -70,13 +69,12 @@ declare const cityssm: cityssmGlobal;
 
           const nextButtonEle = document.createElement("button");
 
-          nextButtonEle.className = "button is-outlined is-info ml-1";
+          nextButtonEle.className = "button is-outlined is-info ml-1 is-next-button";
           nextButtonEle.type = "button";
           nextButtonEle.setAttribute("aria-label", "Next Results");
           nextButtonEle.innerHTML = "<span>Next</span>" +
             "<span class=\"icon\"><i class=\"fas fa-arrow-right\" aria-hidden=\"true\"></i></span>";
 
-          nextButtonEle.addEventListener("click", nextFunction);
 
           pagerEle.querySelectorAll(".span")[1].append(nextButtonEle);
         }
@@ -95,6 +93,19 @@ declare const cityssm: cityssmGlobal;
         searchResultsContainerEle.innerHTML = "";
         searchResultsContainerEle.append(pagerEle);
         searchResultsContainerEle.append(panelEle);
+        searchResultsContainerEle.append(pagerEle.cloneNode(true));
+
+        const nextButtonElements = searchResultsContainerEle.querySelectorAll(".is-next-button");
+
+        for (const nextButtonElement of nextButtonElements) {
+          nextButtonElement.addEventListener("click", nextFunction);
+        }
+
+        const previousButtonElements = searchResultsContainerEle.querySelectorAll(".is-previous-button");
+
+        for (const previousButtonElement of previousButtonElements) {
+          previousButtonElement.addEventListener("click", previousFunction);
+        }
       });
   };
 

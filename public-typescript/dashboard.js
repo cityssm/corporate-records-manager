@@ -32,22 +32,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "<div class=\"span has-text-right\"></div>";
             if (offset !== 0) {
                 const previousButtonEle = document.createElement("button");
-                previousButtonEle.className = "button is-light is-info has-tooltip-left has-tooltip-arrow";
+                previousButtonEle.className = "button is-light is-info has-tooltip-left has-tooltip-arrow is-previous-button";
                 previousButtonEle.dataset.tooltip = "Previous Results";
                 previousButtonEle.type = "button";
                 previousButtonEle.setAttribute("aria-label", "Previous Results");
                 previousButtonEle.innerHTML = "<i class=\"fas fa-arrow-left\" aria-hidden=\"true\"></i>";
-                previousButtonEle.addEventListener("click", previousFunction);
                 pagerEle.querySelectorAll(".span")[1].append(previousButtonEle);
             }
             if (limit + offset < responseJSON.count) {
                 const nextButtonEle = document.createElement("button");
-                nextButtonEle.className = "button is-outlined is-info ml-1";
+                nextButtonEle.className = "button is-outlined is-info ml-1 is-next-button";
                 nextButtonEle.type = "button";
                 nextButtonEle.setAttribute("aria-label", "Next Results");
                 nextButtonEle.innerHTML = "<span>Next</span>" +
                     "<span class=\"icon\"><i class=\"fas fa-arrow-right\" aria-hidden=\"true\"></i></span>";
-                nextButtonEle.addEventListener("click", nextFunction);
                 pagerEle.querySelectorAll(".span")[1].append(nextButtonEle);
             }
             const panelEle = document.createElement("div");
@@ -61,6 +59,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             searchResultsContainerEle.innerHTML = "";
             searchResultsContainerEle.append(pagerEle);
             searchResultsContainerEle.append(panelEle);
+            searchResultsContainerEle.append(pagerEle.cloneNode(true));
+            const nextButtonElements = searchResultsContainerEle.querySelectorAll(".is-next-button");
+            for (const nextButtonElement of nextButtonElements) {
+                nextButtonElement.addEventListener("click", nextFunction);
+            }
+            const previousButtonElements = searchResultsContainerEle.querySelectorAll(".is-previous-button");
+            for (const previousButtonElement of previousButtonElements) {
+                previousButtonElement.addEventListener("click", previousFunction);
+            }
         });
     };
     const previousFunction = (clickEvent) => {
