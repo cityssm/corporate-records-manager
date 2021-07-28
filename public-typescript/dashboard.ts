@@ -61,7 +61,6 @@ declare const cityssm: cityssmGlobal;
           previousButtonEle.setAttribute("aria-label", "Previous Results");
           previousButtonEle.innerHTML = "<i class=\"fas fa-arrow-left\" aria-hidden=\"true\"></i>";
 
-
           pagerEle.querySelectorAll(".span")[1].append(previousButtonEle);
         }
 
@@ -74,7 +73,6 @@ declare const cityssm: cityssmGlobal;
           nextButtonEle.setAttribute("aria-label", "Next Results");
           nextButtonEle.innerHTML = "<span>Next</span>" +
             "<span class=\"icon\"><i class=\"fas fa-arrow-right\" aria-hidden=\"true\"></i></span>";
-
 
           pagerEle.querySelectorAll(".span")[1].append(nextButtonEle);
         }
