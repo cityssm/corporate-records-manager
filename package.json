@@ -84,6 +84,6 @@
     "gulp-concat": "^2.6.1",
     "gulp-minify": "^3.1.0",
     "nodemon": "^2.0.12",
-    "puppeteer": "^10.1.0"
+    "puppeteer": "^10.2.0"
   }
 }
