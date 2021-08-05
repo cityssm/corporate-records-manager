@@ -36,7 +36,7 @@
     "@cityssm/mssql-multi-pool": "^2.0.0",
     "@cityssm/simple-password-generator": "^2.1.0",
     "@fontsource/barlow": "^4.5.0",
-    "@fortawesome/fontawesome-free": "^5.15.3",
+    "@fortawesome/fontawesome-free": "^5.15.4",
     "compression": "^1.7.4",
     "connect-sqlite3": "^0.9.11",
     "cookie-parser": "^1.4.5",
