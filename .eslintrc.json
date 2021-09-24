@@ -36,6 +36,14 @@
     "unicorn/prefer-node-protocol": "off",
     "unicorn/prevent-abbreviations": [
       "error", {
+        "replacements": {
+          "ele": {
+            "element": true
+          },
+          "eles": {
+            "elements": true
+          }
+        },
         "allowList": {
           "tempAdmin": true
         }

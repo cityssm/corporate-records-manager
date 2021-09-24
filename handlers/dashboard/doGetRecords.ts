@@ -9,6 +9,7 @@ export const handler: RequestHandler = async (request, response) => {
     recordTypeKey: request.body.recordTypeKey,
     searchString: request.body.searchString,
     recordNumber: request.body.recordNumber,
+    recordTag: request.body.recordTag,
     recordDateStringGTE: request.body["recordDateString-gte"],
     recordDateStringLTE: request.body["recordDateString-lte"]
   }, {

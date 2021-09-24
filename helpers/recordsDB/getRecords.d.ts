@@ -7,6 +7,7 @@ export declare const getRecords: (parameters: {
     recordTypeKey: string;
     searchString: string;
     recordNumber?: string;
+    recordTag?: string;
     recordDateStringGTE?: string;
     recordDateStringLTE?: string;
 }, options: {

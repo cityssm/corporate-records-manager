@@ -18,6 +18,7 @@ export const getRecords = async (parameters: {
   recordTypeKey: string;
   searchString: string;
   recordNumber?: string;
+  recordTag?: string;
   recordDateStringGTE?: string;
   recordDateStringLTE?: string;
 }, options: {
@@ -49,6 +50,12 @@ export const getRecords = async (parameters: {
       countRequest = countRequest.input("recordNumber", parameters.recordNumber);
       resultsRequest = resultsRequest.input("recordNumber", parameters.recordNumber);
       whereSQL += " and recordNumber like '%' + @recordNumber + '%'";
+    }
+
+    if (parameters.recordTag && parameters.recordTag !== "") {
+      countRequest = countRequest.input("recordTag", parameters.recordTag);
+      resultsRequest = resultsRequest.input("recordTag", parameters.recordTag);
+      whereSQL += " and t.tagCSV like '%' + @recordTag + '%'";
     }
 
     if (parameters.recordDateStringGTE && parameters.recordDateStringGTE !== "") {
@@ -84,7 +91,9 @@ export const getRecords = async (parameters: {
       }
     }
 
-    const countResult = await countRequest.query("select count(*) as cnt from CR.Records" + whereSQL);
+    const countResult = await countRequest.query("select count(*) as cnt from CR.Records r" +
+      " left join CR.RecordTagCSV t on r.recordID = t.recordID" +
+      whereSQL);
 
     returnObject.count = countResult.recordset[0].cnt;
 
@@ -93,11 +102,12 @@ export const getRecords = async (parameters: {
     }
 
     const result = await resultsRequest.query("select top " + (options.limit + options.offset).toString() +
-      " recordID, recordTypeKey, recordNumber," +
+      " r.recordID, recordTypeKey, recordNumber," +
       " recordTitle, recordDescription, party, location, recordDate," +
       " recordCreate_userName, recordCreate_datetime," +
       " recordUpdate_userName, recordUpdate_datetime" +
-      " from CR.Records" +
+      " from CR.Records r" +
+      " left join CR.RecordTagCSV t on r.recordID = t.recordID" +
       whereSQL +
       " order by recordDate desc, recordCreate_datetime desc, recordNumber desc");
 

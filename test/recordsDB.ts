@@ -99,6 +99,17 @@ describe("recordsDB - getRecords()", () => {
     assert.strictEqual(typeof (records), "object");
   });
 
+  it("filters by recordTag", async () => {
+    const records = await getRecords({
+      recordTypeKey: "",
+      recordTag: "agreement",
+      searchString: ""
+    },
+      limitOffset);
+
+    assert.strictEqual(typeof (records), "object");
+  });
+
   it("filters by recordDateStringGTE", async () => {
     const records = await getRecords({
       recordTypeKey: "",
