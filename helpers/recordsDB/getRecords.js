@@ -25,7 +25,7 @@ export const getRecords = async (parameters, options) => {
         if (parameters.recordTag && parameters.recordTag !== "") {
             countRequest = countRequest.input("recordTag", parameters.recordTag);
             resultsRequest = resultsRequest.input("recordTag", parameters.recordTag);
-            whereSQL += " and t.tagCSV like '%' + @recordTag + '%'";
+            whereSQL += " and recordID in (select recordID from CR.RecordTags where tag like '%' + @recordTag + '%')";
         }
         if (parameters.recordDateStringGTE && parameters.recordDateStringGTE !== "") {
             countRequest = countRequest.input("recordDateStringGTE", parameters.recordDateStringGTE);
@@ -52,20 +52,18 @@ export const getRecords = async (parameters, options) => {
                     ")";
             }
         }
-        const countResult = await countRequest.query("select count(*) as cnt from CR.Records r" +
-            " left join CR.RecordTagCSV t on r.recordID = t.recordID" +
+        const countResult = await countRequest.query("select count(*) as cnt from CR.Records" +
             whereSQL);
         returnObject.count = countResult.recordset[0].cnt;
         if (returnObject.count === 0) {
             return returnObject;
         }
         const result = await resultsRequest.query("select top " + (options.limit + options.offset).toString() +
-            " r.recordID, recordTypeKey, recordNumber," +
+            " recordID, recordTypeKey, recordNumber," +
             " recordTitle, recordDescription, party, location, recordDate," +
             " recordCreate_userName, recordCreate_datetime," +
             " recordUpdate_userName, recordUpdate_datetime" +
-            " from CR.Records r" +
-            " left join CR.RecordTagCSV t on r.recordID = t.recordID" +
+            " from CR.Records" +
             whereSQL +
             " order by recordDate desc, recordCreate_datetime desc, recordNumber desc");
         returnObject.records = result.recordset.slice(options.offset);
