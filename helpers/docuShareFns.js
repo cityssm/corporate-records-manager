@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export const doSetup = () => {
     ds.setupJava({
-        dsapiPath: path.join(__dirname, "..", "java", "dsapi.jar")
+        dsapiPath: [path.join(__dirname, "..", "java", "dsapi.jar")]
     });
     ds.setupServer(configFns.getProperty("integrations.docuShare.server"));
     ds.setupSession(configFns.getProperty("integrations.docuShare.session"));
