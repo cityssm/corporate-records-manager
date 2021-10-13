@@ -77,7 +77,7 @@
     "@typescript-eslint/parser": "^4.31.2",
     "bulma": "^0.9.3",
     "eslint": "^7.32.0",
-    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-unicorn": "^36.0.0",
     "gulp": "^4.0.2",
