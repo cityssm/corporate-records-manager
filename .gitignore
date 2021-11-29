@@ -5,4 +5,5 @@ dsapi.jar
 
 coverage/
 data/config.*
+data/sessions/
 node_modules/
