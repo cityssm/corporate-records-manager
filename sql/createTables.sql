@@ -4,6 +4,7 @@ GO
 
 create table CR.Users (
 	userName varchar(30) primary key not null,
+	fullName nvarchar(200),
 	isActive bit not null default 0,
 	canUpdate bit not null default 0,
 	isAdmin bit not null default 0
