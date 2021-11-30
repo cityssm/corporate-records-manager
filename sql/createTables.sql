@@ -218,6 +218,8 @@ GO
 
 
 create table CR.RecordUsers (
+	recordUserID bigint primary key identity,
+
 	recordID bigint not null,
 	userName varchar(30) not null,
 	recordUserTypeKey varchar(30) not null,
@@ -229,7 +231,7 @@ create table CR.RecordUsers (
 	recordDelete_userName varchar(30),
 	recordDelete_datetime datetime,
 
-	constraint pk_recordusers primary key (recordID, userName, recordUserTypeKey),
+	constraint u_recordusers unique (recordID, userName, recordUserTypeKey),
 
 	constraint fk_recordusers_recordid foreign key (recordID) references CR.Records (recordID)
 	on update no action
