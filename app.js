@@ -26,6 +26,7 @@ import debug from "debug";
 const debugApp = debug("corporate-records-manager:app");
 export const tempAdmin = {
     userName: "~tempAdmin",
+    fullName: "Temporary Administrator",
     canUpdate: false,
     isAdmin: true,
     password: generatePassword({
@@ -34,7 +35,7 @@ export const tempAdmin = {
     })
 };
 if (configFns.getProperty("application.enableTempAdminUser")) {
-    debugApp("WARNING: ~tempAdmin currently enabled.");
+    debugApp("WARNING:" + tempAdmin.userName + " (" + tempAdmin.fullName + ") currently enabled.");
 }
 export const app = express();
 if (!configFns.getProperty("reverseProxy.disableEtag")) {

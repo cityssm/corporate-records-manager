@@ -36,6 +36,7 @@ const debugApp = debug("corporate-records-manager:app");
 
 export const tempAdmin: User = {
   userName: "~tempAdmin",
+  fullName: "Temporary Administrator",
   canUpdate: false,
   isAdmin: true,
   password: generatePassword({
@@ -45,7 +46,7 @@ export const tempAdmin: User = {
 };
 
 if (configFns.getProperty("application.enableTempAdminUser")) {
-  debugApp("WARNING: ~tempAdmin currently enabled.");
+  debugApp("WARNING:" + tempAdmin.userName + " (" + tempAdmin.fullName + ") currently enabled.");
 }
 
 
