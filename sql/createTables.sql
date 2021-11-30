@@ -201,3 +201,42 @@ create table CR.RecordURLs (
 	on delete no action
 )
 GO
+
+
+create table CR.RecordUserTypes (
+	recordUserTypeKey varchar(30) primary key not null,
+	recordUserType varchar(100) not null,
+	orderNumber tinyint not null default 0,
+	isActive bit not null default 1
+)
+GO
+
+
+insert into CR.RecordUserTypes (recordUserTypeKey, recordUserType, orderNumber, isActive) values ('authority-delegated', 'Delegated Authority', 0, 1)
+
+GO
+
+
+create table CR.RecordUsers (
+	recordID bigint not null,
+	userName varchar(30) not null,
+	recordUserTypeKey varchar(30) not null,
+
+	recordCreate_userName varchar(30) not null,
+	recordCreate_datetime datetime not null default getdate(),
+	recordUpdate_userName varchar(30) not null,
+	recordUpdate_datetime datetime not null default getdate(),
+	recordDelete_userName varchar(30),
+	recordDelete_datetime datetime,
+
+	constraint pk_recordusers primary key (recordID, userName, recordUserTypeKey),
+
+	constraint fk_recordusers_recordid foreign key (recordID) references CR.Records (recordID)
+	on update no action
+	on delete no action,
+
+	constraint fk_recordusers_recordusertypekey foreign key (recordUserTypeKey) references CR.RecordUserTypes (recordUserTypeKey)
+	on update no action
+	on delete no action
+)
+GO
