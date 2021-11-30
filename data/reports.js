@@ -64,6 +64,15 @@ export const reports = {
                 " from CR.RecordStatusLog";
         }
     },
+    "table:RecordUsers": {
+        sql: () => {
+            return "select recordUserID, recordID, userName, recordUserTypeKey," +
+                " recordCreate_userName, recordCreate_datetime," +
+                " recordUpdate_userName, recordUpdate_datetime," +
+                " recordDelete_userName, recordDelete_datetime" +
+                " from CR.RecordUsers";
+        }
+    },
     "table:RecordURLs": {
         sql: () => {
             return "select urlID, recordID, url, urlTitle, urlDescription," +
