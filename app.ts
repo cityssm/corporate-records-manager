@@ -113,6 +113,9 @@ app.use(urlPrefix, express.static("public"));
 app.use(urlPrefix + "/lib/fontsource-barlow",
   express.static(path.join("node_modules", "@fontsource", "barlow")));
 
+app.use(urlPrefix + "/lib/bulma-js",
+  express.static(path.join("node_modules", "@cityssm", "bulma-js", "dist")));
+
 app.use(urlPrefix + "/lib/bulma-webapp-js",
   express.static(path.join("node_modules", "@cityssm", "bulma-webapp-js", "dist")));
 

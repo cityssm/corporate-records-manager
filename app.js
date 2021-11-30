@@ -67,6 +67,7 @@ app.use(limiter);
 const urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
 app.use(urlPrefix, express.static("public"));
 app.use(urlPrefix + "/lib/fontsource-barlow", express.static(path.join("node_modules", "@fontsource", "barlow")));
+app.use(urlPrefix + "/lib/bulma-js", express.static(path.join("node_modules", "@cityssm", "bulma-js", "dist")));
 app.use(urlPrefix + "/lib/bulma-webapp-js", express.static(path.join("node_modules", "@cityssm", "bulma-webapp-js", "dist")));
 app.use(urlPrefix + "/lib/date-diff", express.static(path.join("node_modules", "@cityssm", "date-diff", "es2015")));
 app.use(urlPrefix + "/lib/fa5", express.static(path.join("node_modules", "@fortawesome", "fontawesome-free")));

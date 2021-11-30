@@ -28,7 +28,8 @@
   },
   "dependencies": {
     "@cityssm/ad-web-auth-connector": "^0.1.0",
-    "@cityssm/bulma-webapp-js": "^1.4.3",
+    "@cityssm/bulma-js": "^0.3.1",
+    "@cityssm/bulma-webapp-js": "^1.5.0",
     "@cityssm/date-diff": "^2.2.3",
     "@cityssm/docushare": "^1.1.1",
     "@cityssm/express-abuse-points": "^1.0.1",
@@ -72,9 +73,10 @@
     "@types/mocha": "^9.0.0",
     "@types/mssql": "^7.1.4",
     "@types/papaparse": "^5.3.1",
+    "@types/session-file-store": "^1.2.2",
     "@types/set-interval-async": "^1.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "@typescript-eslint/parser": "^5.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
     "bulma": "^0.9.3",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.25.3",
@@ -84,6 +86,6 @@
     "gulp-concat": "^2.6.1",
     "gulp-minify": "^3.1.0",
     "nodemon": "^2.0.15",
-    "puppeteer": "^12.0.0"
+    "puppeteer": "^12.0.1"
   }
 }
