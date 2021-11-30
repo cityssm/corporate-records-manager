@@ -7,7 +7,7 @@ declare const cityssm: cityssmGlobal;
 export interface CRMEdit {
   recordID: string;
   getLoadingPanelBlockHTML: (sectionName: string) => string;
-  clearPanelBlocksFunction: (panelEle: HTMLElement) => void;
+  clearPanelBlocksFunction: (panelElement: HTMLElement) => void;
 }
 
 
@@ -52,13 +52,12 @@ export interface CRMEdit {
         "Loading " + sectionName + "..." +
         "</div>";
     },
-    clearPanelBlocksFunction: (panelEle) => {
+    clearPanelBlocksFunction: (panelElement) => {
 
-      const panelBlockEles = panelEle.querySelectorAll(".panel-block");
+      const panelBlockElements = panelElement.querySelectorAll(".panel-block");
 
-      for (let index = 0; index < panelBlockEles.length; index += 1) {
-        panelBlockEles[index].remove();
-        index -= 1;
+      for (const panelBlockElement of panelBlockElements) {
+        panelBlockElement.remove();
       }
     }
   };

@@ -17,6 +17,7 @@ const editJavascriptFunction = () => {
     return gulp.src([
         "public-typescript/edit/main.js",
         "public-typescript/edit/recordStatuses.js",
+        "public-typescript/edit/recordUsers.js",
         "public-typescript/edit/recordURLs.js",
         "public-typescript/edit/relatedRecords.js",
         "public-typescript/edit/recordComments.js"

@@ -6,6 +6,7 @@ import { getRecordStatuses } from "./getRecordStatuses.js";
 import { getRecordURLs } from "./getRecordURLs.js";
 import { getRelatedRecords } from "./getRelatedRecords.js";
 import { getRecordComments } from "./getRecordComments.js";
+import { getRecordUsers } from "./getRecordUsers.js";
 
 import type * as sqlTypes from "mssql";
 import type { Record } from "../../types/recordTypes";
@@ -41,6 +42,7 @@ export const getRecord = async (recordID: number | string): Promise<Record> => {
     record.urls = await getRecordURLs(recordID);
     record.related = await getRelatedRecords(recordID);
     record.comments = await getRecordComments(recordID);
+    record.users = await getRecordUsers(recordID);
 
     return record;
 

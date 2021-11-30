@@ -24,12 +24,14 @@ export const handler: RequestHandler = async (request, response) => {
   }
 
   const statusTypes = await configCache.getStatusTypes(record.recordTypeKey);
+  const recordUserTypes = await configCache.getRecordUserTypes();
 
   response.render(request.query.view === "print" ? "print" : "view", {
     headTitle: recordType.recordType + " " + record.recordNumber,
     recordType,
     record,
-    statusTypes
+    statusTypes,
+    recordUserTypes
   });
 };
 

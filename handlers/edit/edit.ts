@@ -26,13 +26,15 @@ export const handler: RequestHandler = async (request, response) => {
   }
 
   const statusTypes = await configCache.getStatusTypes(record.recordTypeKey);
+  const recordUserTypes = await configCache.getRecordUserTypes();
 
   response.render("edit", {
     headTitle: recordType.recordType + " " + record.recordNumber + " Update",
     isNew: false,
     recordType,
     record,
-    statusTypes
+    statusTypes,
+    recordUserTypes
   });
 };
 

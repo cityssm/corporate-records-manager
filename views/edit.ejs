@@ -130,7 +130,7 @@
               <span>Save Record Changes</span>
             </button>
             <% if (!isNew) { %>
-              <div class="dropdown is-right is-hoverable">
+              <div class="dropdown is-right">
                 <div class="dropdown-trigger">
                   <button class="button" type="button" aria-haspopup="true" aria-controls="dropdown-menu--more">
                     <span>Options</span>
@@ -176,6 +176,17 @@
           </div>
         </div>
       <% } %>
+      <div class="panel" id="panel--users">
+        <div class="panel-heading is-flex is-justify-content-space-between">
+          <h2 class="has-text-weight-bold">Users</h2>
+          <% if (recordUserTypes.length > 0) { %>
+            <button class="button is-small is-light is-success" id="is-add-user-button" type="button">
+              <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+              <span>Add User</span>
+            </button>
+          <% } %>
+        </div>
+      </div>
       <div class="panel" id="panel--urls">
         <div class="panel-heading is-flex is-justify-content-space-between">
           <h2 class="has-text-weight-bold">Links</h2>
@@ -226,12 +237,15 @@
     exports.recordURLs = <%- JSON.stringify(record.urls) %>;
     exports.relatedRecords = <%- JSON.stringify(record.related) %>;
     exports.recordComments = <%- JSON.stringify(record.comments) %>;
+    exports.recordUsers = <%- JSON.stringify(record.users) %>;
   <% } %>
 
   // Config Values
   <% if (statusTypes) { %>
     exports.statusTypes = <%- JSON.stringify(statusTypes) %>;
   <% } %>
+
+  exports.recordUserTypes = <%- JSON.stringify(recordUserTypes) %>;
 
   <% if (configFns.getProperty("integrations.docuShare.isEnabled")) { %>
     exports.docuShareCollectionHandles = <%- JSON.stringify(configFns.getProperty("integrations.docuShare.collectionHandles")) %>;

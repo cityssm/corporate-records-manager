@@ -5,11 +5,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const crmEdit = exports.crmEdit;
     let comments = exports.recordComments;
     delete exports.recordComments;
-    const commentPanelEle = document.querySelector("#panel--comments");
+    const commentPanelElement = document.querySelector("#panel--comments");
     const openEditCommentModalFunction = (clickEvent) => {
         clickEvent.preventDefault();
-        const panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
-        const index = Number.parseInt(panelBlockEle.dataset.index, 10);
+        const panelBlockElement = clickEvent.currentTarget.closest(".panel-block");
+        const index = Number.parseInt(panelBlockElement.dataset.index, 10);
         const comment = comments[index];
         let closeEditModalFunction;
         const editFunction = (formEvent) => {
@@ -33,15 +33,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 document.querySelector("#editComment--comment").value = comment.comment;
                 document.querySelector("#form--editComment").addEventListener("submit", editFunction);
             },
-            onshown: (_modalEle, closeModalFunction) => {
+            onshown: (_modalElement, closeModalFunction) => {
                 closeEditModalFunction = closeModalFunction;
+                bulmaJS.toggleHtmlClipped();
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
             }
         });
     };
     const openRemoveCommentModalFunction = (clickEvent) => {
         clickEvent.preventDefault();
-        const panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
-        const index = Number.parseInt(panelBlockEle.dataset.index, 10);
+        const panelBlockElement = clickEvent.currentTarget.closest(".panel-block");
+        const index = Number.parseInt(panelBlockElement.dataset.index, 10);
         const comment = comments[index];
         const removeFunction = () => {
             cityssm.postJSON(urlPrefix + "/edit/doRemoveComment", {
@@ -49,7 +53,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (responseJSON) => {
                 if (responseJSON.success) {
                     comments.splice(index, 1);
-                    crmEdit.clearPanelBlocksFunction(commentPanelEle);
+                    crmEdit.clearPanelBlocksFunction(commentPanelElement);
                     renderCommentsFunction();
                 }
                 else {
@@ -60,12 +64,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.confirmModal("Remove Comment", "Are you sure you want to remove this comment?", "Yes, Remove the Comment", "warning", removeFunction);
     };
     const renderCommentFunction = (comment, index) => {
-        const panelBlockEle = document.createElement("div");
-        panelBlockEle.className = "panel-block is-block";
-        panelBlockEle.dataset.commentLogId = comment.commentLogID.toString();
-        panelBlockEle.dataset.index = index.toString();
+        const panelBlockElement = document.createElement("div");
+        panelBlockElement.className = "panel-block is-block";
+        panelBlockElement.dataset.commentLogId = comment.commentLogID.toString();
+        panelBlockElement.dataset.index = index.toString();
         const commentTime = new Date(comment.commentTime);
-        panelBlockEle.innerHTML = "<div class=\"columns\">" +
+        panelBlockElement.innerHTML = "<div class=\"columns\">" +
             ("<div class=\"column\">" +
                 "<span class=\"has-tooltip-arrow has-tooltip-right\" data-tooltip=\"" + cityssm.dateToTimeString(commentTime) + "\">" + cityssm.dateToString(commentTime) + "</span><br />" +
                 "<span class=\"is-size-7\">" + cityssm.escapeHTML(comment.comment) + "</span>" +
@@ -80,15 +84,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "</button>" +
                 "</div>") +
             "</div>";
-        const buttonEles = panelBlockEle.querySelectorAll("button");
-        buttonEles[0].addEventListener("click", openEditCommentModalFunction);
-        buttonEles[1].addEventListener("click", openRemoveCommentModalFunction);
-        commentPanelEle.append(panelBlockEle);
+        const buttonElements = panelBlockElement.querySelectorAll("button");
+        buttonElements[0].addEventListener("click", openEditCommentModalFunction);
+        buttonElements[1].addEventListener("click", openRemoveCommentModalFunction);
+        commentPanelElement.append(panelBlockElement);
     };
     const renderCommentsFunction = () => {
-        crmEdit.clearPanelBlocksFunction(commentPanelEle);
+        crmEdit.clearPanelBlocksFunction(commentPanelElement);
         if (comments.length === 0) {
-            commentPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+            commentPanelElement.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
                 "<div class=\"message is-info\">" +
                 "<div class=\"message-body\">This record has no comments.</div>" +
                 "</div>" +
@@ -100,9 +104,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     };
     const getComments = () => {
-        crmEdit.clearPanelBlocksFunction(commentPanelEle);
+        crmEdit.clearPanelBlocksFunction(commentPanelElement);
         comments = [];
-        commentPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Comments"));
+        commentPanelElement.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Comments"));
         cityssm.postJSON(urlPrefix + "/view/doGetComments", {
             recordID: crmEdit.recordID
         }, (responseJSON) => {
@@ -111,7 +115,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 renderCommentsFunction();
             }
             else {
-                commentPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+                commentPanelElement.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
                     "<div class=\"message is-danger\"><div class=\"message-body\">" +
                     responseJSON.message +
                     "</div></div>" +
@@ -141,9 +145,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 document.querySelector("#addComment--commentDateString").value = cityssm.dateToString(rightNow);
                 document.querySelector("#addComment--commentTimeString").value = cityssm.dateToTimeString(rightNow);
             },
-            onshown: (_modalEle, closeModalFunction) => {
+            onshown: (_modalElement, closeModalFunction) => {
+                bulmaJS.toggleHtmlClipped();
                 closeAddModalFunction = closeModalFunction;
                 document.querySelector("#form--addComment").addEventListener("submit", addFunction);
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
             }
         });
     });

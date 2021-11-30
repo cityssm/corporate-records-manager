@@ -27,11 +27,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "Loading " + sectionName + "..." +
                 "</div>";
         },
-        clearPanelBlocksFunction: (panelEle) => {
-            const panelBlockEles = panelEle.querySelectorAll(".panel-block");
-            for (let index = 0; index < panelBlockEles.length; index += 1) {
-                panelBlockEles[index].remove();
-                index -= 1;
+        clearPanelBlocksFunction: (panelElement) => {
+            const panelBlockElements = panelElement.querySelectorAll(".panel-block");
+            for (const panelBlockElement of panelBlockElements) {
+                panelBlockElement.remove();
             }
         }
     };

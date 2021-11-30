@@ -107,6 +107,37 @@
         <% } %>
       </div>
     <% } %>
+    <% if (record.users.length > 0) { %>
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="columns is-mobile">
+            <div class="column">
+              <h2 class="has-text-weight-bold">Users</h2>
+            </div>
+            <div class="column is-narrow">
+              <span class="tag is-info"><%= record.users.length %></span>
+            </div>
+          </div>
+        </div>
+        <% for (let index = 0; index < record.users.length; index += 1) { %>
+          <%
+            const recordUser = record.users[index];
+            const recordUserType = recordUserTypes.find((possibleRecordUserType) => { return possibleRecordUserType.recordUserTypeKey === recordUser.recordUserTypeKey});
+          %>
+          <div class="panel-block is-block <%= (index >= 5 ? "is-hidden" : "") %>">
+            <strong><%= recordUserType ? recordUserType.recordUserType : recordUser.recordUserTypeKey %></strong><br />
+            <span><%= recordUser.userName %></span>
+          </div>
+        <% } %>
+        <% if (record.users.length > 5) { %>
+          <div class="panel-block">
+            <button class="button is-link is-outlined is-fullwidth is-show-all-button" type="button">
+              Show <%= (record.users.length - 5) %> More
+            </button>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
     <% if (record.urls.length > 0) { %>
       <div class="panel">
         <div class="panel-heading">
@@ -185,7 +216,16 @@
     <% } %>
     <% if (record.comments.length > 0) { %>
       <div class="panel">
-        <h2 class="panel-heading">Comments</h2>
+        <div class="panel-heading">
+          <div class="columns">
+            <div class="column">
+              <h2 class="has-text-weight-bold">Comments</h2>
+            </div>
+            <div class="column is-narrow">
+              <span class="tag is-info"><%= record.comments.length %></span>
+            </div>
+          </div>
+        </div>
         <% for (const comment of record.comments) { %>
           <div class="panel-block is-block">
             <span class="has-tooltip-arrow has-tooltip-right" data-tooltip="<%= dateTimeFns.dateToTimeString(comment.commentTime) %>">

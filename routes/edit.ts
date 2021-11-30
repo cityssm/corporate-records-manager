@@ -12,6 +12,9 @@ import handler_doAddStatus from "../handlers/edit/doAddStatus.js";
 import handler_doUpdateStatus from "../handlers/edit/doUpdateStatus.js";
 import handler_doRemoveStatus from "../handlers/edit/doRemoveStatus.js";
 
+import handler_doAddRecordUser from "../handlers/edit/doAddRecordUser.js";
+import handler_doRemoveRecordUser from "../handlers/edit/doRemoveRecordUser.js";
+
 import handler_doAddURL from "../handlers/edit/doAddURL.js";
 import handler_doUpdateURL from "../handlers/edit/doUpdateURL.js";
 import handler_doRemoveURL from "../handlers/edit/doRemoveURL.js";
@@ -46,6 +49,10 @@ router.post("/doGetSuggestedTags", handler_doGetSuggestedTags);
 router.post("/doAddStatus", handler_doAddStatus);
 router.post("/doUpdateStatus", handler_doUpdateStatus);
 router.post("/doRemoveStatus", handler_doRemoveStatus);
+
+
+router.post("/doAddRecordUser", handler_doAddRecordUser);
+router.post("/doRemoveRecordUser", handler_doRemoveRecordUser);
 
 
 router.post("/doAddURL", handler_doAddURL);

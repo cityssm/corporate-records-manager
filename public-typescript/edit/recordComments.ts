@@ -4,7 +4,10 @@ import type * as recordTypes from "../../types/recordTypes";
 
 import type { CRMEdit } from "./main";
 
+import type { BulmaJS } from "@cityssm/bulma-js/types";
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
+
+declare const bulmaJS: BulmaJS;
 declare const cityssm: cityssmGlobal;
 
 
@@ -16,15 +19,15 @@ declare const cityssm: cityssmGlobal;
   let comments: recordTypes.RecordComment[] = exports.recordComments;
   delete exports.recordComments;
 
-  const commentPanelEle = document.querySelector("#panel--comments") as HTMLElement;
+  const commentPanelElement = document.querySelector("#panel--comments") as HTMLElement;
 
   const openEditCommentModalFunction = (clickEvent: MouseEvent) => {
 
     clickEvent.preventDefault();
 
-    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
+    const panelBlockElement = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
 
-    const index = Number.parseInt(panelBlockEle.dataset.index, 10);
+    const index = Number.parseInt(panelBlockElement.dataset.index, 10);
     const comment = comments[index];
 
     let closeEditModalFunction: () => void;
@@ -61,8 +64,12 @@ declare const cityssm: cityssmGlobal;
 
         document.querySelector("#form--editComment").addEventListener("submit", editFunction);
       },
-      onshown: (_modalEle, closeModalFunction) => {
+      onshown: (_modalElement, closeModalFunction) => {
         closeEditModalFunction = closeModalFunction;
+        bulmaJS.toggleHtmlClipped();
+      },
+      onremoved: () => {
+        bulmaJS.toggleHtmlClipped();
       }
     });
   };
@@ -71,9 +78,9 @@ declare const cityssm: cityssmGlobal;
 
     clickEvent.preventDefault();
 
-    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
+    const panelBlockElement = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
 
-    const index = Number.parseInt(panelBlockEle.dataset.index, 10);
+    const index = Number.parseInt(panelBlockElement.dataset.index, 10);
     const comment = comments[index];
 
     const removeFunction = () => {
@@ -84,7 +91,7 @@ declare const cityssm: cityssmGlobal;
 
         if (responseJSON.success) {
           comments.splice(index, 1);
-          crmEdit.clearPanelBlocksFunction(commentPanelEle);
+          crmEdit.clearPanelBlocksFunction(commentPanelElement);
           renderCommentsFunction();
 
         } else {
@@ -105,14 +112,14 @@ declare const cityssm: cityssmGlobal;
 
   const renderCommentFunction = (comment: recordTypes.RecordComment, index: number) => {
 
-    const panelBlockEle = document.createElement("div");
-    panelBlockEle.className = "panel-block is-block";
-    panelBlockEle.dataset.commentLogId = comment.commentLogID.toString();
-    panelBlockEle.dataset.index = index.toString();
+    const panelBlockElement = document.createElement("div");
+    panelBlockElement.className = "panel-block is-block";
+    panelBlockElement.dataset.commentLogId = comment.commentLogID.toString();
+    panelBlockElement.dataset.index = index.toString();
 
     const commentTime = new Date(comment.commentTime);
 
-    panelBlockEle.innerHTML = "<div class=\"columns\">" +
+    panelBlockElement.innerHTML = "<div class=\"columns\">" +
       ("<div class=\"column\">" +
         "<span class=\"has-tooltip-arrow has-tooltip-right\" data-tooltip=\"" + cityssm.dateToTimeString(commentTime) + "\">" + cityssm.dateToString(commentTime) + "</span><br />" +
         "<span class=\"is-size-7\">" + cityssm.escapeHTML(comment.comment) + "</span>" +
@@ -128,19 +135,19 @@ declare const cityssm: cityssmGlobal;
         "</div>") +
       "</div>";
 
-    const buttonEles = panelBlockEle.querySelectorAll("button");
-    buttonEles[0].addEventListener("click", openEditCommentModalFunction);
-    buttonEles[1].addEventListener("click", openRemoveCommentModalFunction);
+    const buttonElements = panelBlockElement.querySelectorAll("button");
+    buttonElements[0].addEventListener("click", openEditCommentModalFunction);
+    buttonElements[1].addEventListener("click", openRemoveCommentModalFunction);
 
-    commentPanelEle.append(panelBlockEle);
+    commentPanelElement.append(panelBlockElement);
   };
 
   const renderCommentsFunction = () => {
 
-    crmEdit.clearPanelBlocksFunction(commentPanelEle);
+    crmEdit.clearPanelBlocksFunction(commentPanelElement);
 
     if (comments.length === 0) {
-      commentPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+      commentPanelElement.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
         "<div class=\"message is-info\">" +
         "<div class=\"message-body\">This record has no comments.</div>" +
         "</div>" +
@@ -156,10 +163,10 @@ declare const cityssm: cityssmGlobal;
 
   const getComments = () => {
 
-    crmEdit.clearPanelBlocksFunction(commentPanelEle);
+    crmEdit.clearPanelBlocksFunction(commentPanelElement);
     comments = [];
 
-    commentPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Comments"));
+    commentPanelElement.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Comments"));
 
     cityssm.postJSON(urlPrefix + "/view/doGetComments", {
       recordID: crmEdit.recordID
@@ -171,7 +178,7 @@ declare const cityssm: cityssmGlobal;
           renderCommentsFunction();
         } else {
 
-          commentPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+          commentPanelElement.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
             "<div class=\"message is-danger\"><div class=\"message-body\">" +
             responseJSON.message +
             "</div></div>" +
@@ -213,9 +220,13 @@ declare const cityssm: cityssmGlobal;
         (document.querySelector("#addComment--commentDateString") as HTMLInputElement).value = cityssm.dateToString(rightNow);
         (document.querySelector("#addComment--commentTimeString") as HTMLInputElement).value = cityssm.dateToTimeString(rightNow);
       },
-      onshown: (_modalEle, closeModalFunction) => {
+      onshown: (_modalElement, closeModalFunction) => {
+        bulmaJS.toggleHtmlClipped();
         closeAddModalFunction = closeModalFunction;
         document.querySelector("#form--addComment").addEventListener("submit", addFunction);
+      },
+      onremoved: () => {
+        bulmaJS.toggleHtmlClipped();
       }
     });
   });

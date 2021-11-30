@@ -87,6 +87,36 @@
         <% } %>
       </section>
     <% } %>
+    <% if (record.users.length > 0) { %>
+      <section>
+        <hr />
+        <div class="columns is-mobile">
+          <div class="column">
+            <h2 class="title is-4">
+              Users
+              <span class="tag"><%= record.users.length %></span>
+            </h2>
+          </div>
+          <div class="column is-narrow">
+            <button class="button is-small is-hide-section-button" type="button">
+              <span class="icon"><i class="fas fa-eye-slash" aria-hidden="true"></i></span>
+              <span>Hide Users Section</span>
+            </button>
+          </div>
+        </div>
+
+        <% for (let index = 0; index < record.users.length; index += 1) { %>
+          <%
+            const recordUser = record.users[index];
+            const recordUserType = recordUserTypes.find((possibleRecordUserType) => { return possibleRecordUserType.recordUserTypeKey === recordUser.recordUserTypeKey});
+          %>
+          <p class="mb-2">
+            <strong><%= recordUserType ? recordUserType.recordUserType : recordUser.recordUserTypeKey %></strong><br />
+            <span><%= recordUser.userName %></span>
+          </p>
+        <% } %>
+      </section>
+    <% } %>
     <% if (record.urls.length > 0) { %>
       <section class="is-hidden">
         <hr />

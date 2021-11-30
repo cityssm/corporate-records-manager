@@ -5,7 +5,10 @@ import type * as recordTypes from "../../types/recordTypes";
 import type { CRM } from "../../types/clientTypes";
 import type { CRMEdit } from "./main";
 
+import type { BulmaJS } from "@cityssm/bulma-js/types";
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
+
+declare const bulmaJS: BulmaJS;
 declare const cityssm: cityssmGlobal;
 
 
@@ -19,16 +22,16 @@ declare const cityssm: cityssmGlobal;
   let relatedRecords: recordTypes.Record[] = exports.relatedRecords;
   delete exports.relatedRecords;
 
-  const relatedRecordPanelEle = document.querySelector("#panel--relatedRecords") as HTMLElement;
+  const relatedRecordPanelElement = document.querySelector("#panel--relatedRecords") as HTMLElement;
 
   const openRemoveRelatedRecordModalFunction = (clickEvent: MouseEvent) => {
 
     clickEvent.preventDefault();
 
-    const panelBlockEle = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
+    const panelBlockElement = (clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement;
 
-    const index = Number.parseInt(panelBlockEle.dataset.index, 10);
-    const relatedRecordID = Number.parseInt(panelBlockEle.dataset.recordId, 10);
+    const index = Number.parseInt(panelBlockElement.dataset.index, 10);
+    const relatedRecordID = Number.parseInt(panelBlockElement.dataset.recordId, 10);
 
     const removeFunction = () => {
 
@@ -39,7 +42,7 @@ declare const cityssm: cityssmGlobal;
 
         if (responseJSON.success) {
           relatedRecords.splice(index, 1);
-          crmEdit.clearPanelBlocksFunction(relatedRecordPanelEle);
+          crmEdit.clearPanelBlocksFunction(relatedRecordPanelElement);
           renderRelatedRecordsFunction();
 
         } else {
@@ -60,25 +63,25 @@ declare const cityssm: cityssmGlobal;
 
   const renderRelatedRecordFunction = (relatedRecord: recordTypes.Record, index: number) => {
 
-    const panelBlockEle = crm.renderRecordPanelLinkEle(relatedRecord, {
+    const panelBlockElement = crm.renderRecordPanelLinkEle(relatedRecord, {
       panelTag: "div",
       includeRemoveButton: true
     });
 
-    panelBlockEle.dataset.index = index.toString();
-    panelBlockEle.dataset.recordId = relatedRecord.recordID.toString();
+    panelBlockElement.dataset.index = index.toString();
+    panelBlockElement.dataset.recordId = relatedRecord.recordID.toString();
 
-    panelBlockEle.querySelectorAll("button")[0].addEventListener("click", openRemoveRelatedRecordModalFunction);
+    panelBlockElement.querySelectorAll("button")[0].addEventListener("click", openRemoveRelatedRecordModalFunction);
 
-    relatedRecordPanelEle.append(panelBlockEle);
+    relatedRecordPanelElement.append(panelBlockElement);
   };
 
   const renderRelatedRecordsFunction = () => {
 
-    crmEdit.clearPanelBlocksFunction(relatedRecordPanelEle);
+    crmEdit.clearPanelBlocksFunction(relatedRecordPanelElement);
 
     if (relatedRecords.length === 0) {
-      relatedRecordPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+      relatedRecordPanelElement.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
         "<div class=\"message is-info\">" +
         "<div class=\"message-body\">This record has no related records.</div>" +
         "</div>" +
@@ -95,10 +98,10 @@ declare const cityssm: cityssmGlobal;
 
   const getRelatedRecords = () => {
 
-    crmEdit.clearPanelBlocksFunction(relatedRecordPanelEle);
+    crmEdit.clearPanelBlocksFunction(relatedRecordPanelElement);
     relatedRecords = [];
 
-    relatedRecordPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Related Records"));
+    relatedRecordPanelElement.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Related Records"));
 
     cityssm.postJSON(urlPrefix + "/view/doGetRelatedRecords", {
       recordID: crmEdit.recordID
@@ -110,7 +113,7 @@ declare const cityssm: cityssmGlobal;
           renderRelatedRecordsFunction();
         } else {
 
-          relatedRecordPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+          relatedRecordPanelElement.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
             "<div class=\"message is-danger\"><div class=\"message-body\">" +
             responseJSON.message +
             "</div></div>" +
@@ -125,20 +128,20 @@ declare const cityssm: cityssmGlobal;
 
     let doRefreshOnClose = false;
 
-    let searchFormEle: HTMLFormElement;
-    let searchResultsContainerEle: HTMLElement;
+    let searchFormElement: HTMLFormElement;
+    let searchResultsContainerElement: HTMLElement;
 
     const addFunction = (event: MouseEvent) => {
 
       event.preventDefault();
 
-      const buttonEle = event.currentTarget as HTMLButtonElement;
+      const buttonElement = event.currentTarget as HTMLButtonElement;
 
-      buttonEle.disabled = true;
+      buttonElement.disabled = true;
 
-      const panelBlockEle = buttonEle.closest(".panel-block") as HTMLElement;
+      const panelBlockElement = buttonElement.closest(".panel-block") as HTMLElement;
 
-      const relatedRecordID = panelBlockEle.dataset.recordId;
+      const relatedRecordID = panelBlockElement.dataset.recordId;
 
       cityssm.postJSON(urlPrefix + "/edit/doAddRelatedRecord", {
         recordID: crmEdit.recordID,
@@ -148,7 +151,7 @@ declare const cityssm: cityssmGlobal;
 
           if (responseJSON.success) {
             doRefreshOnClose = true;
-            panelBlockEle.remove();
+            panelBlockElement.remove();
 
           } else {
             cityssm.alertModal("Error Adding Related Record",
@@ -156,7 +159,7 @@ declare const cityssm: cityssmGlobal;
               "OK",
               "danger");
 
-            buttonEle.disabled = false;
+            buttonElement.disabled = false;
           }
         });
     };
@@ -167,17 +170,17 @@ declare const cityssm: cityssmGlobal;
         event.preventDefault();
       }
 
-      searchResultsContainerEle.innerHTML = "<div class=\"has-text-centered has-text-grey\">" +
+      searchResultsContainerElement.innerHTML = "<div class=\"has-text-centered has-text-grey\">" +
         "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
         "Searching Records..." +
         "</div>";
 
-      cityssm.postJSON(urlPrefix + "/edit/doSearchRelatedRecords", searchFormEle,
+      cityssm.postJSON(urlPrefix + "/edit/doSearchRelatedRecords", searchFormElement,
         (responseJSON: { success: boolean; message?: string; records?: recordTypes.Record[] }) => {
 
           if (!responseJSON.success) {
 
-            searchResultsContainerEle.innerHTML = "<div class=\"message is-danger\">" +
+            searchResultsContainerElement.innerHTML = "<div class=\"message is-danger\">" +
               "<div class=\"message-body\">" +
               "<p>" + cityssm.escapeHTML(responseJSON.message) + "</p>" +
               "</div>" +
@@ -186,35 +189,34 @@ declare const cityssm: cityssmGlobal;
             return;
           }
 
-          const panelEle = document.createElement("div");
-          panelEle.className = "panel";
+          const panelElement = document.createElement("div");
+          panelElement.className = "panel";
 
           for (const relatedRecord of responseJSON.records) {
 
-            const panelBlockEle = crm.renderRecordPanelLinkEle(relatedRecord, {
+            const panelBlockElement = crm.renderRecordPanelLinkEle(relatedRecord, {
               panelTag: "div",
               includeAddButton: true
             });
 
-            panelBlockEle.dataset.recordId = relatedRecord.recordID.toString();
+            panelBlockElement.dataset.recordId = relatedRecord.recordID.toString();
 
-            panelBlockEle.querySelectorAll("button")[0].addEventListener("click", addFunction);
+            panelBlockElement.querySelector("button").addEventListener("click", addFunction);
 
-            panelEle.append(panelBlockEle);
+            panelElement.append(panelBlockElement);
           }
 
-          searchResultsContainerEle.innerHTML = "";
+          searchResultsContainerElement.innerHTML = "";
 
-          if (panelEle.children.length === 0) {
-            searchResultsContainerEle.innerHTML = "<div class=\"message is-info\">" +
+          if (panelElement.children.length === 0) {
+            searchResultsContainerElement.innerHTML = "<div class=\"message is-info\">" +
               "<div class=\"message-body\">" +
               "<p>There are no new records that meet your search criteria.</p>" +
               "</div>" +
               "</div>";
 
           } else {
-
-            searchResultsContainerEle.append(panelEle);
+            searchResultsContainerElement.append(panelElement);
           }
         });
     };
@@ -222,37 +224,43 @@ declare const cityssm: cityssmGlobal;
     cityssm.openHtmlModal("relatedRecord-add", {
       onshow: () => {
 
-        searchResultsContainerEle = document.querySelector("#container--addRelatedRecord");
+        searchResultsContainerElement = document.querySelector("#container--addRelatedRecord");
 
-        searchFormEle = document.querySelector("#form--addRelatedRecord-search") as HTMLFormElement;
-        searchFormEle.addEventListener("submit", searchRecordsFunction);
+        searchFormElement = document.querySelector("#form--addRelatedRecord-search") as HTMLFormElement;
+        searchFormElement.addEventListener("submit", searchRecordsFunction);
 
         (document.querySelector("#addRelatedRecord--recordID") as HTMLInputElement).value = crmEdit.recordID;
 
-        const recordTypeKeyEle = document.querySelector("#addRelatedRecord--recordTypeKey") as HTMLSelectElement;
+        const recordTypeKeyElement = document.querySelector("#addRelatedRecord--recordTypeKey") as HTMLSelectElement;
 
         for (let index = 0; index < exports.recordTypes.length; index += 1) {
-          const optionEle = document.createElement("option");
-          optionEle.value = exports.recordTypes[index].recordTypeKey;
-          optionEle.textContent = exports.recordTypes[index].recordType;
-          recordTypeKeyEle.append(optionEle);
+          const optionElement = document.createElement("option");
+          optionElement.value = exports.recordTypes[index].recordTypeKey;
+          optionElement.textContent = exports.recordTypes[index].recordType;
+          recordTypeKeyElement.append(optionElement);
 
           if (index === 0) {
-            recordTypeKeyEle.value = index.toString();
+            recordTypeKeyElement.value = index.toString();
           }
         }
 
-        recordTypeKeyEle.addEventListener("change", searchRecordsFunction);
+        recordTypeKeyElement.addEventListener("change", searchRecordsFunction);
 
-        const searchStringEle = document.querySelector("#addRelatedRecord--searchString") as HTMLInputElement;
-        searchStringEle.value = (document.querySelector("#record--recordNumber") as HTMLInputElement).value;
+        const searchStringElement = document.querySelector("#addRelatedRecord--searchString") as HTMLInputElement;
+        searchStringElement.value = (document.querySelector("#record--recordNumber") as HTMLInputElement).value;
 
         searchRecordsFunction();
+      },
+      onshown: () => {
+        bulmaJS.toggleHtmlClipped();
       },
       onhidden: () => {
         if (doRefreshOnClose) {
           getRelatedRecords();
         }
+      },
+      onremoved: () => {
+        bulmaJS.toggleHtmlClipped();
       }
     });
   });

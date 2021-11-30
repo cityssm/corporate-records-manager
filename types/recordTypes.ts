@@ -25,6 +25,14 @@ export interface StatusType {
 }
 
 
+export interface RecordUserType {
+  recordUserTypeKey: string;
+  recordUserType: string;
+  orderNumber?: number;
+  isActive?: boolean;
+}
+
+
 /*
  * Records
  */
@@ -57,6 +65,7 @@ export type Record = {
   urls?: RecordURL[];
   related?: Record[];
   comments?: RecordComment[];
+  users?: RecordUser[];
 } & TrackedValue;
 
 
@@ -84,6 +93,14 @@ export type RecordURL = {
   url: string;
   urlTitle: string;
   urlDescription?: string;
+} & TrackedValue;
+
+
+export type RecordUser = {
+  recordUserID?: number;
+  recordID: number;
+  userName: string;
+  recordUserTypeKey: string;
 } & TrackedValue;
 
 

@@ -16,6 +16,12 @@ export interface StatusType {
     orderNumber?: number;
     recordCount?: number;
 }
+export interface RecordUserType {
+    recordUserTypeKey: string;
+    recordUserType: string;
+    orderNumber?: number;
+    isActive?: boolean;
+}
 interface TrackedValue {
     recordID?: number;
     recordCreate_userName?: string;
@@ -41,6 +47,7 @@ export declare type Record = {
     urls?: RecordURL[];
     related?: Record[];
     comments?: RecordComment[];
+    users?: RecordUser[];
 } & TrackedValue;
 export declare type RecordStatus = {
     statusLogID: number;
@@ -62,6 +69,12 @@ export declare type RecordURL = {
     url: string;
     urlTitle: string;
     urlDescription?: string;
+} & TrackedValue;
+export declare type RecordUser = {
+    recordUserID?: number;
+    recordID: number;
+    userName: string;
+    recordUserTypeKey: string;
 } & TrackedValue;
 export interface User {
     userName: string;

@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const crmEdit = exports.crmEdit;
     let relatedRecords = exports.relatedRecords;
     delete exports.relatedRecords;
-    const relatedRecordPanelEle = document.querySelector("#panel--relatedRecords");
+    const relatedRecordPanelElement = document.querySelector("#panel--relatedRecords");
     const openRemoveRelatedRecordModalFunction = (clickEvent) => {
         clickEvent.preventDefault();
-        const panelBlockEle = clickEvent.currentTarget.closest(".panel-block");
-        const index = Number.parseInt(panelBlockEle.dataset.index, 10);
-        const relatedRecordID = Number.parseInt(panelBlockEle.dataset.recordId, 10);
+        const panelBlockElement = clickEvent.currentTarget.closest(".panel-block");
+        const index = Number.parseInt(panelBlockElement.dataset.index, 10);
+        const relatedRecordID = Number.parseInt(panelBlockElement.dataset.recordId, 10);
         const removeFunction = () => {
             cityssm.postJSON(urlPrefix + "/edit/doRemoveRelatedRecord", {
                 recordID: crmEdit.recordID,
@@ -19,7 +19,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (responseJSON) => {
                 if (responseJSON.success) {
                     relatedRecords.splice(index, 1);
-                    crmEdit.clearPanelBlocksFunction(relatedRecordPanelEle);
+                    crmEdit.clearPanelBlocksFunction(relatedRecordPanelElement);
                     renderRelatedRecordsFunction();
                 }
                 else {
@@ -30,19 +30,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.confirmModal("Remove Comment", "Are you sure you want to remove this related record?", "Yes, Remove the Related Record", "warning", removeFunction);
     };
     const renderRelatedRecordFunction = (relatedRecord, index) => {
-        const panelBlockEle = crm.renderRecordPanelLinkEle(relatedRecord, {
+        const panelBlockElement = crm.renderRecordPanelLinkEle(relatedRecord, {
             panelTag: "div",
             includeRemoveButton: true
         });
-        panelBlockEle.dataset.index = index.toString();
-        panelBlockEle.dataset.recordId = relatedRecord.recordID.toString();
-        panelBlockEle.querySelectorAll("button")[0].addEventListener("click", openRemoveRelatedRecordModalFunction);
-        relatedRecordPanelEle.append(panelBlockEle);
+        panelBlockElement.dataset.index = index.toString();
+        panelBlockElement.dataset.recordId = relatedRecord.recordID.toString();
+        panelBlockElement.querySelectorAll("button")[0].addEventListener("click", openRemoveRelatedRecordModalFunction);
+        relatedRecordPanelElement.append(panelBlockElement);
     };
     const renderRelatedRecordsFunction = () => {
-        crmEdit.clearPanelBlocksFunction(relatedRecordPanelEle);
+        crmEdit.clearPanelBlocksFunction(relatedRecordPanelElement);
         if (relatedRecords.length === 0) {
-            relatedRecordPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+            relatedRecordPanelElement.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
                 "<div class=\"message is-info\">" +
                 "<div class=\"message-body\">This record has no related records.</div>" +
                 "</div>" +
@@ -54,9 +54,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     };
     const getRelatedRecords = () => {
-        crmEdit.clearPanelBlocksFunction(relatedRecordPanelEle);
+        crmEdit.clearPanelBlocksFunction(relatedRecordPanelElement);
         relatedRecords = [];
-        relatedRecordPanelEle.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Related Records"));
+        relatedRecordPanelElement.insertAdjacentHTML("beforeend", crmEdit.getLoadingPanelBlockHTML("Related Records"));
         cityssm.postJSON(urlPrefix + "/view/doGetRelatedRecords", {
             recordID: crmEdit.recordID
         }, (responseJSON) => {
@@ -65,7 +65,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 renderRelatedRecordsFunction();
             }
             else {
-                relatedRecordPanelEle.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
+                relatedRecordPanelElement.insertAdjacentHTML("beforeend", "<div class=\"panel-block is-block\">" +
                     "<div class=\"message is-danger\"><div class=\"message-body\">" +
                     responseJSON.message +
                     "</div></div>" +
@@ -76,25 +76,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
     renderRelatedRecordsFunction();
     document.querySelector("#is-add-related-button").addEventListener("click", () => {
         let doRefreshOnClose = false;
-        let searchFormEle;
-        let searchResultsContainerEle;
+        let searchFormElement;
+        let searchResultsContainerElement;
         const addFunction = (event) => {
             event.preventDefault();
-            const buttonEle = event.currentTarget;
-            buttonEle.disabled = true;
-            const panelBlockEle = buttonEle.closest(".panel-block");
-            const relatedRecordID = panelBlockEle.dataset.recordId;
+            const buttonElement = event.currentTarget;
+            buttonElement.disabled = true;
+            const panelBlockElement = buttonElement.closest(".panel-block");
+            const relatedRecordID = panelBlockElement.dataset.recordId;
             cityssm.postJSON(urlPrefix + "/edit/doAddRelatedRecord", {
                 recordID: crmEdit.recordID,
                 relatedRecordID: relatedRecordID
             }, (responseJSON) => {
                 if (responseJSON.success) {
                     doRefreshOnClose = true;
-                    panelBlockEle.remove();
+                    panelBlockElement.remove();
                 }
                 else {
                     cityssm.alertModal("Error Adding Related Record", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
-                    buttonEle.disabled = false;
+                    buttonElement.disabled = false;
                 }
             });
         };
@@ -102,68 +102,74 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (event) {
                 event.preventDefault();
             }
-            searchResultsContainerEle.innerHTML = "<div class=\"has-text-centered has-text-grey\">" +
+            searchResultsContainerElement.innerHTML = "<div class=\"has-text-centered has-text-grey\">" +
                 "<i class=\"fas fa-4x fa-spinner fa-pulse\" aria-hidden=\"true\"></i><br />" +
                 "Searching Records..." +
                 "</div>";
-            cityssm.postJSON(urlPrefix + "/edit/doSearchRelatedRecords", searchFormEle, (responseJSON) => {
+            cityssm.postJSON(urlPrefix + "/edit/doSearchRelatedRecords", searchFormElement, (responseJSON) => {
                 if (!responseJSON.success) {
-                    searchResultsContainerEle.innerHTML = "<div class=\"message is-danger\">" +
+                    searchResultsContainerElement.innerHTML = "<div class=\"message is-danger\">" +
                         "<div class=\"message-body\">" +
                         "<p>" + cityssm.escapeHTML(responseJSON.message) + "</p>" +
                         "</div>" +
                         "</div>";
                     return;
                 }
-                const panelEle = document.createElement("div");
-                panelEle.className = "panel";
+                const panelElement = document.createElement("div");
+                panelElement.className = "panel";
                 for (const relatedRecord of responseJSON.records) {
-                    const panelBlockEle = crm.renderRecordPanelLinkEle(relatedRecord, {
+                    const panelBlockElement = crm.renderRecordPanelLinkEle(relatedRecord, {
                         panelTag: "div",
                         includeAddButton: true
                     });
-                    panelBlockEle.dataset.recordId = relatedRecord.recordID.toString();
-                    panelBlockEle.querySelectorAll("button")[0].addEventListener("click", addFunction);
-                    panelEle.append(panelBlockEle);
+                    panelBlockElement.dataset.recordId = relatedRecord.recordID.toString();
+                    panelBlockElement.querySelector("button").addEventListener("click", addFunction);
+                    panelElement.append(panelBlockElement);
                 }
-                searchResultsContainerEle.innerHTML = "";
-                if (panelEle.children.length === 0) {
-                    searchResultsContainerEle.innerHTML = "<div class=\"message is-info\">" +
+                searchResultsContainerElement.innerHTML = "";
+                if (panelElement.children.length === 0) {
+                    searchResultsContainerElement.innerHTML = "<div class=\"message is-info\">" +
                         "<div class=\"message-body\">" +
                         "<p>There are no new records that meet your search criteria.</p>" +
                         "</div>" +
                         "</div>";
                 }
                 else {
-                    searchResultsContainerEle.append(panelEle);
+                    searchResultsContainerElement.append(panelElement);
                 }
             });
         };
         cityssm.openHtmlModal("relatedRecord-add", {
             onshow: () => {
-                searchResultsContainerEle = document.querySelector("#container--addRelatedRecord");
-                searchFormEle = document.querySelector("#form--addRelatedRecord-search");
-                searchFormEle.addEventListener("submit", searchRecordsFunction);
+                searchResultsContainerElement = document.querySelector("#container--addRelatedRecord");
+                searchFormElement = document.querySelector("#form--addRelatedRecord-search");
+                searchFormElement.addEventListener("submit", searchRecordsFunction);
                 document.querySelector("#addRelatedRecord--recordID").value = crmEdit.recordID;
-                const recordTypeKeyEle = document.querySelector("#addRelatedRecord--recordTypeKey");
+                const recordTypeKeyElement = document.querySelector("#addRelatedRecord--recordTypeKey");
                 for (let index = 0; index < exports.recordTypes.length; index += 1) {
-                    const optionEle = document.createElement("option");
-                    optionEle.value = exports.recordTypes[index].recordTypeKey;
-                    optionEle.textContent = exports.recordTypes[index].recordType;
-                    recordTypeKeyEle.append(optionEle);
+                    const optionElement = document.createElement("option");
+                    optionElement.value = exports.recordTypes[index].recordTypeKey;
+                    optionElement.textContent = exports.recordTypes[index].recordType;
+                    recordTypeKeyElement.append(optionElement);
                     if (index === 0) {
-                        recordTypeKeyEle.value = index.toString();
+                        recordTypeKeyElement.value = index.toString();
                     }
                 }
-                recordTypeKeyEle.addEventListener("change", searchRecordsFunction);
-                const searchStringEle = document.querySelector("#addRelatedRecord--searchString");
-                searchStringEle.value = document.querySelector("#record--recordNumber").value;
+                recordTypeKeyElement.addEventListener("change", searchRecordsFunction);
+                const searchStringElement = document.querySelector("#addRelatedRecord--searchString");
+                searchStringElement.value = document.querySelector("#record--recordNumber").value;
                 searchRecordsFunction();
+            },
+            onshown: () => {
+                bulmaJS.toggleHtmlClipped();
             },
             onhidden: () => {
                 if (doRefreshOnClose) {
                     getRelatedRecords();
                 }
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
             }
         });
     });

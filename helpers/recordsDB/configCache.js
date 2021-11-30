@@ -1,4 +1,5 @@
 import database_getRecordTypes from "./getRecordTypes.js";
+import database_getRecordUserTypes from "./getRecordUserTypes.js";
 import database_getStatusTypes from "./getStatusTypes.js";
 import NodeCache from "node-cache";
 const cache = new NodeCache({ stdTTL: 600 });
@@ -30,4 +31,8 @@ export const getStatusTypes = async (recordTypeKey) => {
         return await database_getStatusTypes(recordTypeKey);
     });
     return statusTypes;
+};
+export const getRecordUserTypes = async () => {
+    const recordUserTypes = await getCachedDataOrDoQuery("recordUserTypes", database_getRecordUserTypes);
+    return recordUserTypes;
 };

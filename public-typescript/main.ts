@@ -10,25 +10,6 @@ declare const cityssm: cityssmGlobal;
 declare const dateDiff: DateDiff;
 
 
-document.querySelector("#navbar-burger").addEventListener("click", (clickEvent) => {
-
-  clickEvent.preventDefault();
-
-  const toggleButtonEle = clickEvent.currentTarget as HTMLElement;
-  const menuEle = document.querySelector("#navbar-menu");
-
-  menuEle.classList.toggle("is-active");
-
-  if (menuEle.classList.contains("is-active")) {
-    toggleButtonEle.setAttribute("aria-expanded", "true");
-    toggleButtonEle.classList.add("is-active");
-  } else {
-    toggleButtonEle.setAttribute("aria-expanded", "false");
-    toggleButtonEle.classList.remove("is-active");
-  }
-});
-
-
 (() => {
 
   const urlPrefix: string = exports.urlPrefix;
@@ -56,14 +37,14 @@ document.querySelector("#navbar-burger").addEventListener("click", (clickEvent) 
 
       const recordType: recordTypes.RecordType = getRecordType(record.recordTypeKey);
 
-      const panelBlockEle = document.createElement(options.panelTag);
-      panelBlockEle.className = "panel-block is-block";
+      const panelBlockElement = document.createElement(options.panelTag);
+      panelBlockElement.className = "panel-block is-block";
 
       const url = urlPrefix + "/view/" + record.recordID.toString();
       let recordNumberHTML = "";
 
       if (options.panelTag === "a") {
-        (panelBlockEle as HTMLAnchorElement).href = url;
+        (panelBlockElement as HTMLAnchorElement).href = url;
         recordNumberHTML = "<strong>" + recordType.recordType + " " + cityssm.escapeHTML(record.recordNumber) + "</strong>";
       } else {
         recordNumberHTML = "<a class=\"has-text-weight-bold\" href=\"" + cityssm.escapeHTML(url) + "\" target=\"_blank\"> " +
@@ -75,7 +56,7 @@ document.querySelector("#navbar-burger").addEventListener("click", (clickEvent) 
 
       const timeAgo = dateDiff(recordDate, currentDate);
 
-      panelBlockEle.innerHTML = "<div class=\"columns mb-0\">" +
+      panelBlockElement.innerHTML = "<div class=\"columns mb-0\">" +
         ("<div class=\"column pb-0\">" +
           recordNumberHTML +
           (record.recordTitle !== "" && record.recordTitle !== record.recordNumber
@@ -130,7 +111,7 @@ document.querySelector("#navbar-burger").addEventListener("click", (clickEvent) 
         ) +
         "</div>";
 
-      return panelBlockEle;
+      return panelBlockElement;
     }
   };
 

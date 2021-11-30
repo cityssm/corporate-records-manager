@@ -13,12 +13,14 @@ export const handler = async (request, response) => {
         return response.redirect(urlPrefix + "/dashboard?error=recordTypeKeyNotAvailable");
     }
     const statusTypes = await configCache.getStatusTypes(record.recordTypeKey);
+    const recordUserTypes = await configCache.getRecordUserTypes();
     response.render("edit", {
         headTitle: recordType.recordType + " " + record.recordNumber + " Update",
         isNew: false,
         recordType,
         record,
-        statusTypes
+        statusTypes,
+        recordUserTypes
     });
 };
 export default handler;

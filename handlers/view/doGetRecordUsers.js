@@ -1,10 +1,11 @@
-import { addStatus } from "../../helpers/recordsDB/addStatus.js";
+import { getRecordUsers } from "../../helpers/recordsDB/getRecordUsers.js";
 export const handler = async (request, response) => {
-    const statusLogID = await addStatus(request.body, request.session);
-    return statusLogID
+    const recordID = request.body.recordID;
+    const recordUsers = await getRecordUsers(recordID);
+    return recordUsers
         ? response.json({
             success: true,
-            statusLogID
+            recordUsers
         })
         : response.json({
             success: false,

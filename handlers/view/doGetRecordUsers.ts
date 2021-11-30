@@ -1,16 +1,18 @@
 import type { RequestHandler } from "express";
 
-import { addStatus } from "../../helpers/recordsDB/addStatus.js";
+import { getRecordUsers } from "../../helpers/recordsDB/getRecordUsers.js";
 
 
 export const handler: RequestHandler = async (request, response) => {
 
-  const statusLogID = await addStatus(request.body, request.session);
+  const recordID = request.body.recordID;
 
-  return statusLogID
+  const recordUsers = await getRecordUsers(recordID);
+
+  return recordUsers
     ? response.json({
       success: true,
-      statusLogID
+      recordUsers
     })
     : response.json({
       success: false,

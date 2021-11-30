@@ -1,0 +1,40 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Add a New User</h2>
+      <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--addRecordUser">
+        <input id="addRecordUser--recordID" name="recordID" type="hidden" />
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addRecordUser--recordUserTypeKey">User Type</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="addRecordUser--recordUserTypeKey" name="recordUserTypeKey" required>
+                    <option value="">(Select a Type)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="addRecordUser--userName">User Name</label>
+              <div class="control">
+                <input class="input" id="addRecordUser--userName" name="userName" type="text" maxlength="30" required />
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--addRecordUser">Add User</button>
+      <button class="button is-close-modal-button">Cancel</button>
+    </footer>
+  </div>
+</div>
