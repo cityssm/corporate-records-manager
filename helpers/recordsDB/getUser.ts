@@ -18,7 +18,7 @@ export const getUser = async (userName: string, filterByIsActive = true): Promis
 
     const result = await pool.request()
       .input("userName", userName)
-      .query("select userName, canUpdate, isAdmin" +
+      .query("select userName, fullName, canUpdate, isAdmin" +
         " from CR.Users" +
         " where userName = @userName" +
         (filterByIsActive ? " and isActive = 1" : ""));
