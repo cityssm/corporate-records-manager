@@ -36,6 +36,10 @@ export const cleanupRecordStatusLogTable = async (): Promise<number> => {
   return await cleanupTable("RecordStatusLog");
 };
 
+export const cleanupRecordUsersTable = async (): Promise<number> => {
+  return await cleanupTable("RecordUsers");
+};
+
 export const cleanupRecordURLsTable = async (): Promise<number> => {
   return await cleanupTable("RecordURLs");
 };

@@ -23,6 +23,9 @@ const cleanupTable = async (tableName) => {
 export const cleanupRecordStatusLogTable = async () => {
     return await cleanupTable("RecordStatusLog");
 };
+export const cleanupRecordUsersTable = async () => {
+    return await cleanupTable("RecordUsers");
+};
 export const cleanupRecordURLsTable = async () => {
     return await cleanupTable("RecordURLs");
 };

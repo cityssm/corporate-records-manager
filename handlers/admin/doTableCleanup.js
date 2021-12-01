@@ -1,7 +1,7 @@
 import { cleanupRecordsTable } from "../../helpers/recordsDB/cleanupRecordsTable.js";
 import { cleanupRecordTagsTable } from "../../helpers/recordsDB/cleanupRecordTagsTable.js";
 import { cleanupRelatedRecordsTable } from "../../helpers/recordsDB/cleanupRelatedRecordsTable.js";
-import { cleanupRecordStatusLogTable, cleanupRecordURLsTable, cleanupRecordCommentLogTable } from "../../helpers/recordsDB/cleanupTable.js";
+import { cleanupRecordStatusLogTable, cleanupRecordURLsTable, cleanupRecordCommentLogTable, cleanupRecordUsersTable } from "../../helpers/recordsDB/cleanupTable.js";
 export const handler = async (request, response) => {
     const tableName = request.body.tableName;
     let recordCount = 0;
@@ -14,6 +14,9 @@ export const handler = async (request, response) => {
             break;
         case "RecordStatusLog":
             recordCount = await cleanupRecordStatusLogTable();
+            break;
+        case "RecordUsers":
+            recordCount = await cleanupRecordUsersTable();
             break;
         case "RecordURLs":
             recordCount = await cleanupRecordURLsTable();

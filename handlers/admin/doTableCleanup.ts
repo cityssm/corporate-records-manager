@@ -3,7 +3,7 @@ import type { RequestHandler } from "express";
 import { cleanupRecordsTable } from "../../helpers/recordsDB/cleanupRecordsTable.js";
 import { cleanupRecordTagsTable } from "../../helpers/recordsDB/cleanupRecordTagsTable.js";
 import { cleanupRelatedRecordsTable } from "../../helpers/recordsDB/cleanupRelatedRecordsTable.js";
-import { cleanupRecordStatusLogTable, cleanupRecordURLsTable, cleanupRecordCommentLogTable } from "../../helpers/recordsDB/cleanupTable.js";
+import { cleanupRecordStatusLogTable, cleanupRecordURLsTable, cleanupRecordCommentLogTable, cleanupRecordUsersTable } from "../../helpers/recordsDB/cleanupTable.js";
 
 
 export const handler: RequestHandler = async (request, response) => {
@@ -23,6 +23,10 @@ export const handler: RequestHandler = async (request, response) => {
 
     case "RecordStatusLog":
       recordCount = await cleanupRecordStatusLogTable();
+      break;
+
+    case "RecordUsers":
+      recordCount = await cleanupRecordUsersTable();
       break;
 
     case "RecordURLs":
