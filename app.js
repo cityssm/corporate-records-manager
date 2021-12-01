@@ -12,6 +12,7 @@ import * as configFns from "./helpers/configFns.js";
 import * as stringFns from "@cityssm/expressjs-server-js/stringFns.js";
 import * as dateTimeFns from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as docuShareFns from "./helpers/docuShareFns.js";
+import { version } from "./version.js";
 import * as permissionHandlers from "./handlers/permissions.js";
 import routerLogin from "./routes/login.js";
 import routerDashboard from "./routes/dashboard.js";
@@ -107,6 +108,7 @@ app.use(async (request, response, next) => {
     response.locals.stringFns = stringFns;
     response.locals.user = request.session.user;
     response.locals.csrfToken = request.csrfToken();
+    response.locals.buildNumber = version;
     response.locals.urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
     response.locals.recordTypes = await getRecordTypes();
     response.locals.headTitle = "";

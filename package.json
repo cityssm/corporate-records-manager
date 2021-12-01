@@ -19,6 +19,7 @@
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "scripts": {
+    "build": "npx genversion --es6 --semi version.js",
     "start": "cross-env NODE_ENV=production node ./bin/www",
     "dev": "cross-env NODE_ENV=dev DEBUG=corporate-records-manager:* nodemon ./bin/www",
     "dev:java": "cross-env NODE_ENV=dev DEBUG=java-caller nodemon ./bin/www",
