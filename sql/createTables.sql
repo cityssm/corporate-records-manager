@@ -206,13 +206,12 @@ GO
 create table CR.RecordUserTypes (
 	recordUserTypeKey varchar(30) primary key not null,
 	recordUserType varchar(100) not null,
-	orderNumber tinyint not null default 0,
 	isActive bit not null default 1
 )
 GO
 
 
-insert into CR.RecordUserTypes (recordUserTypeKey, recordUserType, orderNumber, isActive) values ('authority-delegated', 'Delegated Authority', 0, 1)
+insert into CR.RecordUserTypes (recordUserTypeKey, recordUserType, isActive) values ('authority-delegated', 'Delegated Authority', 1)
 
 GO
 

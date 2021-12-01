@@ -19,8 +19,8 @@ export interface StatusType {
 export interface RecordUserType {
     recordUserTypeKey: string;
     recordUserType: string;
-    orderNumber?: number;
     isActive?: boolean;
+    recordCount?: number;
 }
 interface TrackedValue {
     recordID?: number;
