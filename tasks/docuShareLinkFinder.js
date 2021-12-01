@@ -1,4 +1,5 @@
 import { setIntervalAsync, clearIntervalAsync } from "set-interval-async/fixed/index.js";
+import exitHook from "exit-hook";
 import * as configFns from "../helpers/configFns.js";
 import * as docuShareFns from "../helpers/docuShareFns.js";
 import { getRecordNumbersByRecordTypeKey } from "../helpers/recordsDB/getRecordNumbersByRecordTypeKey.js";
@@ -7,6 +8,7 @@ import { addURL } from "../helpers/recordsDB/addURL.js";
 import * as ds from "@cityssm/docushare";
 import debug from "debug";
 const debugTask = debug("corporate-records-manager:task:docuShareLinkFinder");
+let terminateTask = false;
 docuShareFns.doSetup();
 const getActiveDocuShareURLCache = async () => {
     const set = new Set();
@@ -28,6 +30,9 @@ const doTask = async () => {
     debugTask("Get active DocuShare URLs");
     const activeURLs = await getActiveDocuShareURLCache();
     for (const collectionHandle of collectionHandles) {
+        if (terminateTask) {
+            break;
+        }
         if (!collectionHandle.recordTypeKeys) {
             continue;
         }
@@ -39,6 +44,9 @@ const doTask = async () => {
             continue;
         }
         for (const recordTypeKey of collectionHandle.recordTypeKeys) {
+            if (terminateTask) {
+                break;
+            }
             if (!recordCache.has(recordTypeKey)) {
                 debugTask("Get recordNumbers from recordTypeKey " + recordTypeKey);
                 const recordNumbers = await getRecordNumbersByRecordTypeKey(recordTypeKey);
@@ -66,6 +74,7 @@ const doTask = async () => {
                         }, {
                             user: {
                                 userName: "task.docushare",
+                                fullName: "DocuShare",
                                 canUpdate: true,
                                 isAdmin: true
                             }
@@ -79,17 +88,12 @@ const doTask = async () => {
 };
 doTask().catch(() => {
 });
-const timer = setIntervalAsync(doTask, 2 * 3600 * 1000);
-if (process) {
-    const stopTimer = () => {
-        clearIntervalAsync(timer)
-            .then(() => {
-            debugTask("Task stopped");
-        })
-            .catch(() => {
-        });
-    };
-    for (const shutdownEvent of ["beforeExit", "exit", "SIGINT", "SIGTERM"]) {
-        process.on(shutdownEvent, stopTimer);
+const intervalID = setIntervalAsync(doTask, 2 * 3600 * 1000);
+exitHook(() => {
+    terminateTask = true;
+    try {
+        clearIntervalAsync(intervalID);
     }
-}
+    catch (_a) {
+    }
+});

@@ -1,4 +1,5 @@
 import { setIntervalAsync, clearIntervalAsync } from "set-interval-async/fixed/index.js";
+import exitHook from "exit-hook";
 
 import * as configFns from "../helpers/configFns.js";
 import * as docuShareFns from "../helpers/docuShareFns.js";
@@ -13,6 +14,9 @@ import type * as recordTypes from "../types/recordTypes";
 
 import debug from "debug";
 const debugTask = debug("corporate-records-manager:task:docuShareLinkFinder");
+
+
+let terminateTask = false;
 
 
 docuShareFns.doSetup();
@@ -51,6 +55,10 @@ const doTask = async () => {
 
   for (const collectionHandle of collectionHandles) {
 
+    if (terminateTask) {
+      break;
+    }
+
     // if the handle is not specific to a recordTypeKey
     if (!collectionHandle.recordTypeKeys) {
       continue;
@@ -68,6 +76,10 @@ const doTask = async () => {
 
     // loop through the recordTypeKeys
     for (const recordTypeKey of collectionHandle.recordTypeKeys) {
+
+      if (terminateTask) {
+        break;
+      }
 
       // load cache if necessary
       if (!recordCache.has(recordTypeKey)) {
@@ -107,6 +119,7 @@ const doTask = async () => {
             }, {
                 user: {
                   userName: "task.docushare",
+                  fullName: "DocuShare",
                   canUpdate: true,
                   isAdmin: true
                 }
@@ -126,22 +139,14 @@ doTask().catch(() => {
 });
 
 
-const timer = setIntervalAsync(doTask, 2 * 3600 * 1000);
+const intervalID = setIntervalAsync(doTask, 2 * 3600 * 1000);
 
 
-if (process) {
-
-  const stopTimer = () => {
-    clearIntervalAsync(timer)
-      .then(() => {
-        debugTask("Task stopped");
-      })
-      .catch(() => {
-        // ignore
-      });
-  };
-
-  for (const shutdownEvent of ["beforeExit", "exit", "SIGINT", "SIGTERM"]) {
-    process.on(shutdownEvent, stopTimer);
+exitHook(() => {
+  terminateTask = true;
+  try {
+    clearIntervalAsync(intervalID);
+  } catch {
+    // ignore
   }
-}
+});
