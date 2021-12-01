@@ -26,6 +26,7 @@ export const cleanupRecordsTable = async (): Promise<number> => {
         " where recordDelete_datetime is not null" +
         " and recordID not in (select recordID from CR.RecordTags)" +
         " and recordID not in (select recordID from CR.RecordStatusLog)" +
+        " and recordID not in (select recordID from CR.RecordUsers)" +
         " and recordID not in (select recordID from CR.RecordURLs)" +
         " and recordID not in (select recordID_A from CR.RelatedRecords)" +
         " and recordID not in (select recordID_B from CR.RelatedRecords)" +
