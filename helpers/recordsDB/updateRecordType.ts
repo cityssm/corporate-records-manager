@@ -21,7 +21,6 @@ export const updateRecordType = async (recordType: RecordType): Promise<boolean>
       .input("maxlength", recordType.maxlength)
       .input("pattern", recordType.pattern)
       .input("patternHelp", recordType.patternHelp)
-      .input("isActive", recordType.isActive)
       .query("update CR.RecordTypes" +
         " set recordType = @recordType," +
         " minlength = @minlength," +

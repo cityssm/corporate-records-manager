@@ -17,7 +17,6 @@ export const handler: RequestHandler = async (request, response) => {
   return response.json({
     success: true
   });
-
 };
 
 
