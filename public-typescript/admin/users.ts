@@ -16,22 +16,22 @@ declare const cityssm: cityssmGlobal;
    * Users
    */
 
-  const usersContainerEle = document.querySelector("#container--users") as HTMLElement;
+  const usersContainerElement = document.querySelector("#container--users") as HTMLElement;
 
   let users: recordTypes.User[] = [];
 
   const getUserFromEventFunction = (clickEvent: Event) => {
 
-    const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
+    const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
 
-    const trEle = buttonEle.closest("tr");
+    const trElement = buttonElement.closest("tr");
 
-    const userIndex = Number.parseInt(trEle.dataset.index, 10);
+    const userIndex = Number.parseInt(trElement.dataset.index, 10);
     const user = users[userIndex];
 
     return {
-      buttonEle,
-      trEle,
+      buttonElement,
+      trElement,
       userIndex,
       user
     };
@@ -39,11 +39,11 @@ declare const cityssm: cityssmGlobal;
 
   const toggleUserSettingFunction = (clickEvent: Event) => {
 
-    const { buttonEle, user } = getUserFromEventFunction(clickEvent);
+    const { buttonElement, user } = getUserFromEventFunction(clickEvent);
 
-    buttonEle.disabled = true;
+    buttonElement.disabled = true;
 
-    const fieldName = buttonEle.dataset.field;
+    const fieldName = buttonElement.dataset.field;
 
     const newFieldValue = !user[fieldName];
 
@@ -53,7 +53,7 @@ declare const cityssm: cityssmGlobal;
       fieldValue: newFieldValue
     }, (responseJSON: { success: boolean; message?: string }) => {
 
-      buttonEle.disabled = false;
+      buttonElement.disabled = false;
 
       if (responseJSON.success) {
 
@@ -64,20 +64,20 @@ declare const cityssm: cityssmGlobal;
           switch (fieldName) {
 
             case "isActive":
-              buttonEle.innerHTML = "<i class=\"fas fa-user-check\" aria-label=\"Active User\"></i>";
+              buttonElement.innerHTML = "<i class=\"fas fa-user-check\" aria-label=\"Active User\"></i>";
               break;
 
             case "canUpdate":
-              buttonEle.innerHTML = "<i class=\"fas fa-pencil-alt\" aria-label=\"Update User\"></i>";
+              buttonElement.innerHTML = "<i class=\"fas fa-pencil-alt\" aria-label=\"Update User\"></i>";
               break;
 
             case "isAdmin":
-              buttonEle.innerHTML = "<i class=\"fas fa-cog\" aria-label=\"Admin User\"></i>";
+              buttonElement.innerHTML = "<i class=\"fas fa-cog\" aria-label=\"Admin User\"></i>";
               break;
           }
 
         } else {
-          buttonEle.innerHTML = "<i class=\"fas fa-minus\" aria-label=\"False\"></i>";
+          buttonElement.innerHTML = "<i class=\"fas fa-minus\" aria-label=\"False\"></i>";
         }
 
       } else {
@@ -91,13 +91,13 @@ declare const cityssm: cityssmGlobal;
 
   const removeUserFunction = (clickEvent: Event) => {
 
-    const { buttonEle, user, userIndex } = getUserFromEventFunction(clickEvent);
+    const { buttonElement, user, userIndex } = getUserFromEventFunction(clickEvent);
 
     const userName = user.userName;
 
     const removeFunction = () => {
 
-      buttonEle.disabled = true;
+      buttonElement.disabled = true;
 
       cityssm.postJSON(urlPrefix + "/admin/doRemoveUser", {
         userName: userName
@@ -114,7 +114,7 @@ declare const cityssm: cityssmGlobal;
               "OK",
               "danger");
 
-            buttonEle.disabled = false;
+            buttonElement.disabled = false;
           }
         });
     };
@@ -129,7 +129,7 @@ declare const cityssm: cityssmGlobal;
   const renderUsersFunction = () => {
 
     if (users.length === 0) {
-      usersContainerEle.innerHTML = "<div class=\"message is-warning\">" +
+      usersContainerElement.innerHTML = "<div class=\"message is-warning\">" +
         "<p class=\"message-body\">" +
         "<strong>There are no users in the system.</strong><br />" +
         "Please create at least one user." +
@@ -139,10 +139,10 @@ declare const cityssm: cityssmGlobal;
       return;
     }
 
-    const tableEle = document.createElement("table");
+    const tableElement = document.createElement("table");
 
-    tableEle.className = "table is-fullwidth is-bordered is-striped is-hoverable has-sticky-header";
-    tableEle.innerHTML = "<thead>" +
+    tableElement.className = "table is-fullwidth is-bordered is-striped is-hoverable has-sticky-header";
+    tableElement.innerHTML = "<thead>" +
       "<tr>" +
       "<th>User Name</th>" +
       "<th class=\"has-text-centered\">Is Active</th>" +
@@ -153,14 +153,14 @@ declare const cityssm: cityssmGlobal;
       "</thead>" +
       "<tbody></tbody>";
 
-    const tbodyEle = tableEle.querySelectorAll("tbody")[0];
+    const tbodyElement = tableElement.querySelectorAll("tbody")[0];
 
     for (const [index, user] of users.entries()) {
 
-      const trEle = document.createElement("tr");
-      trEle.dataset.index = index.toString();
+      const trElement = document.createElement("tr");
+      trElement.dataset.index = index.toString();
 
-      trEle.innerHTML = "<th class=\"is-vcentered\">" + user.userName + "</th>" +
+      trElement.innerHTML = "<th class=\"is-vcentered\">" + user.userName + "</th>" +
         ("<td class=\"has-text-centered\">" +
           "<button class=\"button is-inverted is-info\" data-field=\"isActive\" type=\"button\">" +
           (user.isActive
@@ -190,31 +190,31 @@ declare const cityssm: cityssmGlobal;
             "</button>") +
           "</td>");
 
-      const buttonEles = trEle.querySelectorAll("button");
+      const buttonElements = trElement.querySelectorAll("button");
 
-      for (const buttonEle of buttonEles) {
+      for (const buttonElement of buttonElements) {
 
-        if (buttonEle.classList.contains("is-remove-user-button")) {
-          buttonEle.addEventListener("click", removeUserFunction);
+        if (buttonElement.classList.contains("is-remove-user-button")) {
+          buttonElement.addEventListener("click", removeUserFunction);
 
         } else {
-          buttonEle.addEventListener("click", toggleUserSettingFunction);
+          buttonElement.addEventListener("click", toggleUserSettingFunction);
         }
       }
 
-      tbodyEle.append(trEle);
+      tbodyElement.append(trElement);
     }
 
-    cityssm.clearElement(usersContainerEle);
-    usersContainerEle.append(tableEle);
+    cityssm.clearElement(usersContainerElement);
+    usersContainerElement.append(tableElement);
   };
 
   crmAdmin.getUsersFunction = () => {
 
     users = [];
 
-    cityssm.clearElement(usersContainerEle);
-    usersContainerEle.innerHTML = crmAdmin.getLoadingHTML("Users");
+    cityssm.clearElement(usersContainerElement);
+    usersContainerElement.innerHTML = crmAdmin.getLoadingHTML("Users");
 
     cityssm.postJSON(urlPrefix + "/admin/doGetUsers", {},
       (responseJSON: { users: recordTypes.User[] }) => {
@@ -228,13 +228,13 @@ declare const cityssm: cityssmGlobal;
 
     formEvent.preventDefault();
 
-    const addFormEle = formEvent.currentTarget as HTMLFormElement;
+    const addFormElement = formEvent.currentTarget as HTMLFormElement;
 
-    cityssm.postJSON(urlPrefix + "/admin/doAddUser", addFormEle,
+    cityssm.postJSON(urlPrefix + "/admin/doAddUser", addFormElement,
       (responseJSON: { success: boolean; user?: recordTypes.User; message?: string }) => {
 
         if (responseJSON.success) {
-          addFormEle.reset();
+          addFormElement.reset();
           users.unshift(responseJSON.user);
           renderUsersFunction();
         } else {

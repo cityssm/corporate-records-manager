@@ -19,22 +19,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     };
     exports.crmAdmin = crmAdmin;
-    const tabEles = document.querySelector("#admin--tabs").querySelectorAll("[role='tab']");
-    const tabPanelEles = document.querySelector("#admin--tabpanels").querySelectorAll("[role='tabpanel']");
+    const tabElements = document.querySelector("#admin--tabs").querySelectorAll("[role='tab']");
+    const tabPanelElements = document.querySelector("#admin--tabpanels").querySelectorAll("[role='tabpanel']");
     const selectTabFunction = (clickEvent) => {
         clickEvent.preventDefault();
-        const selectedTabEle = clickEvent.currentTarget;
-        for (const tabPanelEle of tabPanelEles) {
-            tabPanelEle.classList.add("is-hidden");
+        const selectedTabElement = clickEvent.currentTarget;
+        for (const tabPanelElement of tabPanelElements) {
+            tabPanelElement.classList.add("is-hidden");
         }
-        for (const tabEle of tabEles) {
-            tabEle.classList.remove("is-active");
-            tabEle.setAttribute("aria-selected", "false");
+        for (const tabElement of tabElements) {
+            tabElement.classList.remove("is-active");
+            tabElement.setAttribute("aria-selected", "false");
         }
-        selectedTabEle.classList.add("is-active");
-        selectedTabEle.setAttribute("aria-selected", "true");
-        document.querySelector("#" + selectedTabEle.getAttribute("aria-controls")).classList.remove("is-hidden");
-        switch (selectedTabEle.getAttribute("aria-controls").split("--")[1]) {
+        selectedTabElement.classList.add("is-active");
+        selectedTabElement.setAttribute("aria-selected", "true");
+        document.querySelector("#" + selectedTabElement.getAttribute("aria-controls")).classList.remove("is-hidden");
+        switch (selectedTabElement.getAttribute("aria-controls").split("--")[1]) {
             case "users":
                 crmAdmin.getUsersFunction();
                 break;
@@ -46,7 +46,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 break;
         }
     };
-    for (const tabEle of tabEles) {
-        tabEle.addEventListener("click", selectTabFunction);
+    for (const tabElement of tabElements) {
+        tabElement.addEventListener("click", selectTabFunction);
     }
 })();

@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const urlPrefix = exports.urlPrefix;
     const purgeTableFunction = (clickEvent) => {
-        const buttonEle = clickEvent.currentTarget;
-        buttonEle.disabled = true;
-        const tableName = buttonEle.dataset.table;
+        const buttonElement = clickEvent.currentTarget;
+        buttonElement.disabled = true;
+        const tableName = buttonElement.dataset.table;
         const purgeFunction = () => {
             cityssm.postJSON(urlPrefix + "/admin/doTableCleanup", {
                 tableName
@@ -15,14 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     cityssm.alertModal("Error Cleaning Table", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
-                    buttonEle.disabled = false;
+                    buttonElement.disabled = false;
                 }
             });
         };
         cityssm.confirmModal("Cleanup " + tableName, "Are you sure you want to permanently delete all deleted records in the " + tableName + " table?", "Yes, Cleanup", "warning", purgeFunction);
     };
-    const purgeButtonEles = document.querySelector("#adminTabpanel--tableCleanup").querySelectorAll(".is-purge-button");
-    for (const purgeButtonEle of purgeButtonEles) {
-        purgeButtonEle.addEventListener("click", purgeTableFunction);
+    const purgeButtonElements = document.querySelector("#adminTabpanel--tableCleanup").querySelectorAll(".is-purge-button");
+    for (const purgeButtonElement of purgeButtonElements) {
+        purgeButtonElement.addEventListener("click", purgeTableFunction);
     }
 })();

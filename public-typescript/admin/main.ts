@@ -47,35 +47,35 @@ export interface CRMAdmin {
    * Tabs
    */
 
-  const tabEles = document.querySelector("#admin--tabs").querySelectorAll("[role='tab']");
-  const tabPanelEles = document.querySelector("#admin--tabpanels").querySelectorAll("[role='tabpanel']");
+  const tabElements = document.querySelector("#admin--tabs").querySelectorAll("[role='tab']");
+  const tabPanelElements = document.querySelector("#admin--tabpanels").querySelectorAll("[role='tabpanel']");
 
   const selectTabFunction = (clickEvent: Event) => {
 
     clickEvent.preventDefault();
 
-    const selectedTabEle = clickEvent.currentTarget as HTMLElement;
+    const selectedTabElement = clickEvent.currentTarget as HTMLElement;
 
     // Hide all tabpanels
-    for (const tabPanelEle of tabPanelEles) {
-      tabPanelEle.classList.add("is-hidden");
+    for (const tabPanelElement of tabPanelElements) {
+      tabPanelElement.classList.add("is-hidden");
     }
 
     // Deactivate all tabs
-    for (const tabEle of tabEles) {
-      tabEle.classList.remove("is-active");
-      tabEle.setAttribute("aria-selected", "false");
+    for (const tabElement of tabElements) {
+      tabElement.classList.remove("is-active");
+      tabElement.setAttribute("aria-selected", "false");
     }
 
     // Select tab
-    selectedTabEle.classList.add("is-active");
-    selectedTabEle.setAttribute("aria-selected", "true");
+    selectedTabElement.classList.add("is-active");
+    selectedTabElement.setAttribute("aria-selected", "true");
 
     // Display tabpanel
-    document.querySelector("#" + selectedTabEle.getAttribute("aria-controls")).classList.remove("is-hidden");
+    document.querySelector("#" + selectedTabElement.getAttribute("aria-controls")).classList.remove("is-hidden");
 
     // Load the tabpanel content
-    switch (selectedTabEle.getAttribute("aria-controls").split("--")[1]) {
+    switch (selectedTabElement.getAttribute("aria-controls").split("--")[1]) {
 
       case "users":
         crmAdmin.getUsersFunction();
@@ -91,7 +91,7 @@ export interface CRMAdmin {
     }
   };
 
-  for (const tabEle of tabEles) {
-    tabEle.addEventListener("click", selectTabFunction);
+  for (const tabElement of tabElements) {
+    tabElement.addEventListener("click", selectTabFunction);
   }
 })();

@@ -3,48 +3,48 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const crmAdmin = exports.crmAdmin;
     const urlPrefix = exports.urlPrefix;
-    const usersContainerEle = document.querySelector("#container--users");
+    const usersContainerElement = document.querySelector("#container--users");
     let users = [];
     const getUserFromEventFunction = (clickEvent) => {
-        const buttonEle = clickEvent.currentTarget;
-        const trEle = buttonEle.closest("tr");
-        const userIndex = Number.parseInt(trEle.dataset.index, 10);
+        const buttonElement = clickEvent.currentTarget;
+        const trElement = buttonElement.closest("tr");
+        const userIndex = Number.parseInt(trElement.dataset.index, 10);
         const user = users[userIndex];
         return {
-            buttonEle,
-            trEle,
+            buttonElement,
+            trElement,
             userIndex,
             user
         };
     };
     const toggleUserSettingFunction = (clickEvent) => {
-        const { buttonEle, user } = getUserFromEventFunction(clickEvent);
-        buttonEle.disabled = true;
-        const fieldName = buttonEle.dataset.field;
+        const { buttonElement, user } = getUserFromEventFunction(clickEvent);
+        buttonElement.disabled = true;
+        const fieldName = buttonElement.dataset.field;
         const newFieldValue = !user[fieldName];
         cityssm.postJSON(urlPrefix + "/admin/doSetUserSetting", {
             userName: user.userName,
             fieldName: fieldName,
             fieldValue: newFieldValue
         }, (responseJSON) => {
-            buttonEle.disabled = false;
+            buttonElement.disabled = false;
             if (responseJSON.success) {
                 user[fieldName] = newFieldValue;
                 if (newFieldValue) {
                     switch (fieldName) {
                         case "isActive":
-                            buttonEle.innerHTML = "<i class=\"fas fa-user-check\" aria-label=\"Active User\"></i>";
+                            buttonElement.innerHTML = "<i class=\"fas fa-user-check\" aria-label=\"Active User\"></i>";
                             break;
                         case "canUpdate":
-                            buttonEle.innerHTML = "<i class=\"fas fa-pencil-alt\" aria-label=\"Update User\"></i>";
+                            buttonElement.innerHTML = "<i class=\"fas fa-pencil-alt\" aria-label=\"Update User\"></i>";
                             break;
                         case "isAdmin":
-                            buttonEle.innerHTML = "<i class=\"fas fa-cog\" aria-label=\"Admin User\"></i>";
+                            buttonElement.innerHTML = "<i class=\"fas fa-cog\" aria-label=\"Admin User\"></i>";
                             break;
                     }
                 }
                 else {
-                    buttonEle.innerHTML = "<i class=\"fas fa-minus\" aria-label=\"False\"></i>";
+                    buttonElement.innerHTML = "<i class=\"fas fa-minus\" aria-label=\"False\"></i>";
                 }
             }
             else {
@@ -53,10 +53,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     const removeUserFunction = (clickEvent) => {
-        const { buttonEle, user, userIndex } = getUserFromEventFunction(clickEvent);
+        const { buttonElement, user, userIndex } = getUserFromEventFunction(clickEvent);
         const userName = user.userName;
         const removeFunction = () => {
-            buttonEle.disabled = true;
+            buttonElement.disabled = true;
             cityssm.postJSON(urlPrefix + "/admin/doRemoveUser", {
                 userName: userName
             }, (responseJSON) => {
@@ -66,7 +66,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     cityssm.alertModal("Error Removing User", cityssm.escapeHTML(responseJSON.message), "OK", "danger");
-                    buttonEle.disabled = false;
+                    buttonElement.disabled = false;
                 }
             });
         };
@@ -74,7 +74,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     const renderUsersFunction = () => {
         if (users.length === 0) {
-            usersContainerEle.innerHTML = "<div class=\"message is-warning\">" +
+            usersContainerElement.innerHTML = "<div class=\"message is-warning\">" +
                 "<p class=\"message-body\">" +
                 "<strong>There are no users in the system.</strong><br />" +
                 "Please create at least one user." +
@@ -82,9 +82,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "</div>";
             return;
         }
-        const tableEle = document.createElement("table");
-        tableEle.className = "table is-fullwidth is-bordered is-striped is-hoverable has-sticky-header";
-        tableEle.innerHTML = "<thead>" +
+        const tableElement = document.createElement("table");
+        tableElement.className = "table is-fullwidth is-bordered is-striped is-hoverable has-sticky-header";
+        tableElement.innerHTML = "<thead>" +
             "<tr>" +
             "<th>User Name</th>" +
             "<th class=\"has-text-centered\">Is Active</th>" +
@@ -94,11 +94,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             "</tr>" +
             "</thead>" +
             "<tbody></tbody>";
-        const tbodyEle = tableEle.querySelectorAll("tbody")[0];
+        const tbodyElement = tableElement.querySelectorAll("tbody")[0];
         for (const [index, user] of users.entries()) {
-            const trEle = document.createElement("tr");
-            trEle.dataset.index = index.toString();
-            trEle.innerHTML = "<th class=\"is-vcentered\">" + user.userName + "</th>" +
+            const trElement = document.createElement("tr");
+            trElement.dataset.index = index.toString();
+            trElement.innerHTML = "<th class=\"is-vcentered\">" + user.userName + "</th>" +
                 ("<td class=\"has-text-centered\">" +
                     "<button class=\"button is-inverted is-info\" data-field=\"isActive\" type=\"button\">" +
                     (user.isActive
@@ -127,24 +127,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "<i class=\"fas fa-trash-alt\" aria-label=\"Remove User\"></i>" +
                             "</button>") +
                     "</td>");
-            const buttonEles = trEle.querySelectorAll("button");
-            for (const buttonEle of buttonEles) {
-                if (buttonEle.classList.contains("is-remove-user-button")) {
-                    buttonEle.addEventListener("click", removeUserFunction);
+            const buttonElements = trElement.querySelectorAll("button");
+            for (const buttonElement of buttonElements) {
+                if (buttonElement.classList.contains("is-remove-user-button")) {
+                    buttonElement.addEventListener("click", removeUserFunction);
                 }
                 else {
-                    buttonEle.addEventListener("click", toggleUserSettingFunction);
+                    buttonElement.addEventListener("click", toggleUserSettingFunction);
                 }
             }
-            tbodyEle.append(trEle);
+            tbodyElement.append(trElement);
         }
-        cityssm.clearElement(usersContainerEle);
-        usersContainerEle.append(tableEle);
+        cityssm.clearElement(usersContainerElement);
+        usersContainerElement.append(tableElement);
     };
     crmAdmin.getUsersFunction = () => {
         users = [];
-        cityssm.clearElement(usersContainerEle);
-        usersContainerEle.innerHTML = crmAdmin.getLoadingHTML("Users");
+        cityssm.clearElement(usersContainerElement);
+        usersContainerElement.innerHTML = crmAdmin.getLoadingHTML("Users");
         cityssm.postJSON(urlPrefix + "/admin/doGetUsers", {}, (responseJSON) => {
             users = responseJSON.users;
             renderUsersFunction();
@@ -152,10 +152,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     document.querySelector("#form--addUser").addEventListener("submit", (formEvent) => {
         formEvent.preventDefault();
-        const addFormEle = formEvent.currentTarget;
-        cityssm.postJSON(urlPrefix + "/admin/doAddUser", addFormEle, (responseJSON) => {
+        const addFormElement = formEvent.currentTarget;
+        cityssm.postJSON(urlPrefix + "/admin/doAddUser", addFormElement, (responseJSON) => {
             if (responseJSON.success) {
-                addFormEle.reset();
+                addFormElement.reset();
                 users.unshift(responseJSON.user);
                 renderUsersFunction();
             }

@@ -9,10 +9,10 @@ declare const cityssm: cityssmGlobal;
 
   const purgeTableFunction = (clickEvent: Event) => {
 
-    const buttonEle = clickEvent.currentTarget as HTMLButtonElement;
-    buttonEle.disabled = true;
+    const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
+    buttonElement.disabled = true;
 
-    const tableName = buttonEle.dataset.table;
+    const tableName = buttonElement.dataset.table;
 
     const purgeFunction = () => {
 
@@ -35,7 +35,7 @@ declare const cityssm: cityssmGlobal;
               "OK",
               "danger");
 
-            buttonEle.disabled = false;
+            buttonElement.disabled = false;
           }
         });
     };
@@ -47,9 +47,9 @@ declare const cityssm: cityssmGlobal;
       purgeFunction);
   };
 
-  const purgeButtonEles = document.querySelector("#adminTabpanel--tableCleanup").querySelectorAll(".is-purge-button");
+  const purgeButtonElements = document.querySelector("#adminTabpanel--tableCleanup").querySelectorAll(".is-purge-button");
 
-  for (const purgeButtonEle of purgeButtonEles) {
-    purgeButtonEle.addEventListener("click", purgeTableFunction);
+  for (const purgeButtonElement of purgeButtonElements) {
+    purgeButtonElement.addEventListener("click", purgeTableFunction);
   }
 })();
