@@ -6,4 +6,5 @@ export interface CRMAdmin {
     getUsersFunction?: () => void;
     getRecordTypesFunction?: (callbackFunction?: () => void) => void;
     getStatusTypesFunction?: () => void;
+    getRecordUserTypesFunction?: () => void;
 }

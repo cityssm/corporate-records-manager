@@ -41,6 +41,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             case "recordTypes":
                 crmAdmin.getRecordTypesFunction();
                 break;
+            case "recordUserTypes":
+                crmAdmin.getRecordUserTypesFunction();
+                break;
             case "statusTypes":
                 crmAdmin.getRecordTypesFunction(crmAdmin.getStatusTypesFunction);
                 break;

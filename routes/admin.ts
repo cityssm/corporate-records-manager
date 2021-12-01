@@ -21,6 +21,12 @@ import handler_doSetStatusTypeIsActive from "../handlers/admin/doSetStatusTypeIs
 import handler_doSetStatusTypeOrderNumber from "../handlers/admin/doSetStatusTypeOrderNumber.js";
 import handler_doRemoveStatusType from "../handlers/admin/doRemoveStatusType.js";
 
+import handler_doGetRecordUserTypes from "../handlers/admin/doGetRecordUserTypes.js";
+import handler_doAddRecordUserType from "../handlers/admin/doAddRecordUserType.js";
+import handler_doUpdateRecordUserType from "../handlers/admin/doUpdateRecordUserType.js";
+import handler_doSetRecordUserTypeIsActive from "../handlers/admin/doSetRecordUserTypeIsActive.js";
+import handler_doRemoveRecordUserType from "../handlers/admin/doRemoveRecordUserType.js";
+
 import handler_doTableCleanup from "../handlers/admin/doTableCleanup.js";
 
 
@@ -47,6 +53,12 @@ router.post("/doUpdateStatusType", handler_doUpdateStatusType);
 router.post("/doSetStatusTypeIsActive", handler_doSetStatusTypeIsActive);
 router.post("/doSetStatusTypeOrderNumber", handler_doSetStatusTypeOrderNumber);
 router.post("/doRemoveStatusType", handler_doRemoveStatusType);
+
+router.post("/doGetRecordUserTypes", handler_doGetRecordUserTypes);
+router.post("/doAddRecordUserType", handler_doAddRecordUserType);
+router.post("/doUpdateRecordUserType", handler_doUpdateRecordUserType);
+router.post("/doSetRecordUserTypeIsActive", handler_doSetRecordUserTypeIsActive);
+router.post("/doRemoveRecordUserType", handler_doRemoveRecordUserType);
 
 router.post("/doTableCleanup", handler_doTableCleanup);
 

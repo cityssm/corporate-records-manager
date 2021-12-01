@@ -2,13 +2,22 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecordUserTypes");
-export const getRecordUserTypes = async () => {
+export const getRecordUserTypes = async (includeCounts = false) => {
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
-        const result = await pool.request()
-            .query("select recordUserTypeKey, recordUserType, isActive" +
+        let sql = "select recordUserTypeKey, recordUserType, isActive" +
             " from CR.RecordUserTypes" +
-            " order by orderNumber, recordUserType");
+            " order by recordUserType";
+        if (includeCounts) {
+            sql = "select t.recordUserTypeKey, t.recordUserType, t.isActive," +
+                " count(u.recordUserID) as recordCount" +
+                " from CR.RecordUserTypes t" +
+                " left join CR.RecordUsers u on t.recordUserTypeKey = u.recordUserTypeKey" +
+                " group by t.recordUserTypeKey, t.recordUserType, t.isActive" +
+                " order by t.recordUserType";
+        }
+        const result = await pool.request()
+            .query(sql);
         if (result.recordset && result.recordset.length > 0) {
             return result.recordset;
         }

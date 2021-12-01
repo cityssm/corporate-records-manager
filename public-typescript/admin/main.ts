@@ -12,6 +12,7 @@ export interface CRMAdmin {
   getUsersFunction?: () => void;
   getRecordTypesFunction?: (callbackFunction?: () => void) => void;
   getStatusTypesFunction?: () => void;
+  getRecordUserTypesFunction?: () => void;
 }
 
 
@@ -83,6 +84,10 @@ export interface CRMAdmin {
 
       case "recordTypes":
         crmAdmin.getRecordTypesFunction();
+        break;
+
+      case "recordUserTypes":
+        crmAdmin.getRecordUserTypesFunction();
         break;
 
       case "statusTypes":

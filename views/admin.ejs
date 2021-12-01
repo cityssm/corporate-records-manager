@@ -32,6 +32,12 @@
             <span>Status Types</span>
           </a>
         </li>
+        <li>
+          <a id="adminTab--recordUserTypes" href="#adminTabpanel--recordUserTypes" role="tab" aria-selected="false" aria-controls="adminTabpanel--recordUserTypes">
+            <span class="icon"><i class="fas fa-user-tag" aria-hidden="true"></i></span>
+            <span>Record User Types</span>
+          </a>
+        </li>
       </ul>
       <p class="menu-label">
         Table Maintenance
@@ -91,6 +97,20 @@
         </div>
       </div>
       <div id="container--recordTypes"></div>
+    </div>
+    <div class="is-hidden" id="adminTabpanel--recordUserTypes" role="tabpanel" aria-labelledby="adminTab--recordUserTypes">
+      <div class="columns">
+        <div class="column">
+          <h2 class="title is-3">Record User Types</h2>
+        </div>
+        <div class="column is-narrow">
+          <button class="button is-success" id="is-add-record-user-type-button" type="button">
+            <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+            <span>Add Record User Type</span>
+          </button>
+        </div>
+      </div>
+      <div id="container--recordUserTypes"></div>
     </div>
     <div class="is-hidden" id="adminTabpanel--statusTypes" role="tabpanel" aria-labelledby="adminTab--statusTypes">
       <h2 class="title is-3">Status Types</h2>

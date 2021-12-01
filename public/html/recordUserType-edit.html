@@ -1,0 +1,50 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Edit a Record User Type</h2>
+      <button class="delete is-close-modal-button" type="button" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="message is-warning">
+        <p class="message-body">
+          Be sure not to change the meaning of the record user type,
+          especially if it relates to current records.
+        </p>
+      </div>
+      <form id="form--editRecordUserType">
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="editRecordUserType--recordUserTypeKey">Record User Type Key</label>
+              <div class="control has-icons-right">
+                <input class="input" id="editRecordUserType--recordUserTypeKey" name="recordUserTypeKey" type="text" pattern="^[a-z\-_]+$" maxlength="30" readonly required />
+                <span class="icon is-small is-right">
+                  <i class="fas fa-lock" aria-hidden="true"></i>
+                </span>
+              </div>
+              <p class="help">
+                Record User Type Keys cannot be changed.
+              </p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="editRecordUserType--recordUserType">Record User Type</label>
+              <div class="control">
+                <input class="input" id="editRecordUserType--recordUserType" name="recordUserType" type="text" maxlength="100" required />
+              </div>
+              <p class="help">
+                Should be unique.
+              </p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--editRecordUserType">Update Record User Type</button>
+      <button class="button is-close-modal-button">Cancel</button>
+    </footer>
+  </div>
+</div>

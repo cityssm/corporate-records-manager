@@ -11,7 +11,8 @@ export const getRecordTypes = async (includeCounts = false) => {
             " order by recordType";
         if (includeCounts) {
             sql = "select t.recordTypeKey, t.recordType," +
-                " t.minlength, t.maxlength, t.pattern, t.patternHelp, t.isActive, count(r.recordID) as recordCount" +
+                " t.minlength, t.maxlength, t.pattern, t.patternHelp, t.isActive," +
+                " count(r.recordID) as recordCount" +
                 " from CR.RecordTypes t" +
                 " left join CR.Records r on t.recordTypeKey = r.recordTypeKey" +
                 " group by t.recordTypeKey, t.recordType, t.minlength, t.maxlength, t.pattern, t.patternHelp, t.isActive" +
