@@ -244,8 +244,9 @@
   <% if (statusTypes) { %>
     exports.statusTypes = <%- JSON.stringify(statusTypes) %>;
   <% } %>
-
-  exports.recordUserTypes = <%- JSON.stringify(recordUserTypes) %>;
+  <% if (recordUserTypes) { %>
+    exports.recordUserTypes = <%- JSON.stringify(recordUserTypes) %>;
+  <% } %>
 
   <% if (configFns.getProperty("integrations.docuShare.isEnabled")) { %>
     exports.docuShareCollectionHandles = <%- JSON.stringify(configFns.getProperty("integrations.docuShare.collectionHandles")) %>;
