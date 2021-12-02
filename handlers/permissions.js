@@ -1,3 +1,12 @@
+export const canViewAll = (request, response, next) => {
+    if (request.session.user.canViewAll) {
+        return next();
+    }
+    response.status(403);
+    return response.json({
+        success: false
+    });
+};
 export const canUpdate = (request, response, next) => {
     if (request.session.user.canUpdate) {
         return next();
