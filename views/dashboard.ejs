@@ -3,7 +3,7 @@
 <h1 class="title is-1">Records Dashboard</h1>
 
 <div class="columns">
-  <div class="column is-two-thirds">
+  <div class="column">
     <div class="box">
       <form id="form--search">
         <input id="search--limit" name="limit" type="hidden" value="50" />
@@ -88,8 +88,8 @@
     </div>
     <div class="mt-4" id="container--search"></div>
   </div>
-  <% if (user.canUpdate) { %>
-    <div class="column">
+  <% if (user.canViewAll && user.canUpdate) { %>
+    <div class="column is-one-third">
       <div class="panel is-success">
         <h2 class="panel-heading">Create a New Record</h2>
         <% for (const recordType of recordTypes) { %>
