@@ -14,15 +14,29 @@ import { getRecords } from "../helpers/recordsDB/getRecords.js";
 import { getReportData } from "../helpers/recordsDB/getReportData.js";
 import { reports } from "../data/reports.js";
 
+import type { PartialSession } from "../types/recordTypes";
+
+
+const requestSession: PartialSession = {
+  user: {
+    userName: "test.user",
+    fullName: "Test User",
+    canViewAll: true,
+    canUpdate: false,
+    isAdmin: false
+  }
+};
+
 
 describe("recordsDB - getRecord()", () => {
+
 
   after(async () => {
     pool.releaseAll();
   });
 
   it("should execute getRecord()", async () => {
-    return await getRecord(1);
+    return await getRecord(1, requestSession);
   });
 
   it("should execute getRecordComments()", async () => {
@@ -63,7 +77,8 @@ describe("recordsDB - getRecords()", () => {
       recordTypeKey: "",
       searchString: ""
     },
-      limitOffset);
+      limitOffset,
+      requestSession);
 
     assert.strictEqual(typeof (records), "object");
   });
@@ -73,7 +88,8 @@ describe("recordsDB - getRecords()", () => {
       recordTypeKey: "bylaw",
       searchString: ""
     },
-      limitOffset);
+      limitOffset,
+      requestSession);
 
     assert.strictEqual(typeof (records), "object");
   });
@@ -83,7 +99,8 @@ describe("recordsDB - getRecords()", () => {
       recordTypeKey: "",
       searchString: "yard maintenance"
     },
-      limitOffset);
+      limitOffset,
+      requestSession);
 
     assert.strictEqual(typeof (records), "object");
   });
@@ -94,7 +111,8 @@ describe("recordsDB - getRecords()", () => {
       searchString: "",
       recordNumber: "00-001"
     },
-      limitOffset);
+      limitOffset,
+      requestSession);
 
     assert.strictEqual(typeof (records), "object");
   });
@@ -105,7 +123,8 @@ describe("recordsDB - getRecords()", () => {
       recordTag: "agreement",
       searchString: ""
     },
-      limitOffset);
+      limitOffset,
+      requestSession);
 
     assert.strictEqual(typeof (records), "object");
   });
@@ -116,7 +135,8 @@ describe("recordsDB - getRecords()", () => {
       searchString: "",
       recordDateStringGTE: "2010-01-01"
     },
-      limitOffset);
+      limitOffset,
+      requestSession);
 
     assert.strictEqual(typeof (records), "object");
   });
@@ -127,7 +147,8 @@ describe("recordsDB - getRecords()", () => {
       searchString: "",
       recordDateStringLTE: "2010-01-01"
     },
-      limitOffset);
+      limitOffset,
+      requestSession);
 
     assert.strictEqual(typeof (records), "object");
   });

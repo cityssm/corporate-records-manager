@@ -9,12 +9,21 @@ import { getRelatedRecords } from "../helpers/recordsDB/getRelatedRecords.js";
 import { getRecords } from "../helpers/recordsDB/getRecords.js";
 import { getReportData } from "../helpers/recordsDB/getReportData.js";
 import { reports } from "../data/reports.js";
+const requestSession = {
+    user: {
+        userName: "test.user",
+        fullName: "Test User",
+        canViewAll: true,
+        canUpdate: false,
+        isAdmin: false
+    }
+};
 describe("recordsDB - getRecord()", () => {
     after(async () => {
         pool.releaseAll();
     });
     it("should execute getRecord()", async () => {
-        return await getRecord(1);
+        return await getRecord(1, requestSession);
     });
     it("should execute getRecordComments()", async () => {
         return await getRecordComments(1);
@@ -44,21 +53,21 @@ describe("recordsDB - getRecords()", () => {
         const records = await getRecords({
             recordTypeKey: "",
             searchString: ""
-        }, limitOffset);
+        }, limitOffset, requestSession);
         assert.strictEqual(typeof (records), "object");
     });
     it("filters by recordTypeKey", async () => {
         const records = await getRecords({
             recordTypeKey: "bylaw",
             searchString: ""
-        }, limitOffset);
+        }, limitOffset, requestSession);
         assert.strictEqual(typeof (records), "object");
     });
     it("filters by searchString", async () => {
         const records = await getRecords({
             recordTypeKey: "",
             searchString: "yard maintenance"
-        }, limitOffset);
+        }, limitOffset, requestSession);
         assert.strictEqual(typeof (records), "object");
     });
     it("filters by recordNumber", async () => {
@@ -66,7 +75,7 @@ describe("recordsDB - getRecords()", () => {
             recordTypeKey: "",
             searchString: "",
             recordNumber: "00-001"
-        }, limitOffset);
+        }, limitOffset, requestSession);
         assert.strictEqual(typeof (records), "object");
     });
     it("filters by recordTag", async () => {
@@ -74,7 +83,7 @@ describe("recordsDB - getRecords()", () => {
             recordTypeKey: "",
             recordTag: "agreement",
             searchString: ""
-        }, limitOffset);
+        }, limitOffset, requestSession);
         assert.strictEqual(typeof (records), "object");
     });
     it("filters by recordDateStringGTE", async () => {
@@ -82,7 +91,7 @@ describe("recordsDB - getRecords()", () => {
             recordTypeKey: "",
             searchString: "",
             recordDateStringGTE: "2010-01-01"
-        }, limitOffset);
+        }, limitOffset, requestSession);
         assert.strictEqual(typeof (records), "object");
     });
     it("filters by recordDateStringLTE", async () => {
@@ -90,7 +99,7 @@ describe("recordsDB - getRecords()", () => {
             recordTypeKey: "",
             searchString: "",
             recordDateStringLTE: "2010-01-01"
-        }, limitOffset);
+        }, limitOffset, requestSession);
         assert.strictEqual(typeof (records), "object");
     });
 });
