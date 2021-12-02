@@ -121,7 +121,7 @@ app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
 app.use(urlPrefix + "/view", sessionChecker, routerView);
 app.use(urlPrefix + "/new", sessionChecker, permissionHandlers.canUpdate, routerNew);
 app.use(urlPrefix + "/edit", sessionChecker, permissionHandlers.canUpdate, routerEdit);
-app.use(urlPrefix + "/reports", sessionChecker, routerReports);
+app.use(urlPrefix + "/reports", sessionChecker, permissionHandlers.canViewAll, routerReports);
 app.use(urlPrefix + "/admin", sessionChecker, permissionHandlers.isAdmin, routerAdmin);
 app.use(urlPrefix + "/login", routerLogin);
 app.get(urlPrefix + "/logout", (request, response) => {

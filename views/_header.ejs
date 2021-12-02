@@ -35,10 +35,12 @@
     </div>
     <div class="navbar-menu" id="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item" href="<%= urlPrefix %>/reports">
-          <span class="icon"><i class="fas fa-fw fa-file" aria-hidden="true"></i></span>
-          <span>Reports</span>
-        </a>
+        <% if (user.canViewAll) { %>
+          <a class="navbar-item" href="<%= urlPrefix %>/reports">
+            <span class="icon"><i class="fas fa-fw fa-file" aria-hidden="true"></i></span>
+            <span>Reports</span>
+          </a>
+        <% } %>
         <% if (user.isAdmin) { %>
           <a class="navbar-item" href="<%= urlPrefix %>/admin">
             <span class="icon"><i class="fas fa-fw fa-user-cog" aria-hidden="true"></i></span>

@@ -210,7 +210,7 @@ app.use(urlPrefix + "/new", sessionChecker, permissionHandlers.canUpdate, router
 
 app.use(urlPrefix + "/edit", sessionChecker, permissionHandlers.canUpdate, routerEdit);
 
-app.use(urlPrefix + "/reports", sessionChecker, routerReports);
+app.use(urlPrefix + "/reports", sessionChecker, permissionHandlers.canViewAll, routerReports);
 
 app.use(urlPrefix + "/admin", sessionChecker, permissionHandlers.isAdmin, routerAdmin);
 
