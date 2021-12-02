@@ -8,9 +8,9 @@
 
 A system for tracking various corporate records administered by the Clerks Department.
 
-**Under development.  Expected to launch July 2021.**
+**Under development.  Expected to launch December 2021.**
 
-:blue_book: [Read the Documentation](https://cityssm.github.io/corporate-records-manager/docs/)
+📘 [Read the Documentation](https://cityssm.github.io/corporate-records-manager/docs/)
 
 ![Edit By-Law Screenshot](docs/update.png)
 
