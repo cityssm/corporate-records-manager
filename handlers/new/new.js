@@ -20,7 +20,8 @@ export const handler = async (request, response) => {
         isNew: true,
         recordType,
         record: emptyRecord,
-        statusTypes: undefined
+        statusTypes: undefined,
+        recordUserTypes: undefined
     });
 };
 export default handler;

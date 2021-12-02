@@ -31,7 +31,8 @@ export const handler: RequestHandler = async (request, response) => {
     isNew: true,
     recordType,
     record: emptyRecord,
-    statusTypes: undefined
+    statusTypes: undefined,
+    recordUserTypes: undefined
   });
 };
 
