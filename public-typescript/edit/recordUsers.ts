@@ -166,7 +166,7 @@ declare const cityssm: cityssmGlobal;
       };
 
       cityssm.openHtmlModal("user-add", {
-        onshow: () => {
+        onshow: (modalElement) => {
           (document.querySelector("#addRecordUser--recordID") as HTMLInputElement).value = crmEdit.recordID;
 
           const recordUserTypeKeyElement = document.querySelector("#addRecordUser--recordUserTypeKey") as HTMLSelectElement;
@@ -181,6 +181,30 @@ declare const cityssm: cityssmGlobal;
                 "</option>");
             }
           }
+
+          cityssm.postJSON(urlPrefix + "/edit/doGetSuggestedRecordUsers",
+            {},
+            (responseJSON: { success: boolean; message?: string; recordUsers?: { userName: string; fullName: string; }[] }) => {
+
+              if (responseJSON.success) {
+
+                const datalistElement = modalElement.querySelector("#addRecordUser--userName-list") as HTMLDataListElement;
+
+                for (const suggestedRecordUser of responseJSON.recordUsers) {
+
+                  const optionElement = document.createElement("option");
+
+                  optionElement.value = suggestedRecordUser.userName;
+                  
+                  optionElement.textContent = suggestedRecordUser.fullName +
+                    (suggestedRecordUser.fullName !== suggestedRecordUser.userName
+                      ? " (" + suggestedRecordUser.userName + ")"
+                      : "");
+
+                  datalistElement.append(optionElement);
+                }
+              }
+            });
         },
         onshown: (_modalElement, closeModalFunction) => {
           bulmaJS.toggleHtmlClipped();

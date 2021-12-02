@@ -14,6 +14,7 @@ import handler_doAddStatus from "../handlers/edit/doAddStatus.js";
 import handler_doUpdateStatus from "../handlers/edit/doUpdateStatus.js";
 import handler_doRemoveStatus from "../handlers/edit/doRemoveStatus.js";
 
+import handler_doGetSuggestedRecordUsers from "../handlers/edit/doGetSuggestedRecordUsers.js";
 import handler_doAddRecordUser from "../handlers/edit/doAddRecordUser.js";
 import handler_doRemoveRecordUser from "../handlers/edit/doRemoveRecordUser.js";
 
@@ -53,6 +54,7 @@ router.post("/doUpdateStatus", handler_doUpdateStatus);
 router.post("/doRemoveStatus", handler_doRemoveStatus);
 
 
+router.post("/doGetSuggestedRecordUsers", handler_doGetSuggestedRecordUsers);
 router.post("/doAddRecordUser", handler_canViewAll, handler_doAddRecordUser);
 router.post("/doRemoveRecordUser", handler_canViewAll, handler_doRemoveRecordUser);
 

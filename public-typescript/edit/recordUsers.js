@@ -106,7 +106,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             };
             cityssm.openHtmlModal("user-add", {
-                onshow: () => {
+                onshow: (modalElement) => {
                     document.querySelector("#addRecordUser--recordID").value = crmEdit.recordID;
                     const recordUserTypeKeyElement = document.querySelector("#addRecordUser--recordUserTypeKey");
                     const recordUserTypes = exports.recordUserTypes;
@@ -117,6 +117,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "</option>");
                         }
                     }
+                    cityssm.postJSON(urlPrefix + "/edit/doGetSuggestedRecordUsers", {}, (responseJSON) => {
+                        if (responseJSON.success) {
+                            const datalistElement = modalElement.querySelector("#addRecordUser--userName-list");
+                            for (const suggestedRecordUser of responseJSON.recordUsers) {
+                                const optionElement = document.createElement("option");
+                                optionElement.value = suggestedRecordUser.userName;
+                                optionElement.textContent = suggestedRecordUser.fullName +
+                                    (suggestedRecordUser.fullName !== suggestedRecordUser.userName
+                                        ? " (" + suggestedRecordUser.userName + ")"
+                                        : "");
+                                datalistElement.append(optionElement);
+                            }
+                        }
+                    });
                 },
                 onshown: (_modalElement, closeModalFunction) => {
                     bulmaJS.toggleHtmlClipped();
