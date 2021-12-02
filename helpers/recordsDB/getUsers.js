@@ -7,7 +7,7 @@ export const getUsers = async () => {
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         const result = await pool.request()
-            .query("select userName, fullName, canUpdate, isAdmin, isActive" +
+            .query("select userName, fullName, canViewAll, canUpdate, isAdmin, isActive" +
             " from CR.Users" +
             " order by userName");
         users = result.recordset;

@@ -8,7 +8,7 @@ export const getUser = async (userName, filterByIsActive = true) => {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         const result = await pool.request()
             .input("userName", userName)
-            .query("select userName, fullName, canUpdate, isAdmin" +
+            .query("select userName, fullName, canViewAll, canUpdate, isAdmin" +
             " from CR.Users" +
             " where userName = @userName" +
             (filterByIsActive ? " and isActive = 1" : ""));
