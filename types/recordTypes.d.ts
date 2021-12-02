@@ -79,6 +79,7 @@ export declare type RecordUser = {
 export interface User {
     userName: string;
     fullName: string;
+    canViewAll: boolean;
     canUpdate: boolean;
     isAdmin: boolean;
     isActive?: boolean;

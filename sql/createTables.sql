@@ -6,6 +6,7 @@ create table CR.Users (
 	userName varchar(30) primary key not null,
 	fullName nvarchar(200),
 	isActive bit not null default 0,
+	canViewAll bit not null default 0,
 	canUpdate bit not null default 0,
 	isAdmin bit not null default 0
 )
@@ -13,7 +14,7 @@ GO
 
 
 -- Grant domain administrator access.
-insert into CR.Users (userName, isActive, canUpdate, isAdmin) values ('administrator', 1, 0, 1)
+insert into CR.Users (userName, isActive, canViewAll, canUpdate, isAdmin) values ('administrator', 1, 1, 0, 1)
 GO
 
 
