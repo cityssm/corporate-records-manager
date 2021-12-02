@@ -83,6 +83,28 @@
         </div>
       </div>
       <div id="container--users"></div>
+      <div class="content">
+        <h3 class="title is-5 mt-4">Permissions</h3>
+        <ul>
+          <li>
+            <strong>Is Active</strong><br />
+            Active users are able to log into <%= configFns.getProperty("application.applicationName") %>.
+          </li>
+          <li>
+            <strong>Can View All</strong><br />
+            When set, the user can see all records.
+            When not set, the user can only see those records which are associated with them.
+          </li>
+          <li>
+            <strong>Can Update</strong><br />
+            When set, the user will have the ability to create, maintain, and delete records.
+          </li>
+          <li>
+            <strong>Is Admin</strong><br />
+            When set, the user will have access to the Administration area and all of it's options.
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="is-hidden" id="adminTabpanel--recordTypes" role="tabpanel" aria-labelledby="adminTab--recordTypes">
       <div class="columns">
