@@ -2,7 +2,7 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecords");
-export const getRecords = async (parameters, options) => {
+export const getRecords = async (parameters, options, requestSession) => {
     const returnObject = {
         count: 0,
         records: []
@@ -12,6 +12,11 @@ export const getRecords = async (parameters, options) => {
         let countRequest = pool.request();
         let resultsRequest = pool.request();
         let whereSQL = " where recordDelete_datetime is null";
+        if (!requestSession.user.canViewAll) {
+            countRequest = countRequest.input("userName", requestSession.user.userName);
+            resultsRequest = resultsRequest.input("userName", requestSession.user.userName);
+            whereSQL += " and recordID in (select recordID from CR.RecordUsers where userName = @userName and recordDelete_datetime is null)";
+        }
         if (parameters.recordTypeKey !== "") {
             countRequest = countRequest.input("recordTypeKey", parameters.recordTypeKey);
             resultsRequest = resultsRequest.input("recordTypeKey", parameters.recordTypeKey);

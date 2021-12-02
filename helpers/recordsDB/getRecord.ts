@@ -9,27 +9,34 @@ import { getRecordComments } from "./getRecordComments.js";
 import { getRecordUsers } from "./getRecordUsers.js";
 
 import type * as sqlTypes from "mssql";
-import type { Record } from "../../types/recordTypes";
+import type { Record, PartialSession } from "../../types/recordTypes";
 
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecord");
 
 
-export const getRecord = async (recordID: number | string): Promise<Record> => {
+export const getRecord = async (recordID: number | string, requestSession: PartialSession): Promise<Record> => {
 
   try {
     const pool: sqlTypes.ConnectionPool =
       await sqlPool.connect(configFns.getProperty("mssqlConfig"));
 
+    let sql = "select recordID, recordTypeKey, recordNumber," +
+      " recordTitle, recordDescription, party, location, recordDate," +
+      " recordCreate_userName, recordCreate_datetime," +
+      " recordUpdate_userName, recordUpdate_datetime" +
+      " from CR.Records" +
+      " where recordDelete_datetime is null" +
+      " and recordID = @recordID";
+
+    if (!requestSession.user.canViewAll) {
+      sql += " and recordID in (select recordID from CR.RecordUsers where userName = @userName and recordDelete_datetime is null)";
+    }
+
     const result = await pool.request()
       .input("recordID", recordID)
-      .query("select recordID, recordTypeKey, recordNumber," +
-        " recordTitle, recordDescription, party, location, recordDate," +
-        " recordCreate_userName, recordCreate_datetime," +
-        " recordUpdate_userName, recordUpdate_datetime" +
-        " from CR.Records" +
-        " where recordDelete_datetime is null" +
-        " and recordID = @recordID");
+      .input("userName", requestSession.user.userName)
+      .query(sql);
 
     if (!result.recordset || result.recordset.length === 0) {
       return undefined;

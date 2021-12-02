@@ -10,7 +10,7 @@ export const handler = async (request, response) => {
     }, {
         limit: Number.parseInt(request.body.limit, 10),
         offset: Number.parseInt(request.body.offset, 10)
-    });
+    }, request.session);
     return results
         ? response.json({
             success: true,

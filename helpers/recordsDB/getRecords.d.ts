@@ -1,4 +1,4 @@
-import type { Record } from "../../types/recordTypes";
+import type { Record, PartialSession } from "../../types/recordTypes";
 interface GetRecordsReturn {
     count: number;
     records: Record[];
@@ -13,5 +13,5 @@ export declare const getRecords: (parameters: {
 }, options: {
     limit: number;
     offset: number;
-}) => Promise<GetRecordsReturn>;
+}, requestSession: PartialSession) => Promise<GetRecordsReturn>;
 export default getRecords;

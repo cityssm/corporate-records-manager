@@ -13,7 +13,7 @@ export const handler: RequestHandler = async (request, response) => {
 
   const recordID = request.params.recordID;
 
-  const record = await getRecord(recordID);
+  const record = await getRecord(recordID, request.session);
 
   if (!record) {
     return response.redirect(urlPrefix + "/dashboard?error=recordNotAvailable");

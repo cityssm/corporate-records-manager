@@ -2,7 +2,7 @@ import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../configFns.js";
 
 import type * as sqlTypes from "mssql";
-import type { Record } from "../../types/recordTypes";
+import type { Record, PartialSession } from "../../types/recordTypes";
 
 import debug from "debug";
 const debugSQL = debug("corporate-records-manager:recordsDB:getRecords");
@@ -24,7 +24,7 @@ export const getRecords = async (parameters: {
 }, options: {
   limit: number;
   offset: number;
-}): Promise<GetRecordsReturn> => {
+}, requestSession: PartialSession): Promise<GetRecordsReturn> => {
 
   const returnObject: GetRecordsReturn = {
     count: 0,
@@ -39,6 +39,12 @@ export const getRecords = async (parameters: {
     let resultsRequest = pool.request();
 
     let whereSQL = " where recordDelete_datetime is null";
+
+    if (!requestSession.user.canViewAll) {
+      countRequest = countRequest.input("userName", requestSession.user.userName);
+      resultsRequest = resultsRequest.input("userName", requestSession.user.userName);
+      whereSQL += " and recordID in (select recordID from CR.RecordUsers where userName = @userName and recordDelete_datetime is null)";
+    }
 
     if (parameters.recordTypeKey !== "") {
       countRequest = countRequest.input("recordTypeKey", parameters.recordTypeKey);
