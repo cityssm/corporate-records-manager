@@ -67,6 +67,10 @@ declare const cityssm: cityssmGlobal;
               buttonElement.innerHTML = "<i class=\"fas fa-user-check\" aria-label=\"Active User\"></i>";
               break;
 
+            case "canViewAll":
+              buttonElement.innerHTML = "<i class=\"fas fa-eye\" aria-label=\"View All User\"></i>";
+              break;
+
             case "canUpdate":
               buttonElement.innerHTML = "<i class=\"fas fa-pencil-alt\" aria-label=\"Update User\"></i>";
               break;
@@ -146,6 +150,7 @@ declare const cityssm: cityssmGlobal;
       "<tr>" +
       "<th>User Name</th>" +
       "<th class=\"has-text-centered\">Is Active</th>" +
+      "<th class=\"has-text-centered\">Can View All</th>" +
       "<th class=\"has-text-centered\">Can Update</th>" +
       "<th class=\"has-text-centered\">Is Admin</th>" +
       "<th class=\"has-text-centered\">Remove</th>" +
@@ -153,18 +158,30 @@ declare const cityssm: cityssmGlobal;
       "</thead>" +
       "<tbody></tbody>";
 
-    const tbodyElement = tableElement.querySelectorAll("tbody")[0];
+    const tbodyElement = tableElement.querySelector("tbody");
 
     for (const [index, user] of users.entries()) {
 
       const trElement = document.createElement("tr");
       trElement.dataset.index = index.toString();
 
-      trElement.innerHTML = "<th class=\"is-vcentered\">" + user.userName + "</th>" +
+      trElement.innerHTML = ("<th class=\"is-vcentered\">" +
+        user.userName + "<br />" +
+        (user.fullName && user.fullName !== "" && user.fullName !== user.userName
+          ? cityssm.escapeHTML(user.fullName)
+          : "") +
+        "</th>") +
         ("<td class=\"has-text-centered\">" +
           "<button class=\"button is-inverted is-info\" data-field=\"isActive\" type=\"button\">" +
           (user.isActive
             ? "<i class=\"fas fa-user-check\" aria-label=\"Active User\"></i>"
+            : "<i class=\"fas fa-minus\" aria-label=\"False\"></i>") +
+          "</button>" +
+          "</td>") +
+        ("<td class=\"has-text-centered\">" +
+          "<button class=\"button is-inverted is-info\" data-field=\"canViewAll\" type=\"button\">" +
+          (user.canViewAll
+            ? "<i class=\"fas fa-eye\" aria-label=\"View All User\"></i>"
             : "<i class=\"fas fa-minus\" aria-label=\"False\"></i>") +
           "</button>" +
           "</td>") +

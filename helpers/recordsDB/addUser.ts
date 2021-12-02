@@ -12,7 +12,9 @@ export const addUser = async (userName: string): Promise<User> => {
 
   const user: User = {
     userName: userName,
+    fullName: userName,
     isActive: true,
+    canViewAll: false,
     canUpdate: false,
     isAdmin: false
   };
@@ -28,8 +30,8 @@ export const addUser = async (userName: string): Promise<User> => {
       .input("canUpdate", user.canUpdate)
       .input("isAdmin", user.isAdmin)
       .query("insert into CR.Users" +
-        " (userName, isActive, canUpdate, isAdmin)" +
-        " values (@userName, @isActive, @canUpdate, @isAdmin)");
+        " (userName, fullName, isActive, canViewAll, canUpdate, isAdmin)" +
+        " values (@userName, @fullName, @isActive, @canViewAll, @canUpdate, @isAdmin)");
 
     return user;
 

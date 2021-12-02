@@ -4,7 +4,7 @@ import { updateUserSetting } from "../../helpers/recordsDB/updateUserSetting.js"
 import type { FieldName } from "../../helpers/recordsDB/updateUserSetting.js";
 
 
-const userSettingFields = new Set(["isActive", "canUpdate", "isAdmin"]);
+const userSettingFields = new Set(["isActive", "canViewAll", "canUpdate", "isAdmin"]);
 
 
 export const handler: RequestHandler = async (request, response) => {

@@ -5,7 +5,9 @@ const debugSQL = debug("corporate-records-manager:recordsDB:addUser");
 export const addUser = async (userName) => {
     const user = {
         userName: userName,
+        fullName: userName,
         isActive: true,
+        canViewAll: false,
         canUpdate: false,
         isAdmin: false
     };
@@ -17,8 +19,8 @@ export const addUser = async (userName) => {
             .input("canUpdate", user.canUpdate)
             .input("isAdmin", user.isAdmin)
             .query("insert into CR.Users" +
-            " (userName, isActive, canUpdate, isAdmin)" +
-            " values (@userName, @isActive, @canUpdate, @isAdmin)");
+            " (userName, fullName, isActive, canViewAll, canUpdate, isAdmin)" +
+            " values (@userName, @fullName, @isActive, @canViewAll, @canUpdate, @isAdmin)");
         return user;
     }
     catch (error) {
