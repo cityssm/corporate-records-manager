@@ -4,6 +4,13 @@
 
 <div class="columns">
   <div class="column">
+    <% if (!user.canViewAll) { %>
+      <div class="message is-info">
+        <p class="message-body">
+          Note that you can only see records that have been marked as related to you.
+        </p>
+      </div>
+    <% } %>
     <div class="box">
       <form id="form--search">
         <input id="search--limit" name="limit" type="hidden" value="50" />
@@ -41,16 +48,22 @@
             <div class="column">
               <div class="field">
                 <label class="label" for="search--recordNumber">Record Number</label>
-                <div class="control">
+                <div class="control has-icons-left">
                   <input class="input" id="search--recordNumber" name="recordNumber" type="text" maxlength="30" />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-filter" aria-hidden="true"></i>
+                  </span>
                 </div>
               </div>
             </div>
             <div class="column">
               <div class="field">
                 <label class="label" for="search--recordTag">Tag</label>
-                <div class="control">
+                <div class="control has-icons-left">
                   <input class="input" id="search--recordTag" name="recordTag" type="text" list="search--recordTag-datalist" />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-filter" aria-hidden="true"></i>
+                  </span>
                 </div>
               </div>
               <datalist id="search--recordTag-datalist"></datalist>
