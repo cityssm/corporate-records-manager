@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    const currentUser = exports.user;
     const urlPrefix = exports.urlPrefix;
     const crmEdit = exports.crmEdit;
     const userPanelElement = document.querySelector("#panel--users");
@@ -40,13 +41,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "<strong>" + cityssm.escapeHTML(recordUserType ? recordUserType.recordUserType : recordUser.recordUserTypeKey) + "</strong><br />" +
                 "<span>" + cityssm.escapeHTML(recordUser.userName) + "</span>" +
                 "</div>") +
-            ("<div class=\"column is-narrow\">" +
-                " <button class=\"button is-danger is-light is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Remove User\" type=\"button\">" +
-                "<span class=\"icon\"><i class=\"fas fa-trash-alt\" aria-hidden=\"true\"></i></span>" +
-                "</button>" +
-                "</div>") +
+            (currentUser.canViewAll
+                ? "<div class=\"column is-narrow\">" +
+                    " <button class=\"button is-danger is-light is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Remove User\" type=\"button\">" +
+                    "<span class=\"icon\"><i class=\"fas fa-trash-alt\" aria-hidden=\"true\"></i></span>" +
+                    "</button>" +
+                    "</div>"
+                : "") +
             "</div>";
-        panelBlockElement.querySelector("button").addEventListener("click", openRemoveRecordUserModalFunction);
+        if (currentUser.canViewAll) {
+            panelBlockElement.querySelector("button").addEventListener("click", openRemoveRecordUserModalFunction);
+        }
         userPanelElement.append(panelBlockElement);
     };
     const renderRecordUsersFunction = () => {

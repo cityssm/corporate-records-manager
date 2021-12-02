@@ -13,6 +13,8 @@ declare const cityssm: cityssmGlobal;
 
 (() => {
 
+  const currentUser: recordTypes.User = exports.user;
+
   const urlPrefix: string = exports.urlPrefix;
   const crmEdit: CRMEdit = exports.crmEdit;
 
@@ -73,14 +75,18 @@ declare const cityssm: cityssmGlobal;
         "<strong>" + cityssm.escapeHTML(recordUserType ? recordUserType.recordUserType : recordUser.recordUserTypeKey) + "</strong><br />" +
         "<span>" + cityssm.escapeHTML(recordUser.userName) + "</span>" +
         "</div>") +
-      ("<div class=\"column is-narrow\">" +
+      (currentUser.canViewAll
+        ? "<div class=\"column is-narrow\">" +
         " <button class=\"button is-danger is-light is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Remove User\" type=\"button\">" +
         "<span class=\"icon\"><i class=\"fas fa-trash-alt\" aria-hidden=\"true\"></i></span>" +
         "</button>" +
-        "</div>") +
+        "</div>"
+        : "") +
       "</div>";
 
-    panelBlockElement.querySelector("button").addEventListener("click", openRemoveRecordUserModalFunction);
+    if (currentUser.canViewAll) {
+      panelBlockElement.querySelector("button").addEventListener("click", openRemoveRecordUserModalFunction);
+    }
 
     userPanelElement.append(panelBlockElement);
   };

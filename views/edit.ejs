@@ -179,7 +179,7 @@
       <div class="panel" id="panel--users">
         <div class="panel-heading is-flex is-justify-content-space-between">
           <h2 class="has-text-weight-bold">Users</h2>
-          <% if (recordUserTypes.length > 0) { %>
+          <% if (user.canViewAll && recordUserTypes.length > 0) { %>
             <button class="button is-small is-light is-success" id="is-add-user-button" type="button">
               <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
               <span>Add User</span>

@@ -2,6 +2,8 @@ import { Router } from "express";
 
 import * as configFns from "../helpers/configFns.js";
 
+import { canViewAll as handler_canViewAll } from "../handlers/permissions.js";
+
 import handler_edit from "../handlers/edit/edit.js";
 import handler_doUpdate from "../handlers/edit/doUpdate.js";
 import handler_doRemove from "../handlers/edit/doRemove.js";
@@ -51,8 +53,8 @@ router.post("/doUpdateStatus", handler_doUpdateStatus);
 router.post("/doRemoveStatus", handler_doRemoveStatus);
 
 
-router.post("/doAddRecordUser", handler_doAddRecordUser);
-router.post("/doRemoveRecordUser", handler_doRemoveRecordUser);
+router.post("/doAddRecordUser", handler_canViewAll, handler_doAddRecordUser);
+router.post("/doRemoveRecordUser", handler_canViewAll, handler_doRemoveRecordUser);
 
 
 router.post("/doAddURL", handler_doAddURL);
