@@ -100,7 +100,7 @@ and be marked as active.
 | `maxlength`     | `tinyint`                 | The maximum length of record numbers.                        | `8`                                |
 | `pattern`       | `varchar(50)`             | The regular expression to validate record numbers.           | `"^(\d\d){1,2}-\d\d\d$"`           |
 | `patternHelp`   | `varchar(100)`            | The human readable version of the pattern to assist users.   | `"Year, dash, three-digit index."` |
-| `isActive`      | bit                       | Whether the record type is available for new records or not. | `1`                                |
+| `isActive`      | `bit`                     | Whether the record type is available for new records or not. | `1`                                |
 
 ### CR.RecordUserTypes
 
@@ -108,7 +108,7 @@ and be marked as active.
 | ------------------- | ------------------------- | ----------------------------------------------------------------- | --------------------- |
 | `recordUserTypeKey` | `varchar(30) primary key` | The behind-the-scenes key.                                        | `authority-delegated` |
 | `recordUserType`    | `varchar(100)`            | The human readable record user type.                              | `Delegated Authority` |
-| `isActive`          | bit                       | Whether the record user type is available for new records or not. | `1`                   |
+| `isActive`          | `bit`                      | Whether the record user type is available for new records or not. | `1`                   |
 
 ### CR.StatusTypes
 
