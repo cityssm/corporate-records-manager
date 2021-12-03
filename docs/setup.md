@@ -81,23 +81,34 @@ In order for a user to have access to the application,
 they must have their user name in the CR.Users table,
 and be marked as active.
 
-| Field Name  | Data Type                 | Description                                                | Example   |
-| ----------- | ------------------------- | ---------------------------------------------------------- | --------- |
-| `userName`  | `varchar(30) primary key` | The user name (without domain).                            | `"j.doe"` |
-| `isActive`  | `bit`                     | Whether or not the user has permission to log in.          | `1`       |
-| `canUpdate` | `bit`                     | Whether or not the user can update records.                | `1`       |
-| `isAdmin`   | `bit`                     | Whether or not the user can maintain configuration tables. | `0`       |
+| Field Name   | Data Type                 | Description                                                                      | Example      |
+| ------------ | ------------------------- | -------------------------------------------------------------------------------- | ------------ |
+| `userName`   | `varchar(30) primary key` | The user name (without domain).                                                  | `"j.doe"`    |
+| `fullName`   | `nvarchar(200)`           | The user's full name.                                                            | `"Jane Doe"` |
+| `isActive`   | `bit`                     | Whether or not the user has permission to log in.                                | `1`          |
+| `canViewAll` | `bit`                     | Whether or not the user can see records they are not explicitly associated with. | `1`          |
+| `canUpdate`  | `bit`                     | Whether or not the user can update records.                                      | `1`          |
+| `isAdmin`    | `bit`                     | Whether or not the user can maintain configuration tables.                       | `0`          |
 
 ### CR.RecordTypes
 
-| Field Name      | Data Type                 | Description                                                | Example                            |
-| --------------- | ------------------------- | ---------------------------------------------------------- | ---------------------------------- |
-| `recordTypeKey` | `varchar(20) primary key` | The behind-the-scenes key.                                 | `"bylaw"`                          |
-| `recordType`    | `varchar(100)`            | The human readable record type.                            | `"By-Law"`                         |
-| `minlength`     | `tinyint`                 | The minimum length of record numbers.                      | `6`                                |
-| `maxlength`     | `tinyint`                 | The maximum length of record numbers.                      | `8`                                |
-| `pattern`       | `varchar(50)`             | The regular expression to validate record numbers.         | `"^(\d\d){1,2}-\d\d\d$"`           |
-| `patternHelp`   | `varchar(100)`            | The human readable version of the pattern to assist users. | `"Year, dash, three-digit index."` |
+| Field Name      | Data Type                 | Description                                                  | Example                            |
+| --------------- | ------------------------- | ------------------------------------------------------------ | ---------------------------------- |
+| `recordTypeKey` | `varchar(20) primary key` | The behind-the-scenes key.                                   | `"bylaw"`                          |
+| `recordType`    | `varchar(100)`            | The human readable record type.                              | `"By-Law"`                         |
+| `minlength`     | `tinyint`                 | The minimum length of record numbers.                        | `6`                                |
+| `maxlength`     | `tinyint`                 | The maximum length of record numbers.                        | `8`                                |
+| `pattern`       | `varchar(50)`             | The regular expression to validate record numbers.           | `"^(\d\d){1,2}-\d\d\d$"`           |
+| `patternHelp`   | `varchar(100)`            | The human readable version of the pattern to assist users.   | `"Year, dash, three-digit index."` |
+| `isActive`      | bit                       | Whether the record type is available for new records or not. | `1`                                |
+
+### CR.RecordUserTypes
+
+| Field Name          | Data Type                 | Description                                                       | Example               |
+| ------------------- | ------------------------- | ----------------------------------------------------------------- | --------------------- |
+| `recordUserTypeKey` | `varchar(30) primary key` | The behind-the-scenes key.                                        | `authority-delegated` |
+| `recordUserType`    | `varchar(100)`            | The human readable record user type.                              | `Delegated Authority` |
+| `isActive`          | bit                       | Whether the record user type is available for new records or not. | `1`                   |
 
 ### CR.StatusTypes
 
