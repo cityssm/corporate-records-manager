@@ -69,23 +69,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</div>"
                     : "") +
                 "</div>" +
-                "<div class=\"is-size-7\">" +
-                (record.party && record.party !== ""
-                    ? "<span class=\"has-tooltip-right has-tooltip-arrow\" data-tooltip=\"Related Party\">" +
-                        "<span class=\"icon\"><i class=\"fas fa-users\" aria-hidden=\"true\"></i></span> " +
-                        cityssm.escapeHTML(record.party) +
-                        "</span><br />"
-                    : "") +
-                (record.location && record.location !== ""
-                    ? "<span class=\"has-tooltip-right has-tooltip-arrow\" data-tooltip=\"Location\">" +
-                        "<span class=\"icon\"><i class=\"fas fa-map-marker-alt\" aria-hidden=\"true\"></i></span> " +
-                        cityssm.escapeHTML(record.location) +
-                        "</span><br />"
-                    : "") +
-                cityssm.escapeHTML(record.recordDescription.length > 500
-                    ? record.recordDescription.slice(0, 497) + " ..."
-                    : record.recordDescription) +
-                "</div>";
+                ("<div class=\"is-size-7\">" +
+                    (record.party && record.party !== ""
+                        ? "<span class=\"has-tooltip-right has-tooltip-arrow\" data-tooltip=\"Related Party\">" +
+                            "<span class=\"icon\"><i class=\"fas fa-users\" aria-hidden=\"true\"></i></span> " +
+                            cityssm.escapeHTML(record.party) +
+                            "</span><br />"
+                        : "") +
+                    (record.location && record.location !== ""
+                        ? "<span class=\"has-tooltip-right has-tooltip-arrow\" data-tooltip=\"Location\">" +
+                            "<span class=\"icon\"><i class=\"fas fa-map-marker-alt\" aria-hidden=\"true\"></i></span> " +
+                            cityssm.escapeHTML(record.location) +
+                            "</span><br />"
+                        : "") +
+                    cityssm.escapeHTML(record.recordDescription.length > 500
+                        ? record.recordDescription.slice(0, 497) + " ..."
+                        : record.recordDescription) + "<br />" +
+                    (record.statusTypeKey && record.statusTypeKey !== ""
+                        ? "<span class=\"tag\">" +
+                            record.statusType + " " + cityssm.dateToString(new Date(record.statusTime)) +
+                            "</span>"
+                        : "") +
+                    "</div>");
             return panelBlockElement;
         }
     };

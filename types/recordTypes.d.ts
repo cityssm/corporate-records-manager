@@ -48,6 +48,10 @@ export declare type Record = {
     related?: Record[];
     comments?: RecordComment[];
     users?: RecordUser[];
+    statusTypeKey?: string;
+    statusType?: string;
+    statusTime?: Date;
+    statusTimeString?: string;
 } & TrackedValue;
 export declare type RecordStatus = {
     statusLogID: number;

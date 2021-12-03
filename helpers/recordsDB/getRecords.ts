@@ -110,8 +110,16 @@ export const getRecords = async (parameters: {
       " recordID, recordTypeKey, recordNumber," +
       " recordTitle, recordDescription, party, location, recordDate," +
       " recordCreate_userName, recordCreate_datetime," +
-      " recordUpdate_userName, recordUpdate_datetime" +
-      " from CR.Records" +
+      " recordUpdate_userName, recordUpdate_datetime," +
+      " statusTypeKey, statusType, statusTime" +
+      " from CR.Records r" +
+      " cross apply (" +
+      "select top 1 s.statusTime, s.statusTypeKey, t.statusType" +
+      " from CR.RecordStatusLog s" +
+      " left join CR.StatusTypes t on s.statusTypeKey = t.statusTypeKey" +
+      " where r.recordID = s.recordID" +
+      " and recordDelete_datetime is null" +
+      " order by statusTime desc, statusLogID desc) s" +
       whereSQL +
       " order by recordDate desc, recordCreate_datetime desc, recordNumber desc");
 
