@@ -1,7 +1,7 @@
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as configFns from "../helpers/configFns.js";
 
-import addRelatedRecord from "../helpers/recordsDB/addRelatedRecord.js";
+import { addRelatedRecord } from "../helpers/recordsDB/addRelatedRecord.js";
 
 import type * as sqlTypes from "mssql";
 
@@ -93,8 +93,8 @@ const doTableCleanup = async () => {
       .query("update CR.Records" +
         " set recordDate = cast(convert(varchar(10), recordDate, 111) as datetime)");
 
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -213,8 +213,8 @@ const doImportBylaws = async () => {
 
     console.log("Done Bylaws");
 
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -323,8 +323,8 @@ const doImportAgreements = async () => {
 
     console.log("Done Agreements");
 
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -481,8 +481,8 @@ const doImportEasements = async () => {
 
     console.log("Done Easements");
 
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
   }
 };
 
