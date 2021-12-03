@@ -38,7 +38,7 @@ const oldBylawToRecord = new Map();
 const doTablePurge = async () => {
     try {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
-        const tablesToPurge = ["CR.RecordCommentLog", "CR.RecordStatusLog",
+        const tablesToPurge = ["CR.RecordCommentLog", "CR.RecordStatusLog", "CR.RecordUsers",
             "CR.RecordTags", "CR.RecordURLs", "CR.RelatedRecords",
             "CR.Records", "CR.StatusTypes"];
         for (const tableName of tablesToPurge) {

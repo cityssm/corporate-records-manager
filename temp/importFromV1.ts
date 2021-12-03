@@ -56,7 +56,7 @@ const doTablePurge = async () => {
 
     // Purge Destination Tables
 
-    const tablesToPurge = ["CR.RecordCommentLog", "CR.RecordStatusLog",
+    const tablesToPurge = ["CR.RecordCommentLog", "CR.RecordStatusLog", "CR.RecordUsers",
       "CR.RecordTags", "CR.RecordURLs", "CR.RelatedRecords",
       "CR.Records", "CR.StatusTypes"];
 
