@@ -74,6 +74,9 @@ app.use(urlPrefix + "/lib/bulma-js", express.static(path.join("node_modules", "@
 app.use(urlPrefix + "/lib/bulma-webapp-js", express.static(path.join("node_modules", "@cityssm", "bulma-webapp-js", "dist")));
 app.use(urlPrefix + "/lib/date-diff", express.static(path.join("node_modules", "@cityssm", "date-diff", "es2015")));
 app.use(urlPrefix + "/lib/fa5", express.static(path.join("node_modules", "@fortawesome", "fontawesome-free")));
+app.use("/favicon.ico", (_request, response) => {
+    response.redirect(301, urlPrefix + "/images/favicon.ico");
+});
 const sessionCookieName = configFns.getProperty("session.cookieName");
 const FileStoreSession = FileStore(session);
 app.use(session({
