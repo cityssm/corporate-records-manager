@@ -41,7 +41,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const tag = tagElement.querySelector("input").value;
         cityssm.confirmModal("Remove Tag?", "Are you sure you want to remove the <span class=\"tag\">" + cityssm.escapeHTML(tag) + "</span> tag?", "Yes, Remove the Tag", "warning", removeFunction);
     };
-    const openAddTagModalFunction = () => {
+    const openAddTagModalFunction = (clickEvent) => {
+        clickEvent.preventDefault();
         let addTagModalCloseFunction;
         let tagInputElement;
         const suggestedTagLimit = 20;

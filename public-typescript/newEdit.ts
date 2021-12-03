@@ -72,7 +72,9 @@ declare const cityssm: cityssmGlobal;
       removeFunction);
   };
 
-  const openAddTagModalFunction = () => {
+  const openAddTagModalFunction = (clickEvent: Event) => {
+
+    clickEvent.preventDefault();
 
     let addTagModalCloseFunction: () => void;
 

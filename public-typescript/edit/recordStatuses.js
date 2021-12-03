@@ -106,7 +106,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "<span class=\"icon\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
                 "<span>Edit</span>" +
                 "</button>" +
-                " <button class=\"button is-danger is-light is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Remove Status\" type=\"button\">" +
+                " <button class=\"button is-danger is-light is-small has-tooltip-arrow has-tooltip-left\" data-tooltip=\"Remove Status\" aria-label=\"Remove Status\" type=\"button\">" +
                 "<span class=\"icon\"><i class=\"fas fa-trash-alt\" aria-hidden=\"true\"></i></span>" +
                 "</button>" +
                 "</div>") +
