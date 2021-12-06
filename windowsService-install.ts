@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/filename-case */
+
 import { Service } from "node-windows";
 import { serviceConfig } from "./windowsService.js";
 
