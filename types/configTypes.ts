@@ -28,7 +28,11 @@ export interface Config {
 
   mssqlConfig: sqlTypes.config;
 
-  adWebAuthConfig: ADWebAuthConfig;
+  authentication: {
+    source: "ad-web-auth" | "Active Directory",
+    adWebAuthConfig?: ADWebAuthConfig;
+    activeDirectoryConfig?: ActiveDirectoryConfig;
+  }
 
   integrations?: {
     docuShare?: {
@@ -53,4 +57,12 @@ export interface ReportDefinition {
   sql: () => string;
   paramNames?: string[];
   columns?: string[];
+}
+
+
+export interface ActiveDirectoryConfig {
+  url: string;
+  baseDN: string;
+  username: string;
+  password: string;
 }

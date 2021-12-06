@@ -15,11 +15,14 @@ export const config: configTypes.Config = {
 
   // ad-web-auth details
   // Not used
-  adWebAuthConfig: {
-    url: "http://127.0.0.1:46464",
-    method: "headers",
-    userNameField: "AD-UserName",
-    passwordField: "AD-Password"
+  authentication: {
+    source: "Active Directory",
+    activeDirectoryConfig: {
+      url: "ldap://adServer.local",
+      baseDN: "dc=example,dc=com",
+      username: "activeDirectory@example.com",
+      password: "p@ssword"
+    }
   },
 
   mssqlConfig: {

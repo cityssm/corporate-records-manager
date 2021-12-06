@@ -21,7 +21,11 @@ export interface Config {
         doKeepAlive?: boolean;
     };
     mssqlConfig: sqlTypes.config;
-    adWebAuthConfig: ADWebAuthConfig;
+    authentication: {
+        source: "ad-web-auth" | "Active Directory";
+        adWebAuthConfig?: ADWebAuthConfig;
+        activeDirectoryConfig?: ActiveDirectoryConfig;
+    };
     integrations?: {
         docuShare?: {
             isEnabled: boolean;
@@ -41,4 +45,10 @@ export interface ReportDefinition {
     sql: () => string;
     paramNames?: string[];
     columns?: string[];
+}
+export interface ActiveDirectoryConfig {
+    url: string;
+    baseDN: string;
+    username: string;
+    password: string;
 }

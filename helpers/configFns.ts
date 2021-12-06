@@ -55,7 +55,10 @@ export function getProperty(propertyName: "session.maxAgeMillis"): number;
 export function getProperty(propertyName: "session.secret"): string;
 
 export function getProperty(propertyName: "mssqlConfig"): sqlTypes.config;
-export function getProperty(propertyName: "adWebAuthConfig"): ADWebAuthConfig;
+
+export function getProperty(propertyName: "authentication.source"): "ad-web-auth" | "Active Directory";
+export function getProperty(propertyName: "authentication.adWebAuthConfig"): ADWebAuthConfig;
+export function getProperty(propertyName: "authentication.activeDirectoryConfig"): configTypes.ActiveDirectoryConfig;
 
 export function getProperty(propertyName: "integrations.docuShare.isEnabled"): boolean;
 export function getProperty(propertyName: "integrations.docuShare.rootURL"): string;

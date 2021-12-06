@@ -15,7 +15,9 @@ export declare function getProperty(propertyName: "session.doKeepAlive"): boolea
 export declare function getProperty(propertyName: "session.maxAgeMillis"): number;
 export declare function getProperty(propertyName: "session.secret"): string;
 export declare function getProperty(propertyName: "mssqlConfig"): sqlTypes.config;
-export declare function getProperty(propertyName: "adWebAuthConfig"): ADWebAuthConfig;
+export declare function getProperty(propertyName: "authentication.source"): "ad-web-auth" | "Active Directory";
+export declare function getProperty(propertyName: "authentication.adWebAuthConfig"): ADWebAuthConfig;
+export declare function getProperty(propertyName: "authentication.activeDirectoryConfig"): configTypes.ActiveDirectoryConfig;
 export declare function getProperty(propertyName: "integrations.docuShare.isEnabled"): boolean;
 export declare function getProperty(propertyName: "integrations.docuShare.rootURL"): string;
 export declare function getProperty(propertyName: "integrations.docuShare.server"): docuShareConfig.ServerConfig;
