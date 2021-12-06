@@ -30,7 +30,7 @@
             <strong><%= record.recordTitle %></strong>
           </div>
           <div class="column is-narrow">
-            <%= dateTimeFns.dateToString(record.recordDate) %>
+            <span class="has-tooltip-left has-tooltip-arrow" data-tooltip="<%= recordType.recordType %> Date"><%= dateTimeFns.dateToString(record.recordDate) %></span>
           </div>
         </div>
       </div>
