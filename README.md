@@ -18,7 +18,7 @@ A system for tracking various corporate records administered by the Clerks Depar
 
 -   Tracks corporate records like by-laws and agreements.  Built with the City's Clerks Department in mine, but flexible enough to track much more.
 -   CSV export options.
--   [Xerox DocuShare](https://www.xerox.com/en-us/services/enterprise-content-management) integrations.
+-   Optional [Xerox DocuShare](https://www.xerox.com/en-us/services/enterprise-content-management) integrations.
 
 ## Server Requirements
 
@@ -26,19 +26,10 @@ The application has built and tested in a Windows environment,
 but will likely run in environments that support the following.
 
 -   Node 14 or better.
--   Microsoft SQL Server 2005 or better (for data storage).
+-   Microsoft SQL Server 2016 or better (for data storage).
 -   Active Directory (for authentication).
 
-## Installation
-
--   Install [NodeJS](https://nodejs.org/) 14 or better.
--   Download the [latest release](https://github.com/cityssm/corporate-records-manager/releases), or clone the repository to a folder of your choice.
--   Use the [`sql/createTables.sql`](sql/createTables.sql) script to create the SQL Server database.
--   Run `npm install` to grab the dependencies.
--   Create a `data/config.js` file.  The properties are described in the [Setup and Configuration documentation](docs/setup.md).  Use [`data/configSample.js`](data/configSample.js) as a guide.
--   Run `npm start`.
-
-Windows service install scripts are available as well.
+**[Installation Instructions](docs/admin-gettingStarted.md)**
 
 ## Related Projects
 
