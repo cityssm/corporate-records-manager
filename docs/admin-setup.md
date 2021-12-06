@@ -49,7 +49,7 @@ a reverse proxy like IIS.
 
 See the [configuration options](https://www.npmjs.com/package/mssql#configuration-1) for the `node-mssql` package.
 
-### config.adWebAuthConfig = {};
+### config.authentication = {};
 
 ### config.integrations.docuShare = {};
 
@@ -67,7 +67,7 @@ DocuShare integrations are powered by
 ## Database Tables
 
 To update the configuration tables graphically,
-see the [Administration documentation](admin.md).
+see the [Administrator Views documentation](admin-views.md).
 
 Alternatively, you can manually update the configuration tables.
 using a tool like [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms).
@@ -108,7 +108,7 @@ and be marked as active.
 | ------------------- | ------------------------- | ----------------------------------------------------------------- | --------------------- |
 | `recordUserTypeKey` | `varchar(30) primary key` | The behind-the-scenes key.                                        | `authority-delegated` |
 | `recordUserType`    | `varchar(100)`            | The human readable record user type.                              | `Delegated Authority` |
-| `isActive`          | `bit`                      | Whether the record user type is available for new records or not. | `1`                   |
+| `isActive`          | `bit`                     | Whether the record user type is available for new records or not. | `1`                   |
 
 ### CR.StatusTypes
 

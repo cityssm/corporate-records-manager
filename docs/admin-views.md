@@ -2,7 +2,7 @@
 ·
 [Documentation](./)
 
-# Administration
+# Administrator Views
 
 ![Record Type Administration](admin-recordTypes.png)
 
@@ -13,7 +13,7 @@ Administrators have the ability to make changes to the following configuration t
 -   Status Types
 -   Record User Types
 
-These tables are documented in the [Setup documentation](setup.md).
+These tables are documented in the [Setup and Configuration documentation](admin-setup.md).
 
 ## General Notes
 

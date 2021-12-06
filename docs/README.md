@@ -17,8 +17,8 @@ Export data in the Excel-friendly CSV format.
 
 ## System Administrator Documentation
 
-**[Setup and Configuration](setup.md)**<br />
+**[Setup and Configuration](admin-setup.md)**<br />
 The config.js file.  The database configuration tables.
 
-**[Administration](admin.md)**<br />
+**[Administrator Views](admin-views.md)**<br />
 The administrative views for maintaining users, record types, and status types.
