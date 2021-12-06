@@ -63,14 +63,14 @@ export const getRecords = async (parameters, options, requestSession) => {
         if (returnObject.count === 0) {
             return returnObject;
         }
-        const result = await resultsRequest.query("select top " + (options.limit + options.offset).toString() +
+        const sql = "select top " + (options.limit + options.offset).toString() +
             " recordID, recordTypeKey, recordNumber," +
             " recordTitle, recordDescription, party, location, recordDate," +
             " recordCreate_userName, recordCreate_datetime," +
             " recordUpdate_userName, recordUpdate_datetime," +
             " statusTypeKey, statusType, statusTime" +
             " from CR.Records r" +
-            " cross apply (" +
+            " outer apply (" +
             "select top 1 s.statusTime, s.statusTypeKey, t.statusType" +
             " from CR.RecordStatusLog s" +
             " left join CR.StatusTypes t on s.statusTypeKey = t.statusTypeKey" +
@@ -78,7 +78,8 @@ export const getRecords = async (parameters, options, requestSession) => {
             " and recordDelete_datetime is null" +
             " order by statusTime desc, statusLogID desc) s" +
             whereSQL +
-            " order by recordDate desc, recordCreate_datetime desc, recordNumber desc");
+            " order by recordDate desc, recordCreate_datetime desc, recordNumber desc";
+        const result = await resultsRequest.query(sql);
         returnObject.records = result.recordset.slice(options.offset);
         return returnObject;
     }
