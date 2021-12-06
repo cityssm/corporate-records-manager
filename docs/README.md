@@ -17,6 +17,9 @@ Export data in the Excel-friendly CSV format.
 
 ## System Administrator Documentation
 
+**[Getting Started](admin-gettingStarted.md)**<br />
+Application prerequisites.  Installation instructions.
+
 **[Setup and Configuration](admin-setup.md)**<br />
 The config.js file.  The database configuration tables.
 
