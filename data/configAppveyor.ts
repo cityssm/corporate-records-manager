@@ -13,7 +13,6 @@ export const config: configTypes.Config = {
     maxAgeMillis: 60 * 60 * 1000
   },
 
-  // ad-web-auth details
   // Not used
   authentication: {
     source: "Active Directory",
