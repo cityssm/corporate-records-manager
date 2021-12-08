@@ -15,7 +15,9 @@ export const addUser = async (userName) => {
         const pool = await sqlPool.connect(configFns.getProperty("mssqlConfig"));
         await pool.request()
             .input("userName", user.userName)
+            .input("fullName", user.fullName)
             .input("isActive", user.isActive)
+            .input("canViewAll", user.canViewAll)
             .input("canUpdate", user.canUpdate)
             .input("isAdmin", user.isAdmin)
             .query("insert into CR.Users" +
