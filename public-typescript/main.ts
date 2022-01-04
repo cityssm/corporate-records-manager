@@ -110,7 +110,7 @@ declare const dateDiff: DateDiff;
             : record.recordDescription
           ) + "<br />" +
           (record.statusTypeKey && record.statusTypeKey !== ""
-            ? "<span class=\"tag\">" +
+            ? "<span class=\"tag has-tooltip-right has-tooltip-arrow\" data-tooltip=\"Current Status\">" +
             record.statusType + " " + cityssm.dateToString(new Date(record.statusTime)) +
             "</span>"
             : "") +

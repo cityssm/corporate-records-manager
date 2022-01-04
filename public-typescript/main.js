@@ -86,7 +86,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         ? record.recordDescription.slice(0, 497) + " ..."
                         : record.recordDescription) + "<br />" +
                     (record.statusTypeKey && record.statusTypeKey !== ""
-                        ? "<span class=\"tag\">" +
+                        ? "<span class=\"tag has-tooltip-right has-tooltip-arrow\" data-tooltip=\"Current Status\">" +
                             record.statusType + " " + cityssm.dateToString(new Date(record.statusTime)) +
                             "</span>"
                         : "") +
