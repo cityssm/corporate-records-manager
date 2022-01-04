@@ -9,9 +9,18 @@ export const reports: { [reportName: string]: ReportDefinition } = {
         " convert(char(10), r.recordDate, 23) as recordDate," +
         " r.recordTitle, r.recordDescription," +
         " r.party, r.location," +
-        " t.tagCSV" +
+        " t.tagCSV," +
+        " s.statusTypeKey, s.statusType," +
+        " convert(char(10), s.statusTime, 23) as statusDate" +
         " from CR.Records r" +
         " left join CR.RecordTagCSV t on r.recordID = t.recordID" +
+        " outer apply (" +
+        "select top 1 s.statusTime, s.statusTypeKey, t.statusType" +
+        " from CR.RecordStatusLog s" +
+        " left join CR.StatusTypes t on s.statusTypeKey = t.statusTypeKey" +
+        " where r.recordID = s.recordID" +
+        " and recordDelete_datetime is null" +
+        " order by statusTime desc, statusLogID desc) s" +
         " where r.recordDelete_datetime is null" +
         " and r.recordTypeKey = @recordTypeKey" +
         " order by r.recordID";
