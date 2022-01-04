@@ -42,6 +42,11 @@ export const getRecords = async (parameters, options, requestSession) => {
             resultsRequest = resultsRequest.input("recordDateStringLTE", parameters.recordDateStringLTE);
             whereSQL += " and recordDate <= @recordDateStringLTE";
         }
+        if (parameters.statusTypeKey && parameters.statusTypeKey !== "") {
+            countRequest = countRequest.input("statusTypeKey", parameters.statusTypeKey);
+            resultsRequest = resultsRequest.input("statusTypeKey", parameters.statusTypeKey);
+            whereSQL += " and s.statusTypeKey = @statusTypeKey";
+        }
         if (parameters.searchString !== "") {
             const searchStringSplit = parameters.searchString.trim().split(" ");
             for (const [index, element] of searchStringSplit.entries()) {
@@ -57,7 +62,14 @@ export const getRecords = async (parameters, options, requestSession) => {
                     ")";
             }
         }
-        const countResult = await countRequest.query("select count(*) as cnt from CR.Records" +
+        const countResult = await countRequest.query("select count(*) as cnt from CR.Records r" +
+            " outer apply (" +
+            "select top 1 s.statusTime, s.statusTypeKey, t.statusType" +
+            " from CR.RecordStatusLog s" +
+            " left join CR.StatusTypes t on s.statusTypeKey = t.statusTypeKey" +
+            " where r.recordID = s.recordID" +
+            " and recordDelete_datetime is null" +
+            " order by statusTime desc, statusLogID desc) s" +
             whereSQL);
         returnObject.count = countResult.recordset[0].cnt;
         if (returnObject.count === 0) {

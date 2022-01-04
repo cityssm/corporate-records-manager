@@ -139,6 +139,63 @@ declare const cityssm: cityssmGlobal;
     searchRecordsFunction();
   };
 
+  /*
+   * Status Type Key
+   */
+
+  const recordTypeKeyElement = document.querySelector("#search--recordTypeKey") as HTMLSelectElement;
+  const statusTypeKeyElement = document.querySelector("#search--statusTypeKey") as HTMLSelectElement;
+
+  const statusTypeKeyMap = new Map<string, recordTypes.StatusType[]>();
+
+  const renderStatusTypeKey = () => {
+
+    statusTypeKeyElement.innerHTML = "<option value=\"\" selected>(All Statuses)</option>";
+
+    if (!statusTypeKeyMap.has(recordTypeKeyElement.value)) {
+      return;
+    }
+
+    for (const statusType of statusTypeKeyMap.get(recordTypeKeyElement.value)) {
+
+      if (!statusType.isActive || statusType.recordCount === 0) {
+        continue;
+      }
+
+      const optionElement = document.createElement("option");
+      optionElement.value = statusType.statusTypeKey;
+      optionElement.textContent = statusType.statusType;
+      statusTypeKeyElement.append(optionElement);
+    }
+  };
+
+  recordTypeKeyElement.addEventListener("change", () => {
+
+    statusTypeKeyElement.innerHTML = "<option value=\"\" selected>(All Statuses)</option>";
+
+    if (recordTypeKeyElement.value === "") {
+      // ignore
+
+    } else if (statusTypeKeyMap.has(recordTypeKeyElement.value)) {
+      renderStatusTypeKey();
+
+    } else {
+
+      const recordTypeKey = recordTypeKeyElement.value;
+
+      cityssm.postJSON(urlPrefix + "/dashboard/doGetStatusTypes", {
+        recordTypeKey
+      }, (responseJSON: { statusTypes: recordTypes.StatusType[] }) => {
+        statusTypeKeyMap.set(recordTypeKey, responseJSON.statusTypes);
+        renderStatusTypeKey();
+      })
+    }
+  });
+
+  /*
+   * Initialize form
+   */
+
   searchFormElement.addEventListener("submit", resetOffsetAndSearchFunction);
 
   const filterElements = searchFormElement.querySelectorAll("input, select");

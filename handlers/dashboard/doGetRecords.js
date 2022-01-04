@@ -6,7 +6,8 @@ export const handler = async (request, response) => {
         recordNumber: request.body.recordNumber,
         recordTag: request.body.recordTag,
         recordDateStringGTE: request.body["recordDateString-gte"],
-        recordDateStringLTE: request.body["recordDateString-lte"]
+        recordDateStringLTE: request.body["recordDateString-lte"],
+        statusTypeKey: request.body.statusTypeKey
     }, {
         limit: Number.parseInt(request.body.limit, 10),
         offset: Number.parseInt(request.body.offset, 10)

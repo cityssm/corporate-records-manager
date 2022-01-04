@@ -10,6 +10,7 @@ export declare const getRecords: (parameters: {
     recordTag?: string;
     recordDateStringGTE?: string;
     recordDateStringLTE?: string;
+    statusTypeKey?: string;
 }, options: {
     limit: number;
     offset: number;
