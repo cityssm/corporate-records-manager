@@ -82,7 +82,7 @@
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
     "bulma": "^0.9.3",
-    "eslint": "^7.32.0",
+    "eslint": "^8.14.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-unicorn": "^40.0.0",
