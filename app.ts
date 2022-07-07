@@ -128,9 +128,16 @@ app.use(urlPrefix + "/lib/date-diff",
 app.use(urlPrefix + "/lib/fa5",
   express.static(path.join("node_modules", "@fortawesome", "fontawesome-free")));
 
+
+/*
+ * REDIRECTS
+ */
+
+
 app.use("/favicon.ico", (_request, response) => {
   response.redirect(301, urlPrefix + "/images/favicon.ico");
 });
+
 
 /*
  * SESSION MANAGEMENT
