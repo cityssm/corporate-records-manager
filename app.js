@@ -68,6 +68,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 const urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
+if (urlPrefix && urlPrefix !== "") {
+    debugApp("urlPrefix = " + urlPrefix);
+}
 app.use(urlPrefix, express.static("public"));
 app.use(urlPrefix + "/lib/fontsource-barlow", express.static(path.join("node_modules", "@fontsource", "barlow")));
 app.use(urlPrefix + "/lib/bulma-js", express.static(path.join("node_modules", "@cityssm", "bulma-js", "dist")));

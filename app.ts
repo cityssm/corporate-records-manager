@@ -110,6 +110,10 @@ app.use(limiter);
 
 const urlPrefix = configFns.getProperty("reverseProxy.urlPrefix");
 
+if (urlPrefix && urlPrefix !== "") {
+  debugApp("urlPrefix = " + urlPrefix);
+}
+
 
 app.use(urlPrefix, express.static("public"));
 
