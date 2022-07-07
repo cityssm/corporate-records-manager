@@ -24,8 +24,7 @@
     "dev": "cross-env NODE_ENV=dev DEBUG=corporate-records-manager:* nodemon ./bin/www",
     "dev:java": "cross-env NODE_ENV=dev DEBUG=java-caller nodemon ./bin/www",
     "test": "mocha --timeout 10000 --exit",
-    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit",
-    "importFromV1": "node ./temp/importFromV1"
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit"
   },
   "dependencies": {
     "@cityssm/ad-web-auth-connector": "^0.2.0",
