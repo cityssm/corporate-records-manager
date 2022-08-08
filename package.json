@@ -54,7 +54,7 @@
     "node-cache": "^5.1.2",
     "papaparse": "^5.3.2",
     "session-file-store": "^1.5.0",
-    "set-interval-async": "^2.0.3"
+    "set-interval-async": "^3.0.2"
   },
   "devDependencies": {
     "@cityssm/bulma-a11y": "^0.4.0",
