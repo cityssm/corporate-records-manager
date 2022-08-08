@@ -36,7 +36,7 @@
     "@cityssm/expressjs-server-js": "^2.3.2",
     "@cityssm/mssql-multi-pool": "^2.1.6",
     "@cityssm/simple-password-generator": "^2.1.2",
-    "@fontsource/barlow": "^4.5.7",
+    "@fontsource/barlow": "^4.5.8",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "activedirectory2": "^2.1.0",
     "compression": "^1.7.4",
