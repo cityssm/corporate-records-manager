@@ -64,7 +64,7 @@
               <label class="label" for="record--recordDateString"><%= recordType.recordType %> Date</label>
               <div class="field">
                 <div class="control">
-                  <input class="input" id="record--recordDateString" name="recordDateString" type="date" value="<%= dateTimeFns.dateToString(record.recordDate) %>" max="<%= dateTimeFns.dateToString(new Date()) %>" required />
+                  <input class="input" id="record--recordDateString" name="recordDateString" type="date" value="<%= record.recordDate ? dateTimeFns.dateToString(record.recordDate) : "" %>" max="<%= dateTimeFns.dateToString(new Date()) %>" required />
                 </div>
               </div>
             </div>
